@@ -60,10 +60,11 @@ Một người giữ được nhiều vai trò. Chỉ tài khoản `@aiedu.com.v
 - `20261120043938_courses.sql`: khoá học, học phần, bài, học liệu, đăng ký, đã lưu, tiến độ; view `lesson_material_updates`, `my_course_progress`; hàm `course_material_links(course_id)`.
 - `20261120044017_hardening.sql`: thu quyền gọi hàm trigger qua API, cố định search_path. Security advisor còn cảnh báo 7 hàm `security definer` gọi được qua API (`has_role`, `is_staff`, `can_edit_course`, `course_visible`, `course_of_module`, `course_of_lesson`, `course_material_links`): giữ có chủ đích vì policy RLS dùng chúng, chúng chỉ trả boolean/id hoặc link đã lọc quyền.
 - `20261120070621_khbd_flow.sql`: luồng KHBD giai đoạn 2. Cột thêm: `documents.topic_name/periods/deploy_format/updated_at`, `document_versions.content` (mục tiêu, 4 hoạt động, kết quả đối chiếu) và `warnings`. Hàm: `create_khbd_jobs(mode, items, options)` tạo lượt chạy (job cha) + job con + 6 bước; `advance_mock_jobs(step_seconds)`; `retry_job`, `cancel_job`; `review_version(version, decision, checklist, rubric, summary)` (trả về thì tự tạo job soạn bản v(N+1), bắt buộc có ít nhất 1 góp ý mở); `undo_approval`. View `khbd_list` (mỗi tài liệu một dòng, `list_status` gồm cả `running`, `error`). Realtime bật cho `generation_jobs`, `job_steps`.
+- `20261120072649_course_admin.sql`: giai đoạn 3. Hàm `move_course_item(kind, id, dir)` đổi chỗ học phần/bài với dòng kề (security invoker, RLS quyết định ai được đổi). View `course_admin_list` (khoá + số học phần, bài, học liệu, học liệu có bản mới, người học) cho màn Quản lý khoá học.
 - Tên file khớp với version đã chạy trên project Supabase `aie-training-hub` (ref `uqgdxncnlcenhjtrszqr`, vùng Singapore). Tên file nhắc trong chú thích bên trong migration là tên cũ, giữ nguyên vì file đã chạy.
 - Thứ tự học phần và bài dùng cột `position` với unique deferrable; đổi chỗ hai dòng thì làm trong một transaction.
 - Giáo viên **không** đọc trực tiếp `document_versions`; lấy link học liệu qua `course_material_links()`.
-- Thử trên Postgres trống, không cần Supabase: `supabase/tests/run.sh <ten_db>`. Chạy mọi file `tests/[1-9]*.sql`; đạt khi số lỗi thực tế bằng số mục "PHẢI LỖI" (hiện là 15).
+- Thử trên Postgres trống, không cần Supabase: `supabase/tests/run.sh <ten_db>`. Chạy mọi file `tests/[1-9]*.sql`; đạt khi số lỗi thực tế bằng số mục "PHẢI LỖI" (hiện là 17).
 
 ## Bản chạy thật
 
@@ -83,7 +84,7 @@ npm run test:db -- <ten_db>     # cần Postgres cục bộ; xem supabase/tests/
 
 Dữ liệu mẫu (đã nạp vào project, chạy lại không bị trùng): `supabase/seed.sql` (9 khoá học), `supabase/seed-khung-mau.sql` (khung lớp 6, Chủ đề 1–2, 10 bài, để thử Tạo KHBD khi chưa đồng bộ Drive).
 
-Thử trọn luồng KHBD trên máy không cần Supabase thật: `tests/e2e/README.md` (PostgREST + cổng giả Auth + Playwright).
+Thử trọn luồng KHBD và khoá học trên máy không cần Supabase thật: `tests/e2e/README.md` (PostgREST + cổng giả Auth + Playwright; `flow_khbd.py` rồi `flow_khoa_hoc.py`).
 
 ## Bản giả lập soạn KHBD (MockExecutor)
 
@@ -137,7 +138,7 @@ Thử trọn luồng KHBD trên máy không cần Supabase thật: `tests/e2e/RE
 
 1. **Nền (đã xong):** Next.js (`@supabase/ssr`), Supabase (project + 3 migration + seed), đăng nhập Google (chờ bật provider) và email + mật khẩu tạm cho nhân viên, chặn khu nội bộ theo vai trò, layout hai khu, danh mục khoá học đọc từ DB, trang chi tiết bản đầu, các màn nội bộ để chỗ.
 2. **Khu nội bộ – KHBD (đã xong, trừ đồng bộ Drive):** Tạo KHBD (soạn lại từ kho, bài mới), Tiến độ (Realtime + bản giả lập, chạy lại, huỷ), Danh sách KHBD, hàng chờ Duyệt bài, màn duyệt một bài (xem trước, checklist, rubric 7 tiêu chí, góp ý theo phần, duyệt/trả về soạn bản mới, hoàn tác duyệt, xem bản cũ). **Còn lại:** đồng bộ cây kho từ Drive (cần service account Google, chờ bạn kỹ thuật cloud); làm PBT sau khi duyệt (giai đoạn 2 của skill).
-3. **Khoá học:** Quản lý khoá học (học phần, bài, gắn học liệu đã duyệt, xuất bản), chi tiết khoá, Khoá học của tôi, tiến độ học.
+3. **Khoá học (đã xong):** Quản lý khoá học (tạo khoá nháp, sửa thông tin, học phần và bài: thêm, đổi tên, xoá, đổi thứ tự; gắn KHBD/PBT đã duyệt, "Gắn vN" khi có bản mới; xuất bản, ẩn, xoá khoá chưa có người học); chi tiết khoá (đăng ký, lưu, đánh dấu bài đã học, tiến độ, học liệu hiện sau khi đăng ký); Khoá học của tôi (Đang học / Đã hoàn thành / Đã lưu); menu khu nội bộ gọn lại thành nút "Menu" dưới 768 px. Xuất bản hoặc ẩn khoá thì gọi `refreshCatalog()` (server action, `updateTag("courses")`).
 4. **Executor thật** khi đã chốt.
 
 ## Quy tắc khi code

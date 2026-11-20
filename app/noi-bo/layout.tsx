@@ -3,19 +3,23 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { LogoMark } from "@/components/Icon";
 import { InternalNav, InternalNavStatic } from "@/components/InternalNav";
+import { InternalAside } from "@/components/InternalShell";
 import { ROLE_LABELS, getCurrentUser, initials } from "@/lib/auth";
 
 export const metadata = { title: { default: "Nội bộ", template: "%s · Nội bộ · AI Edu" } };
 
 export default function InternalLayout({ children }: LayoutProps<"/noi-bo">) {
   return (
-    <div className="flex min-h-screen flex-wrap bg-bg">
-      <aside className="flex flex-[1_1_220px] flex-col gap-6 border-r border-line bg-surface px-4 py-5 md:max-w-64">
-        <Link href="/noi-bo" className="flex items-center gap-2.5 px-2 text-ink no-underline hover:text-ink">
-          <LogoMark size={34} />
-          <span className="text-[17px] font-bold">AI Edu</span>
-          <span className="rounded-md bg-ink px-2 py-0.5 text-[11px] font-semibold text-white">Nội bộ</span>
-        </Link>
+    <div className="flex min-h-screen flex-col bg-bg md:flex-row">
+      <InternalAside
+        brand={
+          <Link href="/noi-bo" className="flex items-center gap-2.5 px-2 text-ink no-underline hover:text-ink">
+            <LogoMark size={34} />
+            <span className="text-[17px] font-bold">AI Edu</span>
+            <span className="rounded-md bg-ink px-2 py-0.5 text-[11px] font-semibold text-white">Nội bộ</span>
+          </Link>
+        }
+      >
         <Suspense fallback={<InternalNavStatic />}>
           <InternalNav />
         </Suspense>
@@ -27,9 +31,9 @@ export default function InternalLayout({ children }: LayoutProps<"/noi-bo">) {
         <Suspense fallback={<div className="mt-auto h-9" aria-hidden="true" />}>
           <StaffBadge />
         </Suspense>
-      </aside>
+      </InternalAside>
 
-      <main className="flex min-w-0 flex-[999_1_640px] flex-col gap-6 p-8">
+      <main className="flex min-w-0 flex-1 flex-col gap-6 px-4 py-6 sm:p-8">
         <Suspense fallback={<p className="text-muted">Đang kiểm tra quyền truy cập…</p>}>
           <StaffGate>{children}</StaffGate>
         </Suspense>

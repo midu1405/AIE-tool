@@ -17,9 +17,9 @@ http.createServer((req, res) => {
   const u = new URL(req.url, 'http://x');
   if (u.pathname === '/auth/v1/user') {
     const c = verify((req.headers.authorization || '').replace(/^Bearer /, ''));
-    if (!c || !USERS[c.sub]) { res.writeHead(401, { ...cors, 'content-type': 'application/json' }); return res.end('{"code":401,"error_code":"bad_jwt","msg":"invalid"}'); }
+    if (!c) { res.writeHead(401, { ...cors, 'content-type': 'application/json' }); return res.end('{"code":401,"error_code":"bad_jwt","msg":"invalid"}'); }
     res.writeHead(200, { ...cors, 'content-type': 'application/json' });
-    return res.end(JSON.stringify({ id: c.sub, aud: 'authenticated', role: 'authenticated', email: USERS[c.sub].email, user_metadata: { full_name: USERS[c.sub].name }, app_metadata: {}, created_at: new Date().toISOString() }));
+    return res.end(JSON.stringify({ id: c.sub, aud: 'authenticated', role: 'authenticated', email: USERS[c.sub]?.email ?? c.email, user_metadata: { full_name: USERS[c.sub]?.name ?? c.name ?? c.email }, app_metadata: {}, created_at: new Date().toISOString() }));
   }
   if (u.pathname.startsWith('/rest/v1/')) {
     const headers = { ...req.headers, host: 'localhost:3001' };
