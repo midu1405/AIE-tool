@@ -64,6 +64,12 @@ Một người giữ được nhiều vai trò. Chỉ tài khoản `@aiedu.com.v
 - Giáo viên **không** đọc trực tiếp `document_versions`; lấy link học liệu qua `course_material_links()`.
 - Thử trên Postgres trống, không cần Supabase: `supabase/tests/run.sh <ten_db>`. Đạt khi số lỗi thực tế bằng số mục "PHẢI LỖI" (hiện là 9).
 
+## Bản chạy thật
+
+- Web: https://aie-tool-tici.vercel.app (Vercel, project `aie-tool` của tài khoản midu1405, gói Hobby). Mỗi lần đẩy lên `main` Vercel tự deploy; mỗi nhánh có link xem trước.
+- Biến môi trường trên Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+- Gói Hobby chỉ dành cho dùng thử không thương mại; trước khi mở cho giáo viên cần chuyển Pro hoặc tài khoản Vercel của công ty.
+
 ## Chạy và kiểm tra
 
 ```bash

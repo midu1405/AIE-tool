@@ -2,10 +2,22 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { FORMATS, LEVELS, TOPICS, audienceText, hoursText } from "@/lib/catalog";
-import { getPublishedCourse } from "@/lib/courses";
+import { getPublishedCourse, getPublishedCourses } from "@/lib/courses";
 
 // Bản đầu của trang chi tiết (giai đoạn 1): thông tin khoá và danh sách học phần.
 // Đăng ký học, tiến độ, học liệu làm ở giai đoạn 3 theo design/artboards/Detail.dc.html.
+// Dựng sẵn trang của các khoá đã xuất bản lúc build; khoá mới xuất bản sau đó vẫn mở được (render khi có yêu cầu).
+export async function generateStaticParams() {
+  const courses = await getPublishedCourses();
+  return courses.map((c) => ({ slug: c.slug }));
+}
+
+export async function generateMetadata({ params }: PageProps<"/khoa-hoc/[slug]">) {
+  const { slug } = await params;
+  const c = await getPublishedCourse(slug);
+  return c ? { title: c.title, description: c.summary } : { title: "Không tìm thấy khoá học" };
+}
+
 export default function CoursePage({ params }: PageProps<"/khoa-hoc/[slug]">) {
   return (
     <Suspense fallback={<div className="mx-auto max-w-[1200px] px-6 py-10 text-muted">Đang tải khoá học…</div>}>
