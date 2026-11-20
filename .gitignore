@@ -26,3 +26,7 @@ supabase/.branches/
 supabase/.temp/
 
 .DS_Store
+
+# thử cục bộ
+tests/e2e/cookie.txt
+tests/e2e/shots/

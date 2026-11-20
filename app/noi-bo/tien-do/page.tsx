@@ -1,7 +1,12 @@
-import { ComingSoon } from "@/components/ComingSoon";
+import { Suspense } from "react";
+import { JobProgress } from "@/components/khbd/JobProgress";
 
 export const metadata = { title: "Tiến độ soạn" };
 
 export default function Page() {
-  return <ComingSoon title="Tiến độ soạn" phase={2} design="TienDo.dc.html" note="Mỗi bài một thẻ với 6 bước, cập nhật trực tiếp qua Supabase Realtime; chạy lại từ bước lỗi." />;
+  return (
+    <Suspense fallback={<p className="text-muted">Đang tải tiến độ…</p>}>
+      <JobProgress />
+    </Suspense>
+  );
 }

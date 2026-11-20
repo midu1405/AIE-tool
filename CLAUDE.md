@@ -59,10 +59,11 @@ Một người giữ được nhiều vai trò. Chỉ tài khoản `@aiedu.com.v
 - `20261120043850_core.sql`: người dùng, vai trò, chỉ mục Drive, khung chương trình, job soạn KHBD, phiên bản (`document_versions.status`), duyệt bài, nhật ký.
 - `20261120043938_courses.sql`: khoá học, học phần, bài, học liệu, đăng ký, đã lưu, tiến độ; view `lesson_material_updates`, `my_course_progress`; hàm `course_material_links(course_id)`.
 - `20261120044017_hardening.sql`: thu quyền gọi hàm trigger qua API, cố định search_path. Security advisor còn cảnh báo 7 hàm `security definer` gọi được qua API (`has_role`, `is_staff`, `can_edit_course`, `course_visible`, `course_of_module`, `course_of_lesson`, `course_material_links`): giữ có chủ đích vì policy RLS dùng chúng, chúng chỉ trả boolean/id hoặc link đã lọc quyền.
+- `20261120070621_khbd_flow.sql`: luồng KHBD giai đoạn 2. Cột thêm: `documents.topic_name/periods/deploy_format/updated_at`, `document_versions.content` (mục tiêu, 4 hoạt động, kết quả đối chiếu) và `warnings`. Hàm: `create_khbd_jobs(mode, items, options)` tạo lượt chạy (job cha) + job con + 6 bước; `advance_mock_jobs(step_seconds)`; `retry_job`, `cancel_job`; `review_version(version, decision, checklist, rubric, summary)` (trả về thì tự tạo job soạn bản v(N+1), bắt buộc có ít nhất 1 góp ý mở); `undo_approval`. View `khbd_list` (mỗi tài liệu một dòng, `list_status` gồm cả `running`, `error`). Realtime bật cho `generation_jobs`, `job_steps`.
 - Tên file khớp với version đã chạy trên project Supabase `aie-training-hub` (ref `uqgdxncnlcenhjtrszqr`, vùng Singapore). Tên file nhắc trong chú thích bên trong migration là tên cũ, giữ nguyên vì file đã chạy.
 - Thứ tự học phần và bài dùng cột `position` với unique deferrable; đổi chỗ hai dòng thì làm trong một transaction.
 - Giáo viên **không** đọc trực tiếp `document_versions`; lấy link học liệu qua `course_material_links()`.
-- Thử trên Postgres trống, không cần Supabase: `supabase/tests/run.sh <ten_db>`. Đạt khi số lỗi thực tế bằng số mục "PHẢI LỖI" (hiện là 9).
+- Thử trên Postgres trống, không cần Supabase: `supabase/tests/run.sh <ten_db>`. Chạy mọi file `tests/[1-9]*.sql`; đạt khi số lỗi thực tế bằng số mục "PHẢI LỖI" (hiện là 15).
 
 ## Bản chạy thật
 
@@ -80,7 +81,16 @@ npm run lint && npm run typecheck && npm test
 npm run test:db -- <ten_db>     # cần Postgres cục bộ; xem supabase/tests/run.sh
 ```
 
-Dữ liệu mẫu: `supabase/seed.sql` (9 khoá, đã nạp vào project). Chạy trong SQL editor; chạy lại không bị trùng.
+Dữ liệu mẫu (đã nạp vào project, chạy lại không bị trùng): `supabase/seed.sql` (9 khoá học), `supabase/seed-khung-mau.sql` (khung lớp 6, Chủ đề 1–2, 10 bài, để thử Tạo KHBD khi chưa đồng bộ Drive).
+
+Thử trọn luồng KHBD trên máy không cần Supabase thật: `tests/e2e/README.md` (PostgREST + cổng giả Auth + Playwright).
+
+## Bản giả lập soạn KHBD (MockExecutor)
+
+- Mọi job có `executor = 'mock'`. Chưa có worker: trang Tiến độ đang mở gọi `advance_mock_jobs(3)` mỗi 1,5 giây, Danh sách gọi một lần khi mở; hàm đuổi kịp theo thời gian thực (3 giây một bước) nên đóng trang rồi mở lại vẫn đúng.
+- Bước Lưu Google Doc tạo `document_versions` trạng thái `in_review`, `web_view_link` rỗng (chưa có Doc thật), `content.mock = true` (giao diện hiện nhãn "Bản giả lập").
+- Ghi chú có `#loi` thì lần chạy đầu lỗi ở bước Lưu Google Doc, để thử nút "Chạy lại từ bước lỗi".
+- Khi chốt executor thật: worker nhận job `queued`, ghi `job_steps` theo đúng 6 bước và tạo `document_versions` như bản giả lập; đổi `executor` mặc định trong `create_khbd_jobs` và bỏ vòng gọi `advance_mock_jobs` ở `JobProgress`.
 
 ## Lưu ý Next.js 16
 
@@ -126,7 +136,7 @@ Dữ liệu mẫu: `supabase/seed.sql` (9 khoá, đã nạp vào project). Chạ
 ## Các giai đoạn dựng
 
 1. **Nền (đã xong):** Next.js (`@supabase/ssr`), Supabase (project + 3 migration + seed), đăng nhập Google (chờ bật provider) và email + mật khẩu tạm cho nhân viên, chặn khu nội bộ theo vai trò, layout hai khu, danh mục khoá học đọc từ DB, trang chi tiết bản đầu, các màn nội bộ để chỗ.
-2. **Khu nội bộ – KHBD:** đồng bộ cây kho (chỉ đọc), Tạo KHBD với `MockExecutor`, Tiến độ qua Realtime, Danh sách, Duyệt bài (checklist, rubric 7 tiêu chí, góp ý, duyệt/trả về).
+2. **Khu nội bộ – KHBD (đã xong, trừ đồng bộ Drive):** Tạo KHBD (soạn lại từ kho, bài mới), Tiến độ (Realtime + bản giả lập, chạy lại, huỷ), Danh sách KHBD, hàng chờ Duyệt bài, màn duyệt một bài (xem trước, checklist, rubric 7 tiêu chí, góp ý theo phần, duyệt/trả về soạn bản mới, hoàn tác duyệt, xem bản cũ). **Còn lại:** đồng bộ cây kho từ Drive (cần service account Google, chờ bạn kỹ thuật cloud); làm PBT sau khi duyệt (giai đoạn 2 của skill).
 3. **Khoá học:** Quản lý khoá học (học phần, bài, gắn học liệu đã duyệt, xuất bản), chi tiết khoá, Khoá học của tôi, tiến độ học.
 4. **Executor thật** khi đã chốt.
 
