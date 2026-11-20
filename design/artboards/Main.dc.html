@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Danh mục khoá học</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#2152C5}a:hover{color:#163B91}
+</style>
+</helmet>
+<div style="font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #172033; background: #F6F7F9; min-height: 100vh">
+
+<header style="background: #FFFFFF; border-bottom: 1px solid #E3E6EB">
+<div style="max-width: 1200px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #172033">
+<span style="width: 36px; height: 36px; border-radius: 8px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">AI</span>
+<span style="font-weight: 700; font-size: 18px">AI Edu <span style="font-weight: 500; color: #4B5565">Training Hub</span></span>
+</a>
+<nav aria-label="Điều hướng chính" style="display: flex; gap: 4px; flex-wrap: wrap; flex: 1">
+<a href="Main.dc.html" aria-current="page" style="padding: 12px 14px; border-radius: 8px; background: #E8EEFB; color: {{accent}}; font-weight: 600; text-decoration: none; font-size: 15px">Khoá học</a>
+<a href="MyCourses.dc.html" style="padding: 12px 14px; border-radius: 8px; color: #172033; font-weight: 500; text-decoration: none; font-size: 15px">Khoá học của tôi</a>
+<a href="#tro-giup" style="padding: 12px 14px; border-radius: 8px; color: #172033; font-weight: 500; text-decoration: none; font-size: 15px">Trợ giúp</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #E3E6EB; color: #172033; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px">GV</span>
+<span style="font-size: 14px; color: #4B5565">[Tên giáo viên]</span>
+</div>
+</div>
+</header>
+
+<section style="background: #FFFFFF; border-bottom: 1px solid #E3E6EB">
+<div style="max-width: 1200px; margin: 0 auto; padding: 40px 24px 32px; display: flex; flex-direction: column; gap: 16px">
+<h1 style="margin: 0; font-size: 40px; line-height: 1.15; font-weight: 700">Khoá học</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.6; color: #4B5565; max-width: 720px">Khoá học trực tuyến giúp giáo viên hiểu AI, dạy chuyên đề Giáo dục AI và đưa công cụ số vào lớp học. Học theo tốc độ của bạn, tiến độ được lưu tự động.</p>
+<div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 8px">
+<label for="tim-khoa-hoc" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Tìm khoá học</label>
+<div style="display: flex; align-items: center; gap: 10px; background: #F6F7F9; border: 1px solid #CDD2DA; border-radius: 10px; padding: 0 14px; height: 48px; flex: 1 1 360px; max-width: 560px">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"></path></svg>
+<input id="tim-khoa-hoc" type="search" placeholder="Tìm theo tên hoặc nội dung khoá học" value="{{q}}" onChange="{{onSearch}}" style="border: 0; outline: none; background: transparent; font: inherit; font-size: 15px; color: #172033; flex: 1; min-width: 0; height: 44px">
+</div>
+</div>
+</div>
+</section>
+
+<main style="max-width: 1200px; margin: 0 auto; padding: 32px 24px 48px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+
+<aside aria-label="Bộ lọc khoá học" style="flex: 1 1 240px; max-width: 280px; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<h2 style="margin: 0; font-size: 17px; font-weight: 700">Bộ lọc</h2>
+<sc-if value="{{hasFilters}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{clearAll}}" style="border: 0; background: transparent; color: {{accent}}; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; min-height: 44px; padding: 0 4px">Xoá tất cả</button>
+</sc-if>
+</div>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="4">
+<fieldset style="border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px">
+<legend style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #4B5565; padding: 0; margin-bottom: 6px">{{g.title}}</legend>
+<sc-for list="{{g.options}}" as="o" hint-placeholder-count="4">
+<label for="{{o.id}}" style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer">
+<input id="{{o.id}}" type="checkbox" checked="{{o.checked}}" onChange="{{o.toggle}}" style="width: 18px; height: 18px; margin: 0; accent-color: {{accent}}">
+<span style="flex: 1">{{o.label}}</span>
+<span style="font-size: 13px; color: #4B5565">{{o.count}}</span>
+</label>
+</sc-for>
+</fieldset>
+</sc-for>
+</aside>
+
+<section aria-label="Danh sách khoá học" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap">
+<p style="margin: 0; font-size: 15px; color: #4B5565" aria-live="polite">{{countText}}</p>
+<div style="display: flex; align-items: center; gap: 10px">
+<label for="sap-xep" style="font-size: 14px; color: #4B5565">Sắp xếp</label>
+<select id="sap-xep" value="{{sort}}" onChange="{{onSort}}" style="font: inherit; font-size: 14px; color: #172033; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px; height: 44px; background: #FFFFFF">
+<option value="default">Gợi ý</option>
+<option value="short">Thời lượng ngắn nhất</option>
+<option value="az">Tên A–Z</option>
+</select>
+</div>
+</div>
+
+<sc-if value="{{hasFilters}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{chips}}" as="ch" hint-placeholder-count="2">
+<button type="button" onClick="{{ch.remove}}" aria-label="Bỏ lọc {{ch.label}}" style="display: flex; align-items: center; gap: 8px; border: 1px solid #C9D6F5; background: #E8EEFB; color: #163B91; border-radius: 999px; padding: 0 14px; min-height: 36px; font: inherit; font-size: 14px; cursor: pointer">{{ch.label}}<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #163B91; stroke-width: 2.2; stroke-linecap: round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{noResults}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px dashed #CDD2DA; border-radius: 12px; padding: 48px 24px; text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center">
+<p style="margin: 0; font-size: 18px; font-weight: 600">Chưa có khoá học phù hợp</p>
+<p style="margin: 0; font-size: 15px; color: #4B5565">Thử bỏ bớt bộ lọc hoặc đổi từ khoá tìm kiếm.</p>
+<button type="button" onClick="{{clearAll}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-size: 15px; font-weight: 600; border-radius: 10px; padding: 0 20px; min-height: 44px; cursor: pointer">Xoá bộ lọc</button>
+</div>
+</sc-if>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px">
+<sc-for list="{{courses}}" as="c" hint-placeholder-count="6">
+<article style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column">
+<div style="height: 128px; background: {{c.tint}}; display: flex; align-items: center; justify-content: center; position: relative">
+<svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: {{c.ink}}; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round"><path d="{{c.icon}}"></path></svg>
+<sc-if value="{{c.hasBadge}}" hint-placeholder-val="{{ false }}">
+<span style="position: absolute; top: 12px; left: 12px; background: #FFFFFF; color: #172033; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600">{{c.badge}}</span>
+</sc-if>
+</div>
+<div style="padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1">
+<span style="align-self: flex-start; background: {{c.tint}}; color: {{c.ink}}; border-radius: 6px; padding: 3px 8px; font-size: 12px; font-weight: 600">{{c.topicLabel}}</span>
+<h3 style="margin: 0; font-size: 18px; line-height: 1.35; font-weight: 700"><a href="Detail.dc.html" style="color: #172033; text-decoration: none">{{c.title}}</a></h3>
+<p style="margin: 0; font-size: 14px; line-height: 1.55; color: #4B5565; flex: 1">{{c.desc}}</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: #4B5565; padding-top: 12px; border-top: 1px solid #EEF0F3">
+<span style="display: flex; align-items: center; gap: 6px"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2"></path></svg>{{c.durText}}</span>
+<span>{{c.fmtLabel}}</span>
+<span>{{c.level}}</span>
+</div>
+<p style="margin: 0; font-size: 13px; color: #4B5565">Đối tượng: {{c.audText}}</p>
+</div>
+</article>
+</sc-for>
+</div>
+</section>
+</main>
+
+<section style="max-width: 1200px; margin: 0 auto; padding: 0 24px 56px">
+<div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 16px; padding: 32px; display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 8px; flex: 1 1 420px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 700">Theo dõi việc học của bạn</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5565">Đăng nhập bằng tài khoản Google công ty để đăng ký khoá học, lưu tiến độ và xem lại các khoá đã hoàn thành.</p>
+</div>
+<a href="MyCourses.dc.html" style="background: {{accent}}; color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 10px; padding: 0 22px; min-height: 48px; display: flex; align-items: center">Xem khoá học của tôi</a>
+</div>
+</section>
+
+<footer id="tro-giup" style="border-top: 1px solid #E3E6EB; background: #FFFFFF">
+<div style="max-width: 1200px; margin: 0 auto; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; font-size: 14px; color: #4B5565">
+<span>AI Edu Training Hub</span>
+<nav aria-label="Liên kết cuối trang" style="display: flex; gap: 20px; flex-wrap: wrap">
+<a href="#tro-giup" style="color: #4B5565">Trợ giúp</a>
+<a href="#tro-giup" style="color: #4B5565">Điều khoản</a>
+<a href="#tro-giup" style="color: #4B5565">Quyền riêng tư</a>
+</nav>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2152C5","options":["#2152C5","#0F766E","#7C3AED","#B45309"]},"$preview":{"width":1280,"height":1820}}'>
+var TOPICS = {
+  ai: { label: 'Hiểu biết AI', tint: '#E8EEFB', ink: '#2152C5', icon: 'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V17h5v-1.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z' },
+  teach: { label: 'Dạy học với AI', tint: '#E2F3EA', ink: '#1D6E47', icon: 'M3 4h18v12H3zM8 20l4-4 4 4M7 9h6M7 12h9' },
+  safe: { label: 'An toàn & đạo đức AI', tint: '#FCECE3', ink: '#A3470F', icon: 'M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6zM9 12l2 2 4-4' },
+  digital: { label: 'Năng lực số', tint: '#F1EAFB', ink: '#6A3D9E', icon: 'M4 5h16v11H4zM8 20h8M12 16v4' }
+};
+var AUD = { th: 'Tiểu học', thcs: 'THCS', thpt: 'THPT', ql: 'Cán bộ quản lý' };
+var FMT = { self: 'Tự học', guided: 'Có hướng dẫn' };
+var ALL = ['th', 'thcs', 'thpt', 'ql'];
+var COURSES = [
+  { id: 'hieu-biet-ai', title: 'Hiểu biết AI cho giáo viên và cán bộ quản lý', desc: 'Nắm các khái niệm cốt lõi về AI, cách AI học từ dữ liệu và những gì AI chưa làm được.', topic: 'ai', aud: ALL, h: [1, 2], fmt: 'self', level: 'Cơ bản', status: 'done' },
+  { id: 'gd-ai-thcs', title: 'Dạy chuyên đề Giáo dục AI 12 tiết – THCS', desc: 'Đi qua 12 tiết theo QĐ 2422 cho khối 6–9: mục tiêu, hoạt động mẫu, phiếu học tập và cách đánh giá.', topic: 'teach', aud: ['thcs'], h: [4, 6], fmt: 'guided', level: 'Cơ bản', status: 'learning', progress: 33 },
+  { id: 'gd-ai-th', title: 'Dạy chuyên đề Giáo dục AI 12 tiết – Tiểu học', desc: 'Tổ chức tiết học AI 35 phút cho lớp 4–5 với trò chơi, thẻ và hoạt động trải nghiệm.', topic: 'teach', aud: ['th'], h: [3, 5], fmt: 'guided', level: 'Cơ bản' },
+  { id: 'gd-ai-thpt', title: 'Dạy chuyên đề Giáo dục AI 12 tiết – THPT', desc: 'Dẫn dắt học sinh lớp 10–12 tìm hiểu dữ liệu, mô hình học máy và ứng dụng AI có trách nhiệm.', topic: 'teach', aud: ['thpt'], h: [4, 6], fmt: 'guided', level: 'Nâng cao' },
+  { id: 'teachable-machine', title: 'Teachable Machine trong lớp học', desc: 'Hướng dẫn học sinh tự huấn luyện mô hình nhận dạng hình ảnh, âm thanh mà không cần lập trình.', topic: 'teach', aud: ['thcs', 'thpt'], h: [2, 3], fmt: 'self', level: 'Cơ bản' },
+  { id: 'prompt-gv', title: 'Viết prompt hiệu quả cho giáo viên', desc: 'Cách giao việc cho trợ lý AI để soạn bài, ra đề và nhận xét học sinh, kèm mẫu câu lệnh dùng ngay.', topic: 'ai', aud: ALL, h: [1, 2], fmt: 'self', level: 'Cơ bản' },
+  { id: 'an-toan-ai', title: 'An toàn, đạo đức và bảo vệ dữ liệu khi dùng AI', desc: 'Nhận diện rủi ro, quy tắc dùng AI trong trường học và cách hướng dẫn học sinh kiểm chứng thông tin.', topic: 'safe', aud: ALL, h: [2, 3], fmt: 'self', level: 'Cơ bản', status: 'learning', progress: 60 },
+  { id: 'nang-luc-so', title: 'Tích hợp năng lực số vào bài dạy', desc: 'Gắn mục tiêu năng lực số vào kế hoạch bài dạy và chọn công cụ số phù hợp từng hoạt động.', topic: 'digital', aud: ['th', 'thcs', 'thpt'], h: [3, 4], fmt: 'guided', level: 'Cơ bản' },
+  { id: 'soan-khbd-ai', title: 'Soạn kế hoạch bài dạy với trợ lý AI', desc: 'Dùng AI để soạn nháp KHBD, tự rà soát theo rubric và chỉnh sửa trước khi đưa vào lớp.', topic: 'teach', aud: ['th', 'thcs', 'thpt'], h: [2, 4], fmt: 'guided', level: 'Nâng cao' }
+];
+function durBucket(c) { return c.h[1] <= 2 ? 'short' : (c.h[1] <= 4 ? 'mid' : 'long'); }
+function fold(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase(); }
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { q: '', aud: [], topic: [], dur: [], fmt: [], sort: 'default' };
+  }
+  toggle(key, val) {
+    var cur = this.state[key];
+    var next = cur.indexOf(val) >= 0 ? cur.filter(function (v) { return v !== val; }) : cur.concat([val]);
+    var patch = {}; patch[key] = next;
+    this.setState(patch);
+  }
+  matches(c, s, skip) {
+    if (s.q && fold(c.title + ' ' + c.desc).indexOf(fold(s.q)) < 0) return false;
+    if (skip !== 'aud' && s.aud.length && !s.aud.some(function (a) { return c.aud.indexOf(a) >= 0; })) return false;
+    if (skip !== 'topic' && s.topic.length && s.topic.indexOf(c.topic) < 0) return false;
+    if (skip !== 'dur' && s.dur.length && s.dur.indexOf(durBucket(c)) < 0) return false;
+    if (skip !== 'fmt' && s.fmt.length && s.fmt.indexOf(c.fmt) < 0) return false;
+    return true;
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var accent = this.props.accent ?? '#2152C5';
+    var defs = [
+      { key: 'aud', title: 'Đối tượng', map: AUD, test: function (c, v) { return c.aud.indexOf(v) >= 0; } },
+      { key: 'topic', title: 'Chủ đề', map: { ai: TOPICS.ai.label, teach: TOPICS.teach.label, safe: TOPICS.safe.label, digital: TOPICS.digital.label }, test: function (c, v) { return c.topic === v; } },
+      { key: 'dur', title: 'Thời lượng', map: { short: 'Tối đa 2 giờ', mid: '2–4 giờ', long: 'Trên 4 giờ' }, test: function (c, v) { return durBucket(c) === v; } },
+      { key: 'fmt', title: 'Hình thức', map: FMT, test: function (c, v) { return c.fmt === v; } }
+    ];
+    var groups = defs.map(function (d) {
+      var pool = COURSES.filter(function (c) { return self.matches(c, s, d.key); });
+      return {
+        title: d.title,
+        options: Object.keys(d.map).map(function (v) {
+          return {
+            id: 'loc-' + d.key + '-' + v,
+            label: d.map[v],
+            checked: s[d.key].indexOf(v) >= 0,
+            count: pool.filter(function (c) { return d.test(c, v); }).length,
+            toggle: function () { self.toggle(d.key, v); }
+          };
+        })
+      };
+    });
+    var chips = [];
+    defs.forEach(function (d) {
+      s[d.key].forEach(function (v) { chips.push({ label: d.map[v], remove: function () { self.toggle(d.key, v); } }); });
+    });
+    if (s.q) chips.push({ label: '“' + s.q + '”', remove: function () { self.setState({ q: '' }); } });
+    var list = COURSES.filter(function (c) { return self.matches(c, s, null); });
+    if (s.sort === 'short') list = list.slice().sort(function (a, b) { return (a.h[0] - b.h[0]) || (a.h[1] - b.h[1]); });
+    if (s.sort === 'az') list = list.slice().sort(function (a, b) { return a.title.localeCompare(b.title, 'vi'); });
+    var courses = list.map(function (c) {
+      var t = TOPICS[c.topic];
+      var badge = c.status === 'learning' ? 'Đang học · ' + c.progress + '%' : (c.status === 'done' ? 'Đã hoàn thành' : '');
+      return {
+        title: c.title, desc: c.desc, tint: t.tint, ink: t.ink, icon: t.icon, topicLabel: t.label,
+        durText: c.h[0] + '–' + c.h[1] + ' giờ', fmtLabel: FMT[c.fmt], level: c.level,
+        audText: c.aud.length === 4 ? 'Mọi cấp học' : c.aud.map(function (a) { return AUD[a]; }).join(', '),
+        hasBadge: !!badge, badge: badge
+      };
+    });
+    return {
+      accent: accent,
+      q: s.q,
+      sort: s.sort,
+      groups: groups,
+      chips: chips,
+      hasFilters: chips.length > 0,
+      courses: courses,
+      noResults: courses.length === 0,
+      countText: courses.length === COURSES.length ? 'Tất cả ' + courses.length + ' khoá học' : 'Hiển thị ' + courses.length + ' / ' + COURSES.length + ' khoá học',
+      onSearch: function (e) { self.setState({ q: e.target.value }); },
+      onSort: function (e) { self.setState({ sort: e.target.value }); },
+      clearAll: function () { self.setState({ q: '', aud: [], topic: [], dur: [], fmt: [] }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

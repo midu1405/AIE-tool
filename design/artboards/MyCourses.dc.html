@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Khoá học của tôi</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#2152C5}a:hover{color:#163B91}
+</style>
+</helmet>
+<div style="font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #172033; background: #F6F7F9; min-height: 100vh">
+
+<header style="background: #FFFFFF; border-bottom: 1px solid #E3E6EB">
+<div style="max-width: 1200px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #172033">
+<span style="width: 36px; height: 36px; border-radius: 8px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">AI</span>
+<span style="font-weight: 700; font-size: 18px">AI Edu <span style="font-weight: 500; color: #4B5565">Training Hub</span></span>
+</a>
+<nav aria-label="Điều hướng chính" style="display: flex; gap: 4px; flex-wrap: wrap; flex: 1">
+<a href="Main.dc.html" style="padding: 12px 14px; border-radius: 8px; color: #172033; font-weight: 500; text-decoration: none; font-size: 15px">Khoá học</a>
+<a href="MyCourses.dc.html" aria-current="page" style="padding: 12px 14px; border-radius: 8px; background: #E8EEFB; color: {{accent}}; font-weight: 600; text-decoration: none; font-size: 15px">Khoá học của tôi</a>
+<a href="#tro-giup" style="padding: 12px 14px; border-radius: 8px; color: #172033; font-weight: 500; text-decoration: none; font-size: 15px">Trợ giúp</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #E3E6EB; color: #172033; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px">GV</span>
+<span style="font-size: 14px; color: #4B5565">[Tên giáo viên]</span>
+</div>
+</div>
+</header>
+
+<section style="background: #FFFFFF; border-bottom: 1px solid #E3E6EB">
+<div style="max-width: 1200px; margin: 0 auto; padding: 40px 24px 0; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-size: 36px; line-height: 1.2; font-weight: 700">Khoá học của tôi</h1>
+<p style="margin: 0; font-size: 16px; color: #4B5565">Tiếp tục khoá đang học, xem lại khoá đã xong và các khoá bạn đã lưu.</p>
+</div>
+<a href="Main.dc.html" style="border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 10px; padding: 0 18px; min-height: 44px; display: flex; align-items: center">Tìm thêm khoá học</a>
+</div>
+<div role="tablist" aria-label="Nhóm khoá học" style="display: flex; gap: 4px; flex-wrap: wrap">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<button type="button" role="tab" aria-selected="{{t.active}}" onClick="{{t.pick}}" style="border: 0; border-bottom: 3px solid {{t.line}}; background: transparent; font: inherit; font-size: 15px; font-weight: {{t.weight}}; color: {{t.ink}}; padding: 0 16px; min-height: 52px; cursor: pointer; display: flex; align-items: center; gap: 8px">{{t.label}}<span style="background: #EEF0F3; color: #172033; border-radius: 999px; padding: 2px 8px; font-size: 12px; font-weight: 600">{{t.count}}</span></button>
+</sc-for>
+</div>
+</div>
+</section>
+
+<main style="max-width: 1200px; margin: 0 auto; padding: 32px 24px 56px; display: flex; flex-direction: column; gap: 16px">
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px dashed #CDD2DA; border-radius: 12px; padding: 48px 24px; text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center">
+<p style="margin: 0; font-size: 18px; font-weight: 600">Chưa có khoá học nào ở đây</p>
+<a href="Main.dc.html" style="background: {{accent}}; color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 10px; padding: 0 20px; min-height: 44px; display: flex; align-items: center">Xem danh mục khoá học</a>
+</div>
+</sc-if>
+<sc-for list="{{items}}" as="c" hint-placeholder-count="2">
+<article style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center">
+<div style="width: 96px; height: 96px; flex: none; border-radius: 10px; background: {{c.tint}}; display: flex; align-items: center; justify-content: center">
+<svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: {{c.ink}}; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round"><path d="{{c.icon}}"></path></svg>
+</div>
+<div style="flex: 999 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 600; color: {{c.ink}}">{{c.topicLabel}}</span>
+<h2 style="margin: 0; font-size: 19px; line-height: 1.35; font-weight: 700"><a href="Detail.dc.html" style="color: #172033; text-decoration: none">{{c.title}}</a></h2>
+<p style="margin: 0; font-size: 14px; color: #4B5565">{{c.note}}</p>
+<sc-if value="{{c.showProgress}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; align-items: center; gap: 12px; max-width: 480px">
+<div role="progressbar" aria-label="Tiến độ {{c.title}}" aria-valuenow="{{c.progress}}" aria-valuemin="0" aria-valuemax="100" style="flex: 1; height: 8px; border-radius: 999px; background: #E3E6EB; overflow: hidden"><div style="height: 100%; width: {{c.progress}}%; background: {{c.bar}}"></div></div>
+<span style="font-size: 14px; font-weight: 600; min-width: 44px">{{c.progress}}%</span>
+</div>
+</sc-if>
+</div>
+<div style="flex: 1 1 180px; display: flex; flex-direction: column; gap: 8px; align-items: stretch; max-width: 220px">
+<a href="{{c.primaryHref}}" style="background: {{accent}}; color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 10px; min-height: 44px; display: flex; align-items: center; justify-content: center">{{c.primary}}</a>
+<sc-if value="{{c.hasSecondary}}" hint-placeholder-val="{{ false }}">
+<a href="Detail.dc.html" style="border: 1px solid #CDD2DA; color: #172033; text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 10px; min-height: 44px; display: flex; align-items: center; justify-content: center">{{c.secondary}}</a>
+</sc-if>
+</div>
+</article>
+</sc-for>
+</main>
+
+<footer id="tro-giup" style="border-top: 1px solid #E3E6EB; background: #FFFFFF">
+<div style="max-width: 1200px; margin: 0 auto; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; font-size: 14px; color: #4B5565">
+<span>AI Edu Training Hub</span>
+<nav aria-label="Liên kết cuối trang" style="display: flex; gap: 20px; flex-wrap: wrap">
+<a href="#tro-giup" style="color: #4B5565">Trợ giúp</a>
+<a href="#tro-giup" style="color: #4B5565">Điều khoản</a>
+<a href="#tro-giup" style="color: #4B5565">Quyền riêng tư</a>
+</nav>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2152C5","options":["#2152C5","#0F766E","#7C3AED","#B45309"]},"tab":{"editor":"enum","default":"learning","options":["learning","done","saved"]},"$preview":{"width":1280,"height":1180}}'>
+var ICON = {
+  ai: 'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V17h5v-1.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z',
+  teach: 'M3 4h18v12H3zM8 20l4-4 4 4M7 9h6M7 12h9',
+  safe: 'M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6zM9 12l2 2 4-4'
+};
+var TOPIC = {
+  ai: { label: 'Hiểu biết AI', tint: '#E8EEFB', ink: '#2152C5' },
+  teach: { label: 'Dạy học với AI', tint: '#E2F3EA', ink: '#1D6E47' },
+  safe: { label: 'An toàn & đạo đức AI', tint: '#FCECE3', ink: '#A3470F' }
+};
+var MINE = [
+  { group: 'learning', topic: 'teach', title: 'Dạy chuyên đề Giáo dục AI 12 tiết – THCS', note: 'Tiếp theo: Học phần 3. Dữ liệu và học máy với Teachable Machine', progress: 33 },
+  { group: 'learning', topic: 'safe', title: 'An toàn, đạo đức và bảo vệ dữ liệu khi dùng AI', note: 'Đã xong 3 / 5 học phần', progress: 60 },
+  { group: 'done', topic: 'ai', title: 'Hiểu biết AI cho giáo viên và cán bộ quản lý', note: 'Hoàn thành ngày [dd/mm/yyyy]', progress: 100 },
+  { group: 'saved', topic: 'teach', title: 'Teachable Machine trong lớp học', note: '2–3 giờ · Tự học · Đã lưu để học sau', progress: 0 }
+];
+var TABS = [['learning', 'Đang học'], ['done', 'Đã hoàn thành'], ['saved', 'Đã lưu']];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: null };
+  }
+  renderVals() {
+    var self = this;
+    var accent = this.props.accent ?? '#2152C5';
+    var tab = this.state.tab || this.props.tab || 'learning';
+    var tabs = TABS.map(function (t) {
+      var active = t[0] === tab;
+      return {
+        label: t[1],
+        count: MINE.filter(function (c) { return c.group === t[0]; }).length,
+        active: active,
+        line: active ? accent : 'transparent',
+        ink: active ? '#172033' : '#4B5565',
+        weight: active ? 700 : 500,
+        pick: function () { self.setState({ tab: t[0] }); }
+      };
+    });
+    var items = MINE.filter(function (c) { return c.group === tab; }).map(function (c) {
+      var t = TOPIC[c.topic];
+      return {
+        title: c.title, note: c.note, topicLabel: t.label, tint: t.tint, ink: t.ink, icon: ICON[c.topic],
+        progress: c.progress,
+        bar: c.group === 'done' ? '#1D6E47' : accent,
+        showProgress: c.group !== 'saved',
+        primary: c.group === 'learning' ? 'Tiếp tục học' : (c.group === 'done' ? 'Xem chứng nhận' : 'Bắt đầu học'),
+        primaryHref: c.group === 'done' ? '#chung-nhan' : 'Detail.dc.html',
+        hasSecondary: c.group === 'done',
+        secondary: 'Xem lại khoá học'
+      };
+    });
+    return { accent: accent, tabs: tabs, items: items, isEmpty: items.length === 0 };
+  }
+}
+</script>
+</body>
+</html>

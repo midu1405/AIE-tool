@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Nội bộ – Duyệt KHBD</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#2152C5}a:hover{color:#163B91}
+</style>
+</helmet>
+<div style="font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #172033; background: #F6F7F9; min-height: 100vh; display: flex; flex-wrap: wrap">
+
+<aside style="flex: 1 1 220px; max-width: 256px; background: #FFFFFF; border-right: 1px solid #E3E6EB; padding: 20px 16px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box">
+<a href="TaoKHBD.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #172033; padding: 0 8px">
+<span style="width: 34px; height: 34px; border-radius: 8px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px">AI</span>
+<span style="font-weight: 700; font-size: 17px">AI Edu</span>
+<span style="background: #172033; color: #FFFFFF; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 600">Nội bộ</span>
+</a>
+<nav aria-label="Công cụ KHBD" style="display: flex; flex-direction: column; gap: 4px">
+<a href="TaoKHBD.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg>Tạo KHBD</a>
+<a href="TienDo.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M3 12h4l3-7 4 14 3-7h4"></path></svg>Tiến độ</a>
+<a href="DanhSachKHBD.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round"><path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"></path></svg>Danh sách KHBD</a>
+<a href="DuyetBai.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; background: #E8EEFB; color: {{accent}}; font-weight: 600; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: {{accent}}; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path></svg>Duyệt bài</a>
+<a href="QuanLyKhoaHoc.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M4 19V5a2 2 0 0 1 2-2h14v14H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h14M8 7h8"></path></svg>Quản lý khoá học</a>
+</nav>
+<div style="border-top: 1px solid #E3E6EB; padding-top: 16px">
+<a href="Main.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; font-size: 14px; color: #4B5565; text-decoration: none">Xem trang khoá học public</a>
+</div>
+<div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 0 8px">
+<span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 50%; background: #E3E6EB; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">NV</span>
+<span style="display: flex; flex-direction: column; font-size: 13px"><span style="font-weight: 600">[Tên nhân viên]</span><span style="color: #4B5565">Academic</span></span>
+</div>
+</aside>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+<nav aria-label="Đường dẫn" style="font-size: 14px; color: #4B5565; display: flex; gap: 8px; flex-wrap: wrap"><a href="DanhSachKHBD.dc.html" style="color: #4B5565">Danh sách KHBD</a><span aria-hidden="true">›</span><span>Bài 3. AI tạo sinh</span></nav>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-size: 28px; font-weight: 700">Bài 3. AI tạo sinh</h1>
+<p style="margin: 0; font-size: 14px; color: #4B5565">Lớp 6 · Chủ đề 1: Nền tảng của công nghệ AI · 1 tiết · Soạn lại từ kho · Chuyên đề</p>
+</div>
+<div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+<span style="border-radius: 999px; padding: 4px 12px; font-size: 13px; font-weight: 600; background: {{statusBg}}; color: {{statusInk}}">{{statusLabel}}</span>
+<label for="ban" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Phiên bản</label>
+<select id="ban" style="font: inherit; font-size: 14px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 10px; background: #FFFFFF; color: #172033"><option>v1 (bản mới nhất)</option></select>
+<a href="#mo-doc" style="border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; text-decoration: none; font-weight: 600; font-size: 14px; border-radius: 10px; padding: 0 16px; min-height: 44px; display: flex; align-items: center">Mở Google Doc</a>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<article aria-label="Bản xem trước KHBD" style="flex: 999 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 32px; display: flex; flex-direction: column; gap: 18px; font-size: 14px; line-height: 1.6">
+<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #A92145; padding-bottom: 10px; font-size: 12px; color: #4B5565"><span>[Logo] Kế hoạch giảng dạy</span><span>Bản xem trước · Do Claude soạn · v1</span></div>
+<h2 style="margin: 0; font-size: 22px; font-weight: 700; color: #A92145">Bài 3. AI tạo sinh</h2>
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 15px; font-weight: 700">I. Mục tiêu</h3>
+<p style="margin: 0; font-weight: 600">1. Năng lực trí tuệ nhân tạo</p>
+<p style="margin: 0; color: #4B5565">[Yêu cầu cần đạt lấy theo mã QĐ 2422 lớp 6, mặc định không in mã]</p>
+<p style="margin: 0; font-weight: 600">2. Mục tiêu bài học</p>
+<ul style="margin: 0; padding-left: 20px"><li>Định nghĩa được AI tạo sinh.</li><li>Liệt kê được các sản phẩm đầu ra của AI tạo sinh.</li><li>Nhận diện được một số hạn chế của AI tạo sinh.</li></ul>
+</section>
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-size: 15px; font-weight: 700">II. Thiết bị dạy học và học liệu</h3>
+<ul style="margin: 0; padding-left: 20px"><li>Máy tính kết nối máy chiếu hoặc màn hình tương tác.</li><li>[Học liệu khác: PBT 3.1, ảnh chụp màn hình dự phòng khi mất mạng]</li></ul>
+</section>
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 15px; font-weight: 700">III. Tiến trình dạy học</h3>
+<div style="overflow-x: auto">
+<table style="width: 100%; min-width: 520px; border-collapse: collapse; font-size: 13px">
+<thead><tr style="background: #F6E8EC; text-align: left"><th scope="col" style="padding: 8px 10px; border: 1px solid #E3C7CF; width: 26%">Hoạt động</th><th scope="col" style="padding: 8px 10px; border: 1px solid #E3C7CF">Mô tả</th><th scope="col" style="padding: 8px 10px; border: 1px solid #E3C7CF; width: 24%">Sản phẩm / Minh chứng</th></tr></thead>
+<tbody>
+<tr><td style="padding: 8px 10px; border: 1px solid #E3E6EB; vertical-align: top"><strong>1. Khởi động</strong><br>[x] phút</td><td style="padding: 8px 10px; border: 1px solid #E3E6EB">[GV chiếu…; <strong>Hỏi:</strong> “…” → <em>đáp án gợi ý</em>]</td><td style="padding: 8px 10px; border: 1px solid #E3E6EB">[Câu trả lời miệng]</td></tr>
+<tr><td style="padding: 8px 10px; border: 1px solid #E3E6EB; vertical-align: top"><strong>2. Hình thành kiến thức</strong><br>[x] phút</td><td style="padding: 8px 10px; border: 1px solid #E3E6EB">[Nội dung Claude soạn theo spec]</td><td style="padding: 8px 10px; border: 1px solid #E3E6EB">[PBT 3.1 – phần A]</td></tr>
+<tr><td style="padding: 8px 10px; border: 1px solid #E3E6EB; vertical-align: top"><strong>3. Luyện tập</strong><br>[x] phút</td><td style="padding: 8px 10px; border: 1px solid #E3E6EB">[Nội dung Claude soạn theo spec]</td><td style="padding: 8px 10px; border: 1px solid #E3E6EB">[PBT 3.1 – phần B]</td></tr>
+<tr><td style="padding: 8px 10px; border: 1px solid #E3E6EB; vertical-align: top"><strong>4. Vận dụng</strong><br>[x] phút</td><td style="padding: 8px 10px; border: 1px solid #E3E6EB">[… <strong>GV tổng kết:</strong> …]</td><td style="padding: 8px 10px; border: 1px solid #E3E6EB">[Sản phẩm vận dụng]</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin: 0; font-size: 12px; color: #4B5565">Tổng thời gian các hoạt động phải bằng 45 phút × số tiết.</p>
+</section>
+</article>
+
+<section aria-label="Công cụ duyệt" style="flex: 1 1 340px; max-width: 420px; display: flex; flex-direction: column; gap: 16px">
+<div role="tablist" aria-label="Công cụ duyệt" style="display: flex; gap: 4px; background: #EEF0F3; border-radius: 12px; padding: 4px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<button type="button" role="tab" aria-selected="{{t.active}}" onClick="{{t.pick}}" style="flex: 1; border: 0; border-radius: 9px; min-height: 44px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; background: {{t.bg}}; color: {{t.ink}}">{{t.label}}</button>
+</sc-for>
+</div>
+
+<sc-if value="{{tabCheck}}" hint-placeholder-val="{{ true }}">
+<div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">Checklist QĐ 2422 và CV 5588</h2>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{checks}}" as="c" hint-placeholder-count="8">
+<li style="display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.45">
+<span style="flex: none; border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 600; background: {{c.bg}}; color: {{c.ink}}; min-width: 56px; text-align: center">{{c.tag}}</span>
+<span>{{c.text}}</span>
+</li>
+</sc-for>
+</ul>
+<h3 style="margin: 8px 0 0; font-size: 14px; font-weight: 700">Văn bản khác</h3>
+<p style="margin: 0; font-size: 14px; color: #4B5565">TT 02, TT 16, TT 18, TT 85: chưa bật cho lượt này. Bật ở màn Tạo KHBD hoặc chạy đối chiếu lại.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{tabRubric}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">Rubric 7 tiêu chí</h2>
+<span style="font-size: 14px; font-weight: 600">{{scoreText}}</span>
+</div>
+<p style="margin: 0; font-size: 13px; color: #4B5565">3 Đạt yêu cầu · 2 Cần tinh chỉnh · 1 Cần hoàn thiện trọng yếu</p>
+<sc-for list="{{criteria}}" as="k" hint-placeholder-count="7">
+<div role="group" aria-label="{{k.label}}" style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; font-weight: 600">{{k.label}}</span>
+<div style="display: flex; gap: 6px">
+<sc-for list="{{k.options}}" as="o" hint-placeholder-count="4">
+<button type="button" aria-pressed="{{o.active}}" onClick="{{o.pick}}" style="flex: 1; border: 1px solid {{o.edge}}; background: {{o.bg}}; color: {{o.ink}}; font: inherit; font-size: 14px; font-weight: 600; border-radius: 8px; min-height: 40px; cursor: pointer">{{o.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{tabNotes}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">Góp ý</h2>
+<p style="margin: 0; font-size: 13px; color: #4B5565">Gồm góp ý viết ở đây và comment trên Google Doc. Khi trả về, Claude chỉ sửa đúng các phần được góp ý và lưu bản v2.</p>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{notes}}" as="n" hint-placeholder-count="2">
+<li style="background: #F6F7F9; border-radius: 10px; padding: 12px 14px; font-size: 14px; line-height: 1.5; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 12px; color: #4B5565">{{n.meta}}</span>
+<span>{{n.text}}</span>
+</li>
+</sc-for>
+</ul>
+<label for="gop-y" style="font-size: 14px; font-weight: 600">Thêm góp ý</label>
+<textarea id="gop-y" rows="3" value="{{draft}}" onChange="{{onDraft}}" placeholder="vd: Hoạt động 2 cần ví dụ gần gũi hơn" style="font: inherit; font-size: 14px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; color: #172033; resize: vertical"></textarea>
+<button type="button" onClick="{{addNote}}" style="align-self: flex-start; border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-weight: 600; font-size: 14px; border-radius: 10px; padding: 0 16px; min-height: 44px; cursor: pointer">Lưu góp ý</button>
+</div>
+</sc-if>
+
+<div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<sc-if value="{{undecided}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{approve}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 16px; border-radius: 10px; min-height: 48px; cursor: pointer">Duyệt KHBD</button>
+<button type="button" onClick="{{sendBack}}" style="border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-weight: 600; font-size: 15px; border-radius: 10px; min-height: 44px; cursor: pointer">Trả về, soạn bản v2 theo góp ý</button>
+</sc-if>
+<sc-if value="{{isApproved}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 14px; color: #1D6E47; font-weight: 600">Đã duyệt KHBD v1. Bước tiếp theo:</p>
+<a href="TienDo.dc.html" style="background: {{accent}}; color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 10px; min-height: 48px; display: flex; align-items: center; justify-content: center">Làm phiếu bài tập (giai đoạn 2)</a>
+<a href="Detail.dc.html" style="border: 1px solid #CDD2DA; color: #172033; text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 10px; min-height: 44px; display: flex; align-items: center; justify-content: center">Gắn vào khoá học public</a>
+</sc-if>
+<sc-if value="{{isSentBack}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 14px; color: #8A3A0C; font-weight: 600">Đã trả về. Claude đang soạn bản v2 theo {{noteCount}} góp ý.</p>
+<a href="TienDo.dc.html" style="border: 1px solid #CDD2DA; color: #172033; text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 10px; min-height: 44px; display: flex; align-items: center; justify-content: center">Xem tiến độ</a>
+</sc-if>
+<sc-if value="{{decided}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{undo}}" style="border: 0; background: transparent; color: {{accent}}; font: inherit; font-weight: 600; font-size: 14px; min-height: 44px; cursor: pointer">Hoàn tác</button>
+</sc-if>
+</div>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2152C5","options":["#2152C5","#0F766E","#7C3AED","#B45309"]},"$preview":{"width":1280,"height":1600}}'>
+var CHECKS = [
+  ['pass', 'Mã 2422 đúng lớp, 2 đến 4 mã, bám nội dung bài'],
+  ['pass', 'Mục tiêu bài học phủ đủ yêu cầu của khung NLS'],
+  ['pass', 'Không bài kiểm tra định kì, không điểm riêng'],
+  ['warn', 'Hoạt động có AI: cần thêm bước nhắc HS khai báo khi sản phẩm dùng AI'],
+  ['fixed', 'Bài nguồn bắt HS đăng nhập tài khoản: đã đổi thành GV thao tác'],
+  ['pass', 'Công cụ nêu rõ độ tuổi, không đưa dữ liệu cá nhân của HS vào công cụ'],
+  ['pass', 'Hình thức triển khai: chuyên đề'],
+  ['warn', 'Video trong bài chưa có phương án khi mất mạng']
+];
+var TAG = { pass: ['Đạt', '#E2F3EA', '#1D6E47'], warn: ['Cần xem', '#FFF4DB', '#7A4B00'], fixed: ['Đã sửa', '#E8EEFB', '#163B91'] };
+var CRITERIA = ['1. Nội dung kiến thức', '2. Hoạt động học tập', '3. Thời lượng', '4. Công nghệ & công cụ', '5. Mức độ phù hợp với HS', '6. Sản phẩm / Minh chứng', '7. An toàn khi sử dụng AI'];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'check', scores: {}, notes: [
+      { meta: 'Comment trên Google Doc · [Người duyệt] · Hoạt động 2', text: '[Nội dung góp ý]' },
+      { meta: 'Claude · kết quả đối chiếu', text: 'Thêm phương án dự phòng cho video ở Hoạt động 1 khi lớp không có mạng.' }
+    ], draft: '', decision: null };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var accent = this.props.accent ?? '#2152C5';
+    var tabs = [['check', 'Đối chiếu'], ['rubric', 'Rubric'], ['notes', 'Góp ý']].map(function (t) {
+      var active = s.tab === t[0];
+      return { label: t[1], active: active, bg: active ? '#FFFFFF' : 'transparent', ink: active ? '#172033' : '#4B5565', pick: function () { self.setState({ tab: t[0] }); } };
+    });
+    var scored = 0, total = 0, na = 0;
+    var criteria = CRITERIA.map(function (label, i) {
+      var cur = s.scores[i];
+      if (cur === 'na') na++; else if (cur) { scored++; total += cur; }
+      return {
+        label: label,
+        options: [3, 2, 1, 'na'].map(function (v) {
+          var active = cur === v;
+          return { label: v === 'na' ? 'N/A' : String(v), active: active, bg: active ? '#172033' : '#FFFFFF', ink: active ? '#FFFFFF' : '#172033', edge: active ? '#172033' : '#CDD2DA',
+            pick: function () { var sc = Object.assign({}, s.scores); sc[i] = v; self.setState({ scores: sc }); } };
+        })
+      };
+    });
+    var status = s.decision === 'approved' ? ['Đã duyệt KHBD', '#E2F3EA', '#1D6E47'] : (s.decision === 'back' ? ['Cần sửa', '#FCECE3', '#8A3A0C'] : ['Chờ duyệt', '#E8EEFB', '#163B91']);
+    return {
+      accent: accent, tabs: tabs,
+      tabCheck: s.tab === 'check', tabRubric: s.tab === 'rubric', tabNotes: s.tab === 'notes',
+      checks: CHECKS.map(function (c) { var t = TAG[c[0]]; return { tag: t[0], bg: t[1], ink: t[2], text: c[1] }; }),
+      criteria: criteria,
+      scoreText: scored + na === 0 ? 'Chưa chấm' : total + ' / ' + (scored * 3) + ' điểm · ' + (scored + na) + '/7 tiêu chí',
+      notes: s.notes, noteCount: s.notes.length, draft: s.draft,
+      onDraft: function (e) { self.setState({ draft: e.target.value }); },
+      addNote: function () { if (!s.draft.trim()) return; self.setState({ notes: s.notes.concat([{ meta: 'Bạn · vừa xong', text: s.draft.trim() }]), draft: '' }); },
+      statusLabel: status[0], statusBg: status[1], statusInk: status[2],
+      undecided: !s.decision, decided: !!s.decision,
+      isApproved: s.decision === 'approved', isSentBack: s.decision === 'back',
+      approve: function () { self.setState({ decision: 'approved' }); },
+      sendBack: function () { self.setState({ decision: 'back', tab: 'notes' }); },
+      undo: function () { self.setState({ decision: null }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

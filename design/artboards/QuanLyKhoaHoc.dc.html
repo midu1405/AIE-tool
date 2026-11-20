@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Nội bộ – Quản lý khoá học</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#2152C5}a:hover{color:#163B91}
+</style>
+</helmet>
+<div style="font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #172033; background: #F6F7F9; min-height: 100vh; display: flex; flex-wrap: wrap">
+
+<aside style="flex: 1 1 220px; max-width: 256px; background: #FFFFFF; border-right: 1px solid #E3E6EB; padding: 20px 16px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box">
+<a href="TaoKHBD.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #172033; padding: 0 8px">
+<span style="width: 34px; height: 34px; border-radius: 8px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px">AI</span>
+<span style="font-weight: 700; font-size: 17px">AI Edu</span>
+<span style="background: #172033; color: #FFFFFF; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 600">Nội bộ</span>
+</a>
+<nav aria-label="Công cụ KHBD" style="display: flex; flex-direction: column; gap: 4px">
+<a href="TaoKHBD.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg>Tạo KHBD</a>
+<a href="TienDo.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M3 12h4l3-7 4 14 3-7h4"></path></svg>Tiến độ</a>
+<a href="DanhSachKHBD.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round"><path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"></path></svg>Danh sách KHBD</a>
+<a href="DuyetBai.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path></svg>Duyệt bài</a>
+<a href="QuanLyKhoaHoc.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; background: #E8EEFB; color: {{accent}}; font-weight: 600; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: {{accent}}; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M4 19V5a2 2 0 0 1 2-2h14v14H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h14M8 7h8"></path></svg>Quản lý khoá học</a>
+</nav>
+<div style="border-top: 1px solid #E3E6EB; padding-top: 16px">
+<a href="Main.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; font-size: 14px; color: #4B5565; text-decoration: none">Xem trang khoá học public</a>
+</div>
+<div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 0 8px">
+<span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 50%; background: #E3E6EB; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">NV</span>
+<span style="display: flex; flex-direction: column; font-size: 13px"><span style="font-weight: 600">[Tên nhân viên]</span><span style="color: #4B5565">Quản lý nội dung</span></span>
+</div>
+</aside>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-size: 30px; font-weight: 700">Quản lý khoá học</h1>
+<p style="margin: 0; font-size: 15px; color: #4B5565; max-width: 720px">Sắp xếp học phần, gắn KHBD và PBT đã duyệt làm học liệu, rồi xuất bản lên trang giáo viên. Chỉ vai trò Quản lý nội dung được xuất bản.</p>
+</div>
+<button type="button" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 15px; border-radius: 10px; padding: 0 18px; min-height: 44px; cursor: pointer">Tạo khoá học</button>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section aria-label="Danh sách khoá học" style="flex: 1 1 300px; max-width: 360px; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; overflow: hidden">
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{courses}}" as="c" hint-placeholder-count="9">
+<li style="border-top: {{c.border}}">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.active}}" style="width: 100%; border: 0; border-left: 3px solid {{c.line}}; background: {{c.bg}}; font: inherit; color: #172033; text-align: left; padding: 12px 16px; min-height: 64px; cursor: pointer; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; font-weight: 600; line-height: 1.35">{{c.title}}</span>
+<span style="display: flex; gap: 8px; align-items: center; font-size: 12px; color: #4B5565"><span style="border-radius: 999px; padding: 2px 8px; font-weight: 600; background: {{c.chipBg}}; color: {{c.chipInk}}">{{c.statusLabel}}</span>{{c.meta}}</span>
+</button>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section aria-label="Chỉnh sửa khoá học" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700; flex: 1 1 320px">{{current.title}}</h2>
+<span style="border-radius: 999px; padding: 4px 12px; font-size: 13px; font-weight: 600; background: {{current.chipBg}}; color: {{current.chipInk}}">{{current.statusLabel}}</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px 20px; font-size: 14px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: #4B5565">Chủ đề</span><span>{{current.topic}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: #4B5565">Đối tượng</span><span>{{current.aud}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: #4B5565">Thời lượng · hình thức</span><span>{{current.dur}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: #4B5565">Chứng nhận</span><span>Chưa cấp ở bản đầu</span></div>
+</div>
+<button type="button" style="align-self: flex-start; border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-weight: 600; font-size: 14px; border-radius: 10px; padding: 0 16px; min-height: 44px; cursor: pointer">Sửa thông tin khoá học</button>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Học phần và học liệu</h2>
+<span style="font-size: 13px; color: #4B5565">{{materialCount}} học liệu đã gắn</span>
+</div>
+<sc-if value="{{hasModules}}" hint-placeholder-val="{{ true }}">
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{modules}}" as="m" hint-placeholder-count="4">
+<li style="border: 1px solid #E3E6EB; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 10px">
+<span aria-hidden="true" style="color: #4B5565; font-size: 18px; line-height: 1; cursor: grab">⋮⋮</span>
+<h3 style="margin: 0; font-size: 15px; font-weight: 700; flex: 1">{{m.title}}</h3>
+<span style="font-size: 12px; color: #4B5565">{{m.lessonCount}} bài</span>
+</div>
+<ul style="list-style: none; margin: 0; padding: 0 0 0 28px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{m.lessons}}" as="l" hint-placeholder-count="3">
+<li style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px">
+<span style="flex: 1 1 220px">{{l.title}}</span>
+<button type="button" onClick="{{l.togglePicker}}" aria-expanded="{{l.pickerOpen}}" style="border: 0; background: transparent; color: {{accent}}; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; min-height: 40px">+ Gắn học liệu</button>
+</div>
+<sc-for list="{{l.materials}}" as="mt" hint-placeholder-count="1">
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #F3F6FD; border-radius: 8px; padding: 6px 6px 6px 12px; font-size: 13px">
+<span style="font-weight: 600; color: #163B91">{{mt.kind}}</span>
+<span style="flex: 1 1 200px">{{mt.label}}</span>
+<span style="border-radius: 6px; padding: 2px 8px; background: #FFFFFF; font-weight: 600">{{mt.version}}</span>
+<button type="button" onClick="{{mt.remove}}" aria-label="Gỡ {{mt.label}}" style="border: 0; background: transparent; width: 40px; height: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 2.2; stroke-linecap: round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+</sc-for>
+<sc-if value="{{l.pickerOpen}}" hint-placeholder-val="{{ false }}">
+<div style="border: 1px solid #C9D6F5; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 6px; background: #FFFFFF">
+<span style="font-size: 13px; font-weight: 600">Chọn học liệu đã duyệt</span>
+<sc-for list="{{l.options}}" as="o" hint-placeholder-count="5">
+<div style="display: flex; align-items: center; gap: 10px; font-size: 13px; min-height: 40px; color: {{o.ink}}">
+<span style="flex: 1">{{o.label}}</span>
+<span style="font-size: 12px">{{o.state}}</span>
+<sc-if value="{{o.canAttach}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{o.attach}}" style="border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-size: 13px; font-weight: 600; border-radius: 8px; padding: 0 12px; min-height: 36px; cursor: pointer">Gắn</button></sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</li>
+</sc-for>
+</ul>
+</li>
+</sc-for>
+</ol>
+</sc-if>
+<sc-if value="{{noModules}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 14px; color: #4B5565">Khoá này chưa có học phần trong bản mẫu.</p>
+</sc-if>
+<p style="margin: 0; font-size: 13px; color: #4B5565">Chỉ gắn được bản đã duyệt. Khi KHBD đã gắn có bản mới được duyệt, dòng học liệu hiện nút cập nhật để bạn chọn.</p>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center">
+<span style="flex: 1 1 240px; font-size: 14px; color: #4B5565">{{publishHint}}</span>
+<a href="Detail.dc.html" style="border: 1px solid #CDD2DA; color: #172033; text-decoration: none; font-weight: 600; font-size: 14px; border-radius: 10px; padding: 0 16px; min-height: 44px; display: flex; align-items: center">Xem trước trên trang giáo viên</a>
+<button type="button" onClick="{{togglePublish}}" style="border: 0; background: {{publishBg}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 14px; border-radius: 10px; padding: 0 18px; min-height: 44px; cursor: pointer">{{publishLabel}}</button>
+</div>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2152C5","options":["#2152C5","#0F766E","#7C3AED","#B45309"]},"$preview":{"width":1280,"height":1500}}'>
+var COURSES = [
+  { id: 'gd-ai-thcs', title: 'Dạy chuyên đề Giáo dục AI 12 tiết – THCS', status: 'pub', topic: 'Dạy học với AI', aud: 'THCS', dur: '4–6 giờ · Có hướng dẫn' },
+  { id: 'gd-ai-th', title: 'Dạy chuyên đề Giáo dục AI 12 tiết – Tiểu học', status: 'draft', topic: 'Dạy học với AI', aud: 'Tiểu học', dur: '3–5 giờ · Có hướng dẫn' },
+  { id: 'gd-ai-thpt', title: 'Dạy chuyên đề Giáo dục AI 12 tiết – THPT', status: 'draft', topic: 'Dạy học với AI', aud: 'THPT', dur: '4–6 giờ · Có hướng dẫn' },
+  { id: 'hieu-biet-ai', title: 'Hiểu biết AI cho giáo viên và cán bộ quản lý', status: 'pub', topic: 'Hiểu biết AI', aud: 'Mọi cấp học', dur: '1–2 giờ · Tự học' },
+  { id: 'teachable-machine', title: 'Teachable Machine trong lớp học', status: 'pub', topic: 'Dạy học với AI', aud: 'THCS, THPT', dur: '2–3 giờ · Tự học' },
+  { id: 'prompt-gv', title: 'Viết prompt hiệu quả cho giáo viên', status: 'pub', topic: 'Hiểu biết AI', aud: 'Mọi cấp học', dur: '1–2 giờ · Tự học' },
+  { id: 'an-toan-ai', title: 'An toàn, đạo đức và bảo vệ dữ liệu khi dùng AI', status: 'pub', topic: 'An toàn & đạo đức AI', aud: 'Mọi cấp học', dur: '2–3 giờ · Tự học' },
+  { id: 'nang-luc-so', title: 'Tích hợp năng lực số vào bài dạy', status: 'hidden', topic: 'Năng lực số', aud: 'Tiểu học, THCS, THPT', dur: '3–4 giờ · Có hướng dẫn' },
+  { id: 'soan-khbd-ai', title: 'Soạn kế hoạch bài dạy với trợ lý AI', status: 'draft', topic: 'Dạy học với AI', aud: 'Tiểu học, THCS, THPT', dur: '2–4 giờ · Có hướng dẫn' }
+];
+var STATUS = { pub: ['Đã xuất bản', '#E2F3EA', '#1D6E47'], draft: ['Nháp', '#EEF0F3', '#4B5565'], hidden: ['Đã ẩn', '#FFF4DB', '#7A4B00'] };
+var MODULES = [
+  { title: 'Học phần 1. Tổng quan chương trình và QĐ 2422', lessons: ['Mục tiêu của chuyên đề', 'Cấu trúc 12 tiết theo khối', 'Cách dùng bộ học liệu'] },
+  { title: 'Học phần 2. AI là gì: giúp học sinh hiểu đúng', lessons: ['AI theo luật và AI học từ dữ liệu', 'Nói về AI mà không nhân hoá', 'Hoạt động khởi động mẫu'] },
+  { title: 'Học phần 3. Dữ liệu và học máy với Teachable Machine', lessons: ['Thu thập dữ liệu trong lớp', 'Huấn luyện và kiểm thử mô hình', 'Thảo luận về sai lệch dữ liệu'] }
+];
+var LIBRARY = [
+  { id: 'k1', kind: 'KHBD', label: 'Bài 1. Làm quen với nền tảng Google Deepmind · Lớp 6', version: 'v1', ok: true, state: 'Đã duyệt' },
+  { id: 'k10', kind: 'KHBD', label: 'Bài 10. Cách máy học hoạt động · Lớp 6', version: 'v1', ok: true, state: 'Đã duyệt' },
+  { id: 'p10', kind: 'PBT', label: 'Bài 10. Cách máy học hoạt động · Lớp 6', version: 'v1', ok: true, state: 'Đã duyệt' },
+  { id: 'k3', kind: 'KHBD', label: 'Bài 3. AI tạo sinh · Lớp 6', version: 'v1', ok: false, state: 'Chờ duyệt, chưa gắn được' },
+  { id: 'k2', kind: 'KHBD', label: 'Bài 2. AI là gì? · Lớp 6', version: 'v2', ok: false, state: 'Cần sửa, chưa gắn được' }
+];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { course: 'gd-ai-thcs', status: {}, attached: { '0-2': ['k1'], '2-1': ['k10', 'p10'] }, picker: null };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var accent = this.props.accent ?? '#2152C5';
+    var statusOf = function (c) { return s.status[c.id] || c.status; };
+    var courses = COURSES.map(function (c, i) {
+      var st = STATUS[statusOf(c)];
+      var active = c.id === s.course;
+      return { title: c.title, statusLabel: st[0], chipBg: st[1], chipInk: st[2], meta: c.aud, active: active,
+        bg: active ? '#F3F6FD' : '#FFFFFF', line: active ? accent : 'transparent', border: i === 0 ? '0' : '1px solid #E3E6EB',
+        pick: function () { self.setState({ course: c.id, picker: null }); } };
+    });
+    var cur = COURSES.filter(function (c) { return c.id === s.course; })[0];
+    var curSt = STATUS[statusOf(cur)];
+    var isMain = cur.id === 'gd-ai-thcs';
+    var count = 0;
+    var modules = isMain ? MODULES.map(function (m, mi) {
+      return {
+        title: m.title, lessonCount: m.lessons.length,
+        lessons: m.lessons.map(function (t, li) {
+          var key = mi + '-' + li;
+          var ids = s.attached[key] || [];
+          count += ids.length;
+          var open = s.picker === key;
+          return {
+            title: t, pickerOpen: open,
+            togglePicker: function () { self.setState({ picker: open ? null : key }); },
+            materials: ids.map(function (id) {
+              var it = LIBRARY.filter(function (x) { return x.id === id; })[0];
+              return { kind: it.kind, label: it.label, version: it.version, remove: function () { var a = Object.assign({}, s.attached); a[key] = ids.filter(function (x) { return x !== id; }); self.setState({ attached: a }); } };
+            }),
+            options: LIBRARY.map(function (it) {
+              var already = ids.indexOf(it.id) >= 0;
+              return { label: it.kind + ' · ' + it.label + ' · ' + it.version, state: already ? 'Đã gắn' : it.state, canAttach: it.ok && !already, ink: it.ok ? '#172033' : '#4B5565',
+                attach: function () { var a = Object.assign({}, s.attached); a[key] = ids.concat([it.id]); self.setState({ attached: a, picker: null }); } };
+            })
+          };
+        })
+      };
+    }) : [];
+    var published = statusOf(cur) === 'pub';
+    return {
+      accent: accent, courses: courses,
+      current: { title: cur.title, topic: cur.topic, aud: cur.aud, dur: cur.dur, statusLabel: curSt[0], chipBg: curSt[1], chipInk: curSt[2] },
+      modules: modules, hasModules: isMain, noModules: !isMain, materialCount: count,
+      publishHint: published ? 'Khoá đang hiện trên trang giáo viên. Ẩn thì giáo viên đang học vẫn giữ tiến độ.' : 'Khoá chưa hiện trên trang giáo viên.',
+      publishLabel: published ? 'Ẩn khỏi trang giáo viên' : 'Xuất bản',
+      publishBg: published ? '#4B5565' : accent,
+      togglePublish: function () { var st = Object.assign({}, s.status); st[cur.id] = published ? 'hidden' : 'pub'; self.setState({ status: st }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

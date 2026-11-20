@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Nội bộ – Tạo KHBD</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#2152C5}a:hover{color:#163B91}
+</style>
+</helmet>
+<div style="font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #172033; background: #F6F7F9; min-height: 100vh; display: flex; flex-wrap: wrap">
+
+<aside style="flex: 1 1 220px; max-width: 256px; background: #FFFFFF; border-right: 1px solid #E3E6EB; padding: 20px 16px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box">
+<a href="TaoKHBD.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #172033; padding: 0 8px">
+<span style="width: 34px; height: 34px; border-radius: 8px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px">AI</span>
+<span style="font-weight: 700; font-size: 17px">AI Edu</span>
+<span style="background: #172033; color: #FFFFFF; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 600">Nội bộ</span>
+</a>
+<nav aria-label="Công cụ KHBD" style="display: flex; flex-direction: column; gap: 4px">
+<a href="TaoKHBD.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; background: #E8EEFB; color: {{accent}}; font-weight: 600; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: {{accent}}; stroke-width: 2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg>Tạo KHBD</a>
+<a href="TienDo.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M3 12h4l3-7 4 14 3-7h4"></path></svg>Tiến độ</a>
+<a href="DanhSachKHBD.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round"><path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"></path></svg>Danh sách KHBD</a>
+<a href="DuyetBai.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path></svg>Duyệt bài</a>
+<a href="QuanLyKhoaHoc.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M4 19V5a2 2 0 0 1 2-2h14v14H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h14M8 7h8"></path></svg>Quản lý khoá học</a>
+</nav>
+<div style="border-top: 1px solid #E3E6EB; padding-top: 16px">
+<a href="Main.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; font-size: 14px; color: #4B5565; text-decoration: none">Xem trang khoá học public</a>
+</div>
+<div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 0 8px">
+<span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 50%; background: #E3E6EB; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">NV</span>
+<span style="display: flex; flex-direction: column; font-size: 13px"><span style="font-weight: 600">[Tên nhân viên]</span><span style="color: #4B5565">Academic</span></span>
+</div>
+</aside>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-size: 30px; font-weight: 700">Tạo kế hoạch bài dạy</h1>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5565; max-width: 760px">Claude soạn theo skill aca-khbd-ai12 v6, đối chiếu QĐ 2422 và CV 5588. Giai đoạn 1 tạo KHBD và spec PBT; phiếu bài tập chỉ dựng sau khi KHBD được duyệt.</p>
+</div>
+
+<div role="group" aria-label="Cách soạn" style="display: flex; flex-wrap: wrap; gap: 4px; background: #EEF0F3; border-radius: 12px; padding: 4px; align-self: flex-start">
+<button type="button" aria-pressed="{{isKho}}" onClick="{{pickKho}}" style="border: 0; border-radius: 9px; padding: 0 18px; min-height: 44px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; background: {{khoBg}}; color: {{khoInk}}">Soạn lại từ kho học liệu</button>
+<button type="button" aria-pressed="{{isMoi}}" onClick="{{pickMoi}}" style="border: 0; border-radius: 9px; padding: 0 18px; min-height: 44px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; background: {{moiBg}}; color: {{moiInk}}">Soạn bài mới</button>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+<sc-if value="{{isKho}}" hint-placeholder-val="{{ true }}">
+<section aria-label="Kho học liệu" style="flex: 999 1 460px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Chọn bài nguồn</h2>
+<span style="font-size: 13px; color: #4B5565">Đồng bộ từ Drive lúc [hh:mm]</span>
+</div>
+<p style="margin: 0; font-size: 13px; color: #4B5565">Kho học liệu chung › 3. Giáo dục trí tuệ nhân tạo dành cho học sinh phổ thông › 1. Học liệu</p>
+<ul style="list-style: none; margin: 0; padding: 0; border: 1px solid #E3E6EB; border-radius: 10px; overflow: hidden">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="10">
+<li style="border-top: {{r.border}}">
+<sc-if value="{{r.isGroup}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{r.toggle}}" aria-expanded="{{r.expanded}}" style="width: 100%; border: 0; background: #FAFBFC; font: inherit; color: #172033; text-align: left; display: flex; align-items: center; gap: 10px; padding: 0 14px 0 {{r.pad}}px; min-height: 44px; cursor: pointer; font-weight: 600; font-size: 15px">
+<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; transform: {{r.rotate}}; fill: none; stroke: #4B5565; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 6l6 6-6 6"></path></svg>
+<span style="flex: 1">{{r.label}}</span>
+<span style="font-size: 12px; font-weight: 500; color: #4B5565">{{r.meta}}</span>
+</button>
+</sc-if>
+<sc-if value="{{r.isLesson}}" hint-placeholder-val="{{ false }}">
+<label for="{{r.id}}" style="display: flex; align-items: center; gap: 12px; padding: 0 14px 0 {{r.pad}}px; min-height: 44px; cursor: pointer; font-size: 15px; background: {{r.bg}}">
+<input id="{{r.id}}" type="checkbox" checked="{{r.checked}}" onChange="{{r.select}}" style="width: 18px; height: 18px; margin: 0; accent-color: {{accent}}">
+<span style="flex: 1">{{r.label}}</span>
+<span style="font-size: 12px; color: #4B5565">{{r.meta}}</span>
+<sc-if value="{{r.hasBadge}}" hint-placeholder-val="{{ false }}"><span style="background: #E2F3EA; color: #1D6E47; border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 600">{{r.badge}}</span></sc-if>
+</label>
+</sc-if>
+<sc-if value="{{r.isNote}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; padding: 10px 14px 10px {{r.pad}}px; font-size: 13px; color: #4B5565">{{r.label}}</p>
+</sc-if>
+</li>
+</sc-for>
+</ul>
+</section>
+</sc-if>
+
+<sc-if value="{{isMoi}}" hint-placeholder-val="{{ false }}">
+<section aria-label="Thông tin bài mới" style="flex: 999 1 460px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Thông tin bài mới</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="lop" style="font-size: 14px; font-weight: 600">Lớp</label>
+<select id="lop" value="{{grade}}" onChange="{{onGrade}}" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 10px; background: #FFFFFF; color: #172033">
+<option value="1">Lớp 1</option><option value="2">Lớp 2</option><option value="3">Lớp 3</option><option value="4">Lớp 4</option><option value="5">Lớp 5</option><option value="6">Lớp 6</option><option value="7">Lớp 7</option><option value="8">Lớp 8</option><option value="9">Lớp 9</option><option value="10">Lớp 10</option><option value="11">Lớp 11</option><option value="12">Lớp 12</option>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="so-tiet" style="font-size: 14px; font-weight: 600">Số tiết</label>
+<select id="so-tiet" value="{{periods}}" onChange="{{onPeriods}}" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 10px; background: #FFFFFF; color: #172033">
+<option value="1">1 tiết (45 phút)</option><option value="2">2 tiết (90 phút)</option><option value="3">3 tiết (135 phút)</option>
+</select>
+</div>
+</div>
+<p role="status" style="margin: 0; border-radius: 8px; padding: 10px 14px; font-size: 14px; line-height: 1.5; background: {{gradeNoteBg}}; color: {{gradeNoteInk}}">{{gradeNote}}</p>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="chu-de" style="font-size: 14px; font-weight: 600">Chủ đề</label>
+<select id="chu-de" value="{{topic}}" onChange="{{onTopic}}" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 10px; background: #FFFFFF; color: #172033">
+<sc-for list="{{topics}}" as="t" hint-placeholder-count="3"><option value="{{t.value}}">{{t.label}}</option></sc-for>
+</select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="ten-bai" style="font-size: 14px; font-weight: 600">Tên bài</label>
+<input id="ten-bai" type="text" value="{{lessonName}}" onChange="{{onLessonName}}" placeholder="vd: Dữ liệu di chuyển như thế nào?" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px; color: #172033">
+<span style="font-size: 13px; color: #4B5565">Trùng tên bài trong khung thì Claude lấy đúng mục tiêu của khung; tên mới thì Claude soạn như bài mở rộng và ghi giả định.</span>
+</div>
+<fieldset style="border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px">
+<legend style="font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 6px">Mã yêu cầu cần đạt QĐ 2422</legend>
+<sc-for list="{{codeModes}}" as="c" hint-placeholder-count="2">
+<label for="{{c.id}}" style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer"><input id="{{c.id}}" type="radio" name="ma-2422" checked="{{c.checked}}" onChange="{{c.pick}}" style="width: 18px; height: 18px; margin: 0; accent-color: {{accent}}">{{c.label}}</label>
+</sc-for>
+<sc-if value="{{manualCodes}}" hint-placeholder-val="{{ false }}">
+<label for="ma-tu-chon" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Mã 2422 tự chọn</label>
+<input id="ma-tu-chon" type="text" value="{{codes}}" onChange="{{onCodes}}" placeholder="vd: 6.C2.1, 6.C2.3" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px; color: #172033; max-width: 360px">
+</sc-if>
+</fieldset>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="tai-lieu" style="font-size: 14px; font-weight: 600">Tài liệu nguồn (không bắt buộc)</label>
+<input id="tai-lieu" type="url" placeholder="Dán link Google Drive: tài liệu Experience AI, slide, video…" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px; color: #172033">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="y-tuong" style="font-size: 14px; font-weight: 600">Ý tưởng, yêu cầu riêng</label>
+<textarea id="y-tuong" rows="4" placeholder="vd: dùng ví dụ về chợ quê; lớp không có máy cho học sinh" style="font: inherit; font-size: 15px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; color: #172033; resize: vertical"></textarea>
+</div>
+</section>
+</sc-if>
+
+<section aria-label="Thiết lập chung" style="flex: 1 1 320px; max-width: 400px; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<sc-if value="{{isKho}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">Đã chọn {{selectedCount}} bài</h2>
+<sc-if value="{{noneSelected}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 14px; color: #4B5565">Tick bài ở cây bên trái. Chọn nhiều bài là soạn hàng loạt.</p></sc-if>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{selectedList}}" as="s" hint-placeholder-count="2">
+<li style="display: flex; align-items: center; gap: 8px; font-size: 14px; background: #F6F7F9; border-radius: 8px; padding: 0 4px 0 12px; min-height: 44px">
+<span style="flex: 1">{{s.label}}</span>
+<button type="button" onClick="{{s.remove}}" aria-label="Bỏ chọn {{s.label}}" style="border: 0; background: transparent; width: 44px; height: 44px; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 2.2; stroke-linecap: round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</li>
+</sc-for>
+</ul>
+<label for="khoi" style="font-size: 14px; font-weight: 600; margin-top: 4px">Lớp</label>
+<select id="khoi" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 10px; background: #FFFFFF; color: #172033">
+<option>Tự nhận theo khung NLS</option><option>Lớp 6</option><option>Lớp 7</option><option>Lớp 8</option><option>Lớp 9</option><option>Lớp 10</option><option>Lớp 11</option><option>Lớp 12</option>
+</select>
+</div>
+</sc-if>
+
+<fieldset style="border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px">
+<legend style="font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 6px">Hình thức triển khai (CV 5588)</legend>
+<sc-for list="{{formats}}" as="f" hint-placeholder-count="3">
+<label for="{{f.id}}" style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer"><input id="{{f.id}}" type="radio" name="hinh-thuc" checked="{{f.checked}}" onChange="{{f.pick}}" style="width: 18px; height: 18px; margin: 0; accent-color: {{accent}}">{{f.label}}</label>
+</sc-for>
+</fieldset>
+
+<fieldset style="border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px">
+<legend style="font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 6px">Căn cứ đối chiếu</legend>
+<sc-for list="{{bases}}" as="b" hint-placeholder-count="6">
+<label for="{{b.id}}" style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer">
+<input id="{{b.id}}" type="checkbox" checked="{{b.checked}}" disabled="{{b.locked}}" onChange="{{b.toggle}}" style="width: 18px; height: 18px; margin: 0; accent-color: {{accent}}">
+<span style="flex: 1">{{b.label}}</span>
+<span style="font-size: 12px; color: #4B5565">{{b.note}}</span>
+</label>
+</sc-for>
+</fieldset>
+
+<sc-if value="{{isKho}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="ghi-chu" style="font-size: 14px; font-weight: 600">Ghi chú cho Claude</label>
+<textarea id="ghi-chu" rows="3" placeholder="vd: bỏ phần giới thiệu chương trình Experience AI" style="font: inherit; font-size: 15px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; color: #172033; resize: vertical"></textarea>
+</div>
+</sc-if>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">Kết quả sẽ có</h2>
+<ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6; color: #172033; display: flex; flex-direction: column; gap: 4px">
+<li>Google Doc KHBD theo mẫu mới, đuôi – vN</li>
+<li>Spec KHBD và spec PBT trong _spec (Claude dùng)</li>
+<li>Kết quả đối chiếu căn cứ và cảnh báo</li>
+<li>Một dòng trong Nhật ký chạy của ngày</li>
+</ul>
+<p style="margin: 0; font-size: 13px; line-height: 1.5; color: #4B5565">Lưu vào: {{savePath}}</p>
+<sc-if value="{{canRun}}" hint-placeholder-val="{{ true }}">
+<a href="TienDo.dc.html" style="background: {{accent}}; color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 16px; border-radius: 10px; min-height: 48px; display: flex; align-items: center; justify-content: center">{{runLabel}}</a>
+</sc-if>
+<sc-if value="{{cannotRun}}" hint-placeholder-val="{{ false }}">
+<button type="button" disabled="{{ true }}" style="border: 0; background: #E3E6EB; color: #4B5565; font: inherit; font-weight: 600; font-size: 16px; border-radius: 10px; min-height: 48px">{{blockedLabel}}</button>
+</sc-if>
+</div>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2152C5","options":["#2152C5","#0F766E","#7C3AED","#B45309"]},"mode":{"editor":"enum","default":"kho","options":["kho","moi"]},"$preview":{"width":1280,"height":1500}}'>
+var TREE = [
+  { id: 'th', label: 'Tiểu học', groups: null },
+  { id: 'thcs', label: 'THCS', groups: [
+    { id: 'thcs-cd1', label: 'Chủ đề 1: Nền tảng của công nghệ AI', lop: 6, lessons: [
+      { id: 'b1', name: 'Bài 1. Làm quen với nền tảng Google Deepmind', tiet: 1 },
+      { id: 'b2', name: 'Bài 2. AI là gì?', tiet: 2 },
+      { id: 'b3', name: 'Bài 3. AI tạo sinh', tiet: 1 },
+      { id: 'b4', name: 'Bài 4. Mô hình', tiet: 1, badge: 'Đã có v1' },
+      { id: 'b5', name: 'Bài 5. Dữ liệu', tiet: 2 },
+      { id: 'b6', name: 'Bài 6. Thị giác máy tính', tiet: 1 },
+      { id: 'b7', name: 'Bài 7. Ứng dụng của AI', tiet: 2 },
+      { id: 'b8', name: 'Bài 8. Ôn tập chủ đề 1', tiet: 1 }
+    ] },
+    { id: 'thcs-cd2', label: 'Chủ đề 2: Máy tính học từ dữ liệu như thế nào?', lop: 6, lessons: [
+      { id: 'b9', name: 'Bài 9. Làm quen với máy học (Machine Learning)', tiet: 2 },
+      { id: 'b10', name: 'Bài 10. Cách máy học hoạt động', tiet: 1 }
+    ] },
+    { id: 'thcs-cd3', label: 'Chủ đề 3 đến 7', lop: null, lessons: null }
+  ] },
+  { id: 'thpt', label: 'THPT', groups: null }
+];
+var TOPICS = {
+  6: ['Nền tảng của công nghệ AI', 'Máy tính học từ dữ liệu như thế nào?', 'Thiên kiến trong trí tuệ nhân tạo'],
+  7: ['Cây quyết định', 'Giải quyết vấn đề bằng mô hình máy học', 'Thẻ mô hình'],
+  8: ['Dữ liệu và trí tuệ nhân tạo', 'Sử dụng công cụ AI có trách nhiệm', 'Kiến thức truyền thông trong kỷ nguyên AI'],
+  9: ['Mô hình ngôn ngữ lớn', 'Trí tuệ nhân tạo và cuộc sống', 'Cơ hội nghề nghiệp'],
+  10: ['Nền tảng của AI', 'Máy tính hoạt động như thế nào?', 'Thiên kiến trong trí tuệ nhân tạo', 'Sử dụng AI trong học tập'],
+  11: ['Cây quyết định', 'Giải quyết vấn đề bằng máy học', 'Thẻ mô hình', 'Kiến thức truyền thông trong kỷ nguyên AI'],
+  12: ['Mô hình ngôn ngữ lớn', 'Sử dụng công cụ AI có trách nhiệm']
+};
+var BASES = [
+  { key: 'qd2422', label: 'QĐ 2422', note: 'bắt buộc', locked: true },
+  { key: 'cv5588', label: 'CV 5588', note: 'bắt buộc', locked: true },
+  { key: 'tt02', label: 'TT 02', note: '[tên văn bản]' },
+  { key: 'tt16', label: 'TT 16', note: '[tên văn bản]' },
+  { key: 'tt18', label: 'TT 18', note: '[tên văn bản]' },
+  { key: 'tt85', label: 'TT 85', note: 'tăng cường, theo nhu cầu' }
+];
+var FORMATS = [['chuyen-de', 'Chuyên đề giáo dục AI (mặc định)'], ['long-ghep', 'Lồng ghép trong môn học'], ['nhu-cau', 'Hoạt động theo nhu cầu']];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { mode: null, expanded: ['thcs', 'thcs-cd1'], selected: ['thcs-cd1/b2', 'thcs-cd1/b5'], format: 'chuyen-de', bases: { tt02: false, tt16: false, tt18: false, tt85: false }, grade: '6', topic: '0', periods: '1', lessonName: '', codeMode: 'auto', codes: '' };
+  }
+  toggleIn(key, val) {
+    var cur = this.state[key];
+    var patch = {};
+    patch[key] = cur.indexOf(val) >= 0 ? cur.filter(function (v) { return v !== val; }) : cur.concat([val]);
+    this.setState(patch);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var accent = this.props.accent ?? '#2152C5';
+    var mode = s.mode || this.props.mode || 'kho';
+    var isKho = mode === 'kho';
+    var rows = [];
+    var names = {};
+    TREE.forEach(function (lv, li) {
+      var open = s.expanded.indexOf(lv.id) >= 0;
+      rows.push({ isGroup: true, isLesson: false, isNote: false, label: lv.label, meta: '', pad: 14, expanded: open, rotate: open ? 'rotate(90deg)' : 'none', border: li === 0 ? '0' : '1px solid #E3E6EB', toggle: function () { self.toggleIn('expanded', lv.id); } });
+      if (!open) return;
+      if (!lv.groups) {
+        rows.push({ isGroup: false, isLesson: false, isNote: true, label: 'Nối Drive để hiện cây thư mục thật của nhánh này.', pad: 44, border: '1px solid #E3E6EB' });
+        return;
+      }
+      lv.groups.forEach(function (g) {
+        var gOpen = s.expanded.indexOf(g.id) >= 0;
+        rows.push({ isGroup: true, isLesson: false, isNote: false, label: g.label, meta: g.lop ? 'Lớp ' + g.lop : '', pad: 40, expanded: gOpen, rotate: gOpen ? 'rotate(90deg)' : 'none', border: '1px solid #E3E6EB', toggle: function () { self.toggleIn('expanded', g.id); } });
+        if (!gOpen) return;
+        if (!g.lessons) {
+          rows.push({ isGroup: false, isLesson: false, isNote: true, label: 'Các chủ đề còn lại lấy từ Drive khi đồng bộ.', pad: 70, border: '1px solid #E3E6EB' });
+          return;
+        }
+        g.lessons.forEach(function (l) {
+          var key = g.id + '/' + l.id;
+          var checked = s.selected.indexOf(key) >= 0;
+          names[key] = l.name + ' · Lớp ' + g.lop;
+          rows.push({ isGroup: false, isLesson: true, isNote: false, id: 'chon-' + g.id + '-' + l.id, label: l.name, meta: l.tiet + ' tiết', pad: 66, checked: checked, bg: checked ? '#F3F6FD' : '#FFFFFF', hasBadge: !!l.badge, badge: l.badge || '', border: '1px solid #E3E6EB', select: function () { self.toggleIn('selected', key); } });
+        });
+      });
+    });
+    TREE.forEach(function (lv) { (lv.groups || []).forEach(function (g) { (g.lessons || []).forEach(function (l) { names[g.id + '/' + l.id] = l.name + ' · Lớp ' + g.lop; }); }); });
+    var selectedList = s.selected.map(function (k) { return { label: names[k] || k, remove: function () { self.toggleIn('selected', k); } }; });
+
+    var g = parseInt(s.grade, 10);
+    var gradeNote, gradeNoteBg, gradeNoteInk;
+    if (g <= 3) { gradeNote = 'Lớp 1–3 chưa có chuẩn trong skill nên chưa soạn được.'; gradeNoteBg = '#FCECE3'; gradeNoteInk = '#8A3A0C'; }
+    else if (g <= 5) { gradeNote = 'Lớp ' + g + ' chưa có khung NLS trong skill: mục tiêu lấy từ tài liệu bạn đưa, Claude ghi rõ giả định.'; gradeNoteBg = '#FFF4DB'; gradeNoteInk = '#7A4B00'; }
+    else { gradeNote = 'Mục tiêu bài học lấy theo khung NLS lớp ' + g + '; mã yêu cầu cần đạt lấy đúng lớp ' + g + ' theo QĐ 2422.'; gradeNoteBg = '#E2F3EA'; gradeNoteInk = '#1D6E47'; }
+    var topicNames = TOPICS[g] || [];
+    var topics = topicNames.map(function (t, i) { return { value: String(i), label: 'Chủ đề ' + (i + 1) + ': ' + t }; });
+    topics.push({ value: 'ngoai', label: 'Ngoài khung (bài mở rộng)' });
+    if (g <= 5) topics = [{ value: 'ngoai', label: 'Theo tài liệu nguồn' }];
+
+    var canRun = isKho ? s.selected.length > 0 : g > 3;
+    var safeName = (s.lessonName || '[Tên bài]');
+    return {
+      accent: accent,
+      isKho: isKho, isMoi: !isKho,
+      khoBg: isKho ? '#FFFFFF' : 'transparent', khoInk: isKho ? '#172033' : '#4B5565',
+      moiBg: isKho ? 'transparent' : '#FFFFFF', moiInk: isKho ? '#4B5565' : '#172033',
+      pickKho: function () { self.setState({ mode: 'kho' }); },
+      pickMoi: function () { self.setState({ mode: 'moi' }); },
+      rows: rows,
+      selectedList: selectedList,
+      selectedCount: s.selected.length,
+      noneSelected: s.selected.length === 0,
+      grade: s.grade, periods: s.periods, topic: s.topic, lessonName: s.lessonName, codes: s.codes,
+      gradeNote: gradeNote, gradeNoteBg: gradeNoteBg, gradeNoteInk: gradeNoteInk,
+      topics: topics,
+      onGrade: function (e) { self.setState({ grade: e.target.value, topic: '0' }); },
+      onPeriods: function (e) { self.setState({ periods: e.target.value }); },
+      onTopic: function (e) { self.setState({ topic: e.target.value }); },
+      onLessonName: function (e) { self.setState({ lessonName: e.target.value }); },
+      onCodes: function (e) { self.setState({ codes: e.target.value }); },
+      manualCodes: s.codeMode === 'manual',
+      codeModes: [
+        { id: 'ma-tu-dong', label: 'Claude tự chọn 2–4 mã đúng lớp', checked: s.codeMode === 'auto', pick: function () { self.setState({ codeMode: 'auto' }); } },
+        { id: 'ma-chi-dinh', label: 'Tôi chỉ định mã', checked: s.codeMode === 'manual', pick: function () { self.setState({ codeMode: 'manual' }); } }
+      ],
+      formats: FORMATS.map(function (f) { return { id: 'ht-' + f[0], label: f[1], checked: s.format === f[0], pick: function () { self.setState({ format: f[0] }); } }; }),
+      bases: BASES.map(function (b) {
+        return { id: 'cc-' + b.key, label: b.label, note: b.note, locked: !!b.locked, checked: b.locked ? true : !!s.bases[b.key], toggle: function () { if (b.locked) return; var nb = Object.assign({}, s.bases); nb[b.key] = !nb[b.key]; self.setState({ bases: nb }); } };
+      }),
+      savePath: isKho ? 'AIE Product › 1. Pre-Review › AI Agent › [ngày chạy] › sao y đường dẫn bài nguồn' : 'AIE Product › 1. Pre-Review › AI Agent › [ngày chạy] › Lớp ' + g + ' › Bài NN. ' + safeName,
+      canRun: canRun, cannotRun: !canRun,
+      runLabel: isKho ? 'Tạo KHBD cho ' + s.selected.length + ' bài' : 'Soạn bài mới',
+      blockedLabel: isKho ? 'Chọn ít nhất 1 bài' : 'Lớp này chưa soạn được'
+    };
+  }
+}
+</script>
+</body>
+</html>
