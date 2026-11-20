@@ -34,9 +34,9 @@ Giữ đúng giao diện bản mẫu. Token gốc:
 
 Xem chi tiết ở `docs/quy-trinh-lam-viec.md`. Tóm tắt:
 
-- **Bên code (Claude công ty):** viết code trên nhánh riêng `feat/<giai-doan>-<ten-ngan>`, mở Pull Request vào `main`, điền đủ mẫu PR. Không push thẳng lên `main`.
-- **Bên thiết kế và kiểm tra (Claude của Midu):** giữ canvas và thư mục `design/`, review từng PR theo giao diện, a11y, RLS, bảo mật và test. Góp ý để trong PR.
-- Màn nào khác bản mẫu thì hỏi trong PR, không tự đổi giao diện. Cần màn mới thì xin thiết kế trước.
+- **Thiết kế và code (Claude của Midu):** giữ canvas và thư mục `design/`, viết code theo từng giai đoạn. Mỗi phần làm trên nhánh `feat/<giai-doan>-<ten-ngan>`, mở Pull Request vào `main`, tự kiểm theo mẫu PR rồi mới merge.
+- **Theo dõi (Claude công ty):** chỉ đọc repo (không có quyền ghi), xem PR và commit mới, đối chiếu với nghiệp vụ KHBD và skill `aca-khbd-ai12`. Góp ý gửi Midu để chuyển lại.
+- **Chốt:** Midu duyệt PR trước khi merge và trả lời các mục "Chưa chốt".
 
 ## Stack
 
