@@ -2,9 +2,9 @@
 -- Drive là bản gốc của học liệu; database giữ chỉ mục, hàng đợi job, phiên bản và kết quả duyệt.
 -- Khoá học cho giáo viên nằm ở migration 20261120000100_courses.sql (chạy sau file này).
 
-create extension if not exists pgcrypto;
-create extension if not exists pg_trgm;
-create extension if not exists unaccent;
+-- Extension đặt trong schema extensions theo cách của Supabase (gen_random_uuid có sẵn từ PG 13).
+create schema if not exists extensions;
+create extension if not exists pg_trgm with schema extensions;
 
 -- ============================================================
 -- 1. Người dùng và phân quyền
@@ -93,7 +93,7 @@ create table drive_files (
   updated_at      timestamptz not null default now()
 );
 create index drive_files_path_ids on drive_files using gin (path_ids);
-create index drive_files_name on drive_files using gin (name gin_trgm_ops);
+create index drive_files_name on drive_files using gin (name extensions.gin_trgm_ops);
 
 create table file_contents (
   file_id        uuid primary key references drive_files on delete cascade,

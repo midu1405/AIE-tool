@@ -55,8 +55,10 @@ Một người giữ được nhiều vai trò. Chỉ tài khoản `@aiedu.com.v
 ## Database (Supabase)
 
 - Migration ở `supabase/migrations/`, tên `YYYYMMDDHHMMSS_ten.sql`. **Không sửa migration đã chạy trên dự án thật**; muốn đổi thì viết migration mới. Mọi bảng mới bật RLS và có policy ngay trong cùng migration.
-- `20261120000000_core.sql`: người dùng, vai trò, chỉ mục Drive, khung chương trình, job soạn KHBD, phiên bản (`document_versions.status`), duyệt bài, nhật ký.
-- `20261120000100_courses.sql`: khoá học, học phần, bài, học liệu, đăng ký, đã lưu, tiến độ; view `lesson_material_updates`, `my_course_progress`; hàm `course_material_links(course_id)`.
+- `20261120043850_core.sql`: người dùng, vai trò, chỉ mục Drive, khung chương trình, job soạn KHBD, phiên bản (`document_versions.status`), duyệt bài, nhật ký.
+- `20261120043938_courses.sql`: khoá học, học phần, bài, học liệu, đăng ký, đã lưu, tiến độ; view `lesson_material_updates`, `my_course_progress`; hàm `course_material_links(course_id)`.
+- `20261120044017_hardening.sql`: thu quyền gọi hàm trigger qua API, cố định search_path. Security advisor còn cảnh báo 7 hàm `security definer` gọi được qua API (`has_role`, `is_staff`, `can_edit_course`, `course_visible`, `course_of_module`, `course_of_lesson`, `course_material_links`): giữ có chủ đích vì policy RLS dùng chúng, chúng chỉ trả boolean/id hoặc link đã lọc quyền.
+- Tên file khớp với version đã chạy trên project Supabase `aie-training-hub` (ref `uqgdxncnlcenhjtrszqr`, vùng Singapore). Tên file nhắc trong chú thích bên trong migration là tên cũ, giữ nguyên vì file đã chạy.
 - Thứ tự học phần và bài dùng cột `position` với unique deferrable; đổi chỗ hai dòng thì làm trong một transaction.
 - Giáo viên **không** đọc trực tiếp `document_versions`; lấy link học liệu qua `course_material_links()`.
 - Thử trên Postgres trống, không cần Supabase: `supabase/tests/run.sh <ten_db>`. Đạt khi số lỗi thực tế bằng số mục "PHẢI LỖI" (hiện là 9).
@@ -96,7 +98,7 @@ Một người giữ được nhiều vai trò. Chỉ tài khoản `@aiedu.com.v
 
 ## Các giai đoạn dựng
 
-1. **Nền:** Next.js (`@supabase/ssr`), Supabase (hai migration ở trên), đăng nhập Google, phân quyền, layout hai khu, danh mục khoá học đọc từ DB với dữ liệu seed.
+1. **Nền:** Next.js (`@supabase/ssr`), Supabase (đã tạo project và chạy 3 migration), đăng nhập Google, phân quyền, layout hai khu, danh mục khoá học đọc từ DB với dữ liệu seed.
 2. **Khu nội bộ – KHBD:** đồng bộ cây kho (chỉ đọc), Tạo KHBD với `MockExecutor`, Tiến độ qua Realtime, Danh sách, Duyệt bài (checklist, rubric 7 tiêu chí, góp ý, duyệt/trả về).
 3. **Khoá học:** Quản lý khoá học (học phần, bài, gắn học liệu đã duyệt, xuất bản), chi tiết khoá, Khoá học của tôi, tiến độ học.
 4. **Executor thật** khi đã chốt.
