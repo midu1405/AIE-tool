@@ -21,7 +21,7 @@ Bản mẫu bấm thử được (canvas, 8 màn): https://claude.ai/artifact/Vg
 | Danh sách KHBD | `/noi-bo/khbd` |
 | Duyệt bài | `/noi-bo/duyet-bai` (hàng chờ) và `/noi-bo/khbd/[id]` (một bài) |
 | Quản lý khoá học | `/noi-bo/khoa-hoc` và `/noi-bo/khoa-hoc/[id]` |
-| (không có trong bản mẫu) Đăng nhập | `/dang-nhap`, `/auth/callback`, `/auth/dang-xuat` (POST) |
+| (không có trong bản mẫu) Đăng nhập | `/dang-nhap` (Google, và tạm thời email + mật khẩu cho nhân viên), `/auth/callback`, `/auth/dang-xuat` (POST) |
 
 Giữ đúng giao diện bản mẫu. Token gốc:
 
@@ -114,11 +114,12 @@ Dữ liệu mẫu: `supabase/seed.sql` (9 khoá, đã nạp vào project). Chạ
 - Tên đầy đủ và phạm vi TT 02, TT 16, TT 18.
 - Màn Duyệt bài dùng skill `aca-khbd-review` hay checklist của `aca-khbd-ai12`.
 - Tiêu chí lọc khoá học (đối tượng, chủ đề, thời lượng, hình thức) đã khớp với cách Academic phân loại chưa.
+- **Đăng nhập Google:** code đã xong nhưng chưa bật provider. Chờ bạn kỹ thuật cloud tạo OAuth Client (Google Auth Platform, loại Web application, redirect URI `https://uqgdxncnlcenhjtrszqr.supabase.co/auth/v1/callback`, Audience External và Publish) rồi dán vào Supabase › Authentication › Providers › Google; thêm Site URL và Redirect URLs (`<địa chỉ web>/**`) ở URL Configuration. Trong lúc chờ, nhân viên đăng nhập bằng email + mật khẩu do quản trị tạo ở Authentication › Users (tích Auto Confirm User); web không có nút tự đăng ký. Giáo viên chưa đăng nhập được cho tới khi bật Google.
 - Link học liệu cho giáo viên: Doc trong `AI Agent` là thư mục nội bộ, giáo viên ngoài công ty không mở được. Cần chốt bản đã duyệt được chép/chia sẻ ra đâu (bước public B9–B10) trước khi giáo viên dùng link.
 
 ## Các giai đoạn dựng
 
-1. **Nền (đã xong):** Next.js (`@supabase/ssr`), Supabase (project + 3 migration + seed), đăng nhập Google (chờ bật provider), chặn khu nội bộ theo vai trò, layout hai khu, danh mục khoá học đọc từ DB, trang chi tiết bản đầu, các màn nội bộ để chỗ.
+1. **Nền (đã xong):** Next.js (`@supabase/ssr`), Supabase (project + 3 migration + seed), đăng nhập Google (chờ bật provider) và email + mật khẩu tạm cho nhân viên, chặn khu nội bộ theo vai trò, layout hai khu, danh mục khoá học đọc từ DB, trang chi tiết bản đầu, các màn nội bộ để chỗ.
 2. **Khu nội bộ – KHBD:** đồng bộ cây kho (chỉ đọc), Tạo KHBD với `MockExecutor`, Tiến độ qua Realtime, Danh sách, Duyệt bài (checklist, rubric 7 tiêu chí, góp ý, duyệt/trả về).
 3. **Khoá học:** Quản lý khoá học (học phần, bài, gắn học liệu đã duyệt, xuất bản), chi tiết khoá, Khoá học của tôi, tiến độ học.
 4. **Executor thật** khi đã chốt.

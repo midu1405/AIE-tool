@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { LoginButton } from "@/components/LoginButton";
+import { PasswordLogin } from "@/components/PasswordLogin";
 
 export const metadata = { title: "Đăng nhập" };
 
@@ -29,6 +30,12 @@ async function LoginBody({ searchParams }: { searchParams: Promise<Record<string
         </p>
       )}
       <LoginButton next={next} />
+      <div className="flex items-center gap-3 text-sm text-muted" aria-hidden="true">
+        <span className="h-px flex-1 bg-line" />
+        hoặc
+        <span className="h-px flex-1 bg-line" />
+      </div>
+      <PasswordLogin next={next} />
     </>
   );
 }
