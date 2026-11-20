@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { LogoMark } from "@/components/Icon";
+import { BrandLogo } from "@/components/Brand";
 import { InternalNav, InternalNavStatic } from "@/components/InternalNav";
 import { InternalAside } from "@/components/InternalShell";
 import { ROLE_LABELS, getCurrentUser, initials } from "@/lib/auth";
@@ -13,9 +13,8 @@ export default function InternalLayout({ children }: LayoutProps<"/noi-bo">) {
     <div className="flex min-h-screen flex-col bg-bg md:flex-row">
       <InternalAside
         brand={
-          <Link href="/noi-bo" className="flex items-center gap-2.5 px-2 text-ink no-underline hover:text-ink">
-            <LogoMark size={34} />
-            <span className="text-[17px] font-bold">AI Edu</span>
+          <Link href="/noi-bo" aria-label="AI Edu – khu nội bộ" className="flex items-center gap-2.5 px-2 text-ink no-underline hover:text-ink">
+            <BrandLogo height={34} />
             <span className="rounded-md bg-ink px-2 py-0.5 text-[11px] font-semibold text-white">Nội bộ</span>
           </Link>
         }
