@@ -1,31 +1,102 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { MyCourses, MyCoursesHeader, type MyItem } from "@/components/learn/MyCourses";
 import { getCurrentUser } from "@/lib/auth";
+import { type Topic, FORMATS, hoursText } from "@/lib/catalog";
+import { courseProgress, nextLabel, type LModule } from "@/lib/learning";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata = { title: "Khoá học của tôi" };
 
-// Giai đoạn 1: chỉ chặn đăng nhập. Ba tab Đang học / Đã hoàn thành / Đã lưu làm ở giai đoạn 3.
+// Theo design/artboards/MyCourses.dc.html: ba tab Đang học / Đã hoàn thành / Đã lưu.
+// Chưa cấp chứng nhận (quyết định đã chốt 1) nên khoá đã xong chỉ có "Xem lại khoá học".
 export default function MyCoursesPage() {
   return (
-    <main className="mx-auto flex max-w-[1200px] flex-col gap-4 px-6 py-10">
-      <h1 className="text-[34px] font-bold">Khoá học của tôi</h1>
-      <Suspense fallback={<p className="text-muted">Đang tải…</p>}>
-        <Body />
-      </Suspense>
-    </main>
+    <Suspense fallback={<MyCoursesHeader />}>
+      <Body />
+    </Suspense>
   );
 }
+
+type CourseRow = {
+  id: string;
+  slug: string;
+  title: string;
+  topic: Topic;
+  status: string;
+  hours_min: number;
+  hours_max: number;
+  format: keyof typeof FORMATS;
+  course_modules: { id: string; title: string; position: number; course_lessons: { id: string; title: string; position: number }[] }[];
+};
+
+const COURSE_COLS = "id, slug, title, topic, status, hours_min, hours_max, format, course_modules(id, title, position, course_lessons(id, title, position))";
+
+function toModules(c: CourseRow): LModule[] {
+  return [...c.course_modules]
+    .sort((a, b) => a.position - b.position)
+    .map((m) => ({ id: m.id, title: m.title, lessons: [...m.course_lessons].sort((a, b) => a.position - b.position).map((l) => ({ id: l.id, title: l.title })) }));
+}
+
+const dateVN = (s: string) => new Date(s).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "Asia/Ho_Chi_Minh" });
 
 async function Body() {
   const user = await getCurrentUser();
   if (!user) redirect("/dang-nhap?next=/khoa-hoc-cua-toi");
-  return (
-    <div className="rounded-xl border border-dashed border-edge bg-surface px-6 py-12 text-center">
-      <p className="text-lg font-semibold">Bạn chưa đăng ký khoá học nào</p>
-      <p className="mt-2 text-[15px] text-muted">
-        Chọn một khoá trong <Link href="/">danh mục khoá học</Link> để bắt đầu.
-      </p>
-    </div>
-  );
+  const supabase = await createClient();
+  const [en, sv, lp] = await Promise.all([
+    supabase.from("enrollments").select(`course_id, enrolled_at, completed_at, courses(${COURSE_COLS})`).order("enrolled_at", { ascending: false }),
+    supabase.from("saved_courses").select(`course_id, saved_at, courses(${COURSE_COLS})`).order("saved_at", { ascending: false }),
+    supabase.from("lesson_progress").select("lesson_id"),
+  ]);
+  const error = en.error ?? sv.error ?? lp.error;
+  const done = new Set(((lp.data ?? []) as { lesson_id: string }[]).map((r) => r.lesson_id));
+  const enrolledIds = new Set<string>();
+  const items: MyItem[] = [];
+
+  for (const e of (en.data ?? []) as unknown as { course_id: string; completed_at: string | null; courses: CourseRow | null }[]) {
+    enrolledIds.add(e.course_id);
+    const c = e.courses;
+    // RLS chỉ trả khoá đã xuất bản (hoặc mọi khoá với nhân viên): khoá bị ẩn sau khi đăng ký thì không đọc được.
+    if (!c || c.status !== "published") {
+      items.push({
+        key: e.course_id,
+        group: e.completed_at ? "done" : "learning",
+        title: c?.title ?? "Khoá học đã tạm ẩn",
+        topic: c?.topic ?? null,
+        note: "Khoá này đang tạm ẩn. Tiến độ của bạn vẫn được giữ và hiện lại khi khoá mở lại.",
+        progress: null,
+        href: null,
+      });
+      continue;
+    }
+    const modules = toModules(c);
+    const p = courseProgress(modules, done);
+    const group = e.completed_at ? "done" : "learning";
+    items.push({
+      key: c.id,
+      group,
+      title: c.title,
+      topic: c.topic,
+      note: group === "done" ? `Hoàn thành ngày ${dateVN(e.completed_at!)}` : nextLabel(modules, done),
+      progress: group === "done" ? 100 : p.percent,
+      href: `/khoa-hoc/${c.slug}`,
+    });
+  }
+  for (const s of (sv.data ?? []) as unknown as { course_id: string; courses: CourseRow | null }[]) {
+    const c = s.courses;
+    if (!c || c.status !== "published") continue;
+    items.push({
+      key: `luu-${c.id}`,
+      group: "saved",
+      title: c.title,
+      topic: c.topic,
+      note: `${hoursText(Number(c.hours_min), Number(c.hours_max))} · ${FORMATS[c.format]} · ${enrolledIds.has(c.id) ? "Đã đăng ký" : "Đã lưu để học sau"}`,
+      progress: null,
+      href: `/khoa-hoc/${c.slug}`,
+      enrolled: enrolledIds.has(c.id),
+    });
+  }
+
+  return <MyCourses items={items} error={error ? `Không tải được khoá học của bạn: ${error.message}. Tải lại trang sau ít phút.` : ""} />;
 }

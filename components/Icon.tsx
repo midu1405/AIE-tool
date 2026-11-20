@@ -41,13 +41,3 @@ export function Icon({
   );
 }
 
-export function LogoMark({ size = 36 }: { size?: number }) {
-  return (
-    <span
-      className="flex items-center justify-center rounded-lg bg-accent font-bold text-white"
-      style={{ width: size, height: size, fontSize: size >= 36 ? 14 : 13 }}
-    >
-      AI
-    </span>
-  );
-}
