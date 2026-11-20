@@ -14,6 +14,7 @@
 ## Database
 
 - [ ] Không đổi schema
+- [ ] `supabase/tests/run.sh` đạt (nếu có đổi schema)
 - [ ] Có migration mới: <!-- tên file --> — đã bật RLS cho bảng mới
 
 ## Tự kiểm trước khi xin review

@@ -1,0 +1,1062 @@
+<title>AI Edu Training Hub</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<style>
+/* Theo thiết kế "AI Edu Training Hub": nền xám nhạt, thẻ trắng viền mảnh, nhấn xanh #2152C5. Giữ một giao diện sáng như bản thiết kế. */
+:root {
+  --bg: #F6F7F9; --surface: #FFFFFF; --ink: #172033; --muted: #4B5565;
+  --line: #E3E6EB; --edge: #CDD2DA; --accent: #2152C5; --accent-dark: #163B91;
+  --accent-soft: #E8EEFB; --row-hi: #F3F6FD;
+  --ok: #1D6E47; --ok-soft: #E2F3EA; --warn: #7A4B00; --warn-soft: #FFF4DB;
+  --err: #8A3A0C; --err-soft: #FCECE3; --err-bar: #C2410C; --grey-soft: #EEF0F3;
+  --font: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--ink); }
+body { font-family: var(--font); font-size: 15px; line-height: 1.5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+a { color: var(--accent); } a:hover { color: var(--accent-dark); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.gut { padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1200px; margin: 0 auto; }
+.ico { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* Thanh chuyển khu của bản mẫu */
+.proto { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; background: var(--ink); color: #DCE3EE; font-size: 13px; }
+.proto .wrap { display: flex; align-items: center; gap: 14px; padding-block: 7px; flex-wrap: wrap; max-width: none; }
+.proto b { color: #FFFFFF; font-weight: 600; }
+.proto nav { display: flex; gap: 4px; margin-left: auto; }
+.proto a { color: #DCE3EE; text-decoration: none; padding: 4px 10px; border-radius: 6px; }
+.proto a[aria-current] { background: #FFFFFF; color: var(--ink); font-weight: 600; }
+
+/* Buttons, chips */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 20px; border-radius: 10px; border: 1px solid var(--accent); background: var(--accent); color: #FFFFFF; font-weight: 600; cursor: pointer; text-decoration: none; white-space: nowrap; }
+.btn:hover { background: var(--accent-dark); border-color: var(--accent-dark); color: #FFFFFF; }
+.btn.ghost { background: var(--surface); border-color: var(--edge); color: var(--ink); }
+.btn.ghost:hover { background: var(--bg); color: var(--ink); }
+.btn.block { width: 100%; min-height: 48px; font-size: 16px; }
+.btn[disabled] { background: var(--line); border-color: var(--line); color: var(--muted); cursor: not-allowed; }
+.chip { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.pill { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 99px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.muted { color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+input[type="search"], input[type="text"], input[type="number"], select, textarea { background: var(--surface); border: 1px solid var(--edge); border-radius: 10px; padding: 0 12px; min-height: 44px; font-size: 15px; }
+textarea { padding: 10px 12px; resize: vertical; min-height: 78px; width: 100%; }
+input[type="checkbox"], input[type="radio"] { width: 18px; height: 18px; accent-color: var(--accent); flex: none; margin: 0; }
+
+/* ========== Public site ========== */
+.pub-head { background: var(--surface); border-bottom: 1px solid var(--line); }
+.pub-head .wrap { display: flex; align-items: center; gap: 24px; padding-block: 12px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+.brand .logo { width: 36px; height: 36px; border-radius: 8px; background: var(--accent); color: #FFFFFF; display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+.brand .name { font-weight: 700; font-size: 18px; } .brand .name span { font-weight: 500; color: var(--muted); }
+.mainnav { display: flex; gap: 4px; flex: 1; flex-wrap: wrap; }
+.mainnav a { padding: 12px 14px; border-radius: 8px; color: var(--ink); font-weight: 500; text-decoration: none; }
+.mainnav a[aria-current] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.who { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--line); color: var(--ink); display: grid; place-items: center; font-weight: 600; font-size: 13px; flex: none; }
+.band { background: var(--surface); border-bottom: 1px solid var(--line); }
+.band .wrap { padding-block: 40px 32px; display: grid; gap: 16px; }
+.band h1 { font-size: clamp(30px, 4vw, 40px); line-height: 1.15; }
+.band p.lead { margin: 0; font-size: 17px; line-height: 1.6; color: var(--muted); max-width: 720px; }
+.search { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--edge); border-radius: 10px; padding: 0 14px; height: 48px; max-width: 560px; margin-top: 8px; color: var(--muted); }
+.search input { border: 0; outline: none; background: transparent; flex: 1; min-width: 0; padding: 0; min-height: 44px; color: var(--ink); }
+.search:focus-within { border-color: var(--accent); }
+
+.cat { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 32px; padding-block: 32px 48px; align-items: start; }
+.filters { padding: 20px; display: grid; gap: 20px; }
+.filters .hd { display: flex; justify-content: space-between; align-items: center; min-height: 32px; }
+.filters h2 { font-size: 17px; }
+.linkbtn { border: 0; background: transparent; color: var(--accent); font-weight: 600; font-size: 14px; cursor: pointer; padding: 0 4px; min-height: 32px; }
+.fgroup { display: grid; gap: 2px; border: 0; padding: 0; margin: 0; }
+.fgroup legend { font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; padding: 0; }
+.fgroup label { display: flex; align-items: center; gap: 10px; min-height: 40px; cursor: pointer; }
+.fgroup .n { margin-left: auto; font-size: 13px; color: var(--muted); }
+.fgroup label.zero { color: var(--muted); }
+.ftoggle { display: none; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.toolbar label { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14px; }
+.toolbar select { min-width: 190px; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.chips button { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--edge); background: var(--surface); border-radius: 99px; padding: 5px 12px; font-size: 13px; cursor: pointer; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.ccard { display: flex; flex-direction: column; overflow: hidden; text-decoration: none; color: var(--ink); transition: border-color .15s, box-shadow .15s; }
+.ccard:hover { color: var(--ink); border-color: var(--accent); box-shadow: 0 4px 16px rgba(23, 32, 51, .08); }
+.ccard .top { height: 128px; display: grid; place-items: center; position: relative; }
+.ccard .badge { position: absolute; left: 14px; top: 12px; background: var(--surface); color: var(--ink); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 99px; box-shadow: 0 1px 2px rgba(23, 32, 51, .1); }
+.ccard .body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.ccard h3 { font-size: 19px; line-height: 1.3; }
+.ccard p { margin: 0; font-size: 14.5px; color: var(--muted); line-height: 1.55; }
+.ccard .foot { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); display: grid; gap: 6px; font-size: 13.5px; color: var(--muted); }
+.ccard .meta { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; }
+.ccard .meta span { display: inline-flex; align-items: center; gap: 5px; }
+.empty { padding: 48px 24px; text-align: center; display: grid; gap: 12px; justify-items: center; color: var(--muted); border: 1px dashed var(--edge); border-radius: 12px; background: var(--surface); }
+.empty b { color: var(--ink); font-size: 17px; }
+.cta-band { padding: 28px 32px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 48px; }
+.cta-band h2 { font-size: 24px; margin-bottom: 6px; }
+.cta-band p { margin: 0; color: var(--muted); }
+.pub-foot { background: var(--surface); border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+.pub-foot .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 22px; }
+.pub-foot nav { display: flex; gap: 20px; } .pub-foot a { color: var(--muted); }
+
+/* Detail */
+.dhead { background: var(--surface); border-bottom: 1px solid var(--line); }
+.dhead .wrap { display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 48px; padding-block: 24px 40px; align-items: start; }
+.crumbs { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--muted); margin-bottom: 14px; flex-wrap: wrap; }
+.crumbs a { color: var(--muted); }
+.dhead h1 { font-size: clamp(28px, 3.6vw, 40px); line-height: 1.15; margin-block: 12px 18px; }
+.dhead .lead { margin: 0 0 22px; font-size: 17px; line-height: 1.6; color: var(--muted); max-width: 700px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 26px; font-size: 15px; color: var(--ink); }
+.facts span { display: inline-flex; align-items: center; gap: 8px; }
+.prog-card { background: var(--bg); padding: 22px 24px; display: grid; gap: 14px; }
+.prog-card .row1 { display: flex; justify-content: space-between; font-weight: 600; font-size: 14px; }
+.prog-card .now { font-size: 14px; color: var(--muted); margin-top: -4px; }
+.dbody { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 32px; padding-block: 32px 56px; align-items: start; }
+.dbody .main, .dbody .side { display: grid; gap: 32px; }
+.sec { padding: 28px; }
+.sec h2 { font-size: 22px; margin-bottom: 18px; }
+.learn { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 32px; margin: 0; padding: 0; list-style: none; }
+.learn li { display: flex; gap: 12px; } .learn svg { color: var(--ok); margin-top: 2px; }
+.mods { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.mod + .mod { border-top: 1px solid var(--line); }
+.mod button.mh { width: 100%; display: grid; grid-template-columns: 32px minmax(0, 1fr) 20px; gap: 14px; align-items: center; text-align: left; border: 0; background: transparent; padding: 16px 18px; cursor: pointer; }
+.mod.cur { background: var(--row-hi); }
+.mod .dot { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+.mod .t { font-weight: 600; font-size: 16px; } .mod .s { font-size: 13px; color: var(--muted); }
+.mod .chev { transition: transform .15s; color: var(--muted); }
+.mod.open .chev { transform: rotate(180deg); }
+.mod ul { margin: 0; padding: 0 18px 18px 80px; display: grid; gap: 8px; color: var(--ink); }
+.mod li::marker { color: #9AA3B2; }
+.info { padding: 22px 24px; display: grid; gap: 10px; }
+.info h2 { font-size: 18px; margin-bottom: 6px; }
+.info dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 10px 22px; font-size: 14.5px; }
+.info dt { color: var(--muted); } .info dd { margin: 0; }
+.related { display: grid; gap: 16px; } .related a { font-weight: 600; text-decoration: none; }
+
+/* Mine */
+.mhead .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding-block: 40px 0; }
+.mhead h1 { font-size: clamp(28px, 3.6vw, 40px); margin-bottom: 6px; }
+.tabs { display: flex; gap: 8px; margin-top: 24px; overflow-x: auto; }
+.tabs button { border: 0; background: none; padding: 14px 16px; display: inline-flex; gap: 8px; align-items: center; font-size: 16px; color: var(--muted); font-weight: 500; border-bottom: 3px solid transparent; cursor: pointer; white-space: nowrap; }
+.tabs button[aria-selected="true"] { color: var(--ink); font-weight: 700; border-bottom-color: var(--accent); }
+.tabs .c { background: var(--grey-soft); border-radius: 99px; font-size: 12px; padding: 1px 8px; font-weight: 600; color: var(--ink); }
+.mlist { display: grid; gap: 16px; padding-block: 32px 56px; }
+.mrow { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 20px; align-items: center; padding: 20px; }
+.mrow .thumb { width: 96px; height: 96px; border-radius: 10px; display: grid; place-items: center; }
+.mrow .tp { font-size: 13px; font-weight: 600; } .mrow h3 { font-size: 19px; margin-block: 4px 6px; }
+.mrow .note { font-size: 14px; color: var(--muted); margin-bottom: 8px; }
+.mrow .pr { display: flex; align-items: center; gap: 12px; max-width: 470px; font-weight: 600; font-size: 14px; } .mrow .pr .bar { flex: 1; }
+.mrow .acts { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+
+/* ========== Internal ========== */
+.app { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: calc(100vh - 36px); }
+.sidebar { background: var(--surface); border-right: 1px solid var(--line); padding: 20px 16px; display: flex; flex-direction: column; gap: 4px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 36px); height: calc(100vh - 36px); }
+.sidebar .brand { padding: 0 8px 16px; } .sidebar .name { font-size: 17px; }
+.tag-inb { background: var(--ink); color: #FFFFFF; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 5px; margin-left: 4px; }
+.sidebar nav { display: grid; gap: 4px; }
+.sidebar nav a { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 8px; color: var(--ink); text-decoration: none; font-weight: 500; }
+.sidebar nav a[aria-current] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.sidebar .pub { border-top: 1px solid var(--line); margin-top: 12px; padding: 18px 12px 0; font-size: 14px; color: var(--muted); }
+.sidebar .pub a { color: var(--muted); }
+.sidebar .me { margin-top: auto; display: flex; gap: 10px; align-items: center; font-size: 14px; padding: 0 8px; }
+.sidebar .me b { display: block; font-size: 14px; }
+.ws { padding-block: 32px 56px; max-width: 1060px; width: 100%; }
+.ws-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.ws-head h1 { font-size: clamp(26px, 3vw, 32px); margin-bottom: 8px; }
+.ws-head p { margin: 0; color: var(--muted); max-width: 760px; }
+.seg { display: inline-flex; background: var(--line); border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 24px; }
+.seg button { border: 0; background: transparent; padding: 10px 18px; border-radius: 9px; font-weight: 600; color: var(--muted); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(23, 32, 51, .08); }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+.panel { padding: 20px; }
+.panel h2 { font-size: 18px; }
+.panel .sub { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; margin-bottom: 8px; }
+.path { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+.tree { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.tree .r { display: flex; align-items: center; gap: 12px; min-height: 45px; padding-right: 14px; border-top: 1px solid var(--line); }
+.tree .r:first-child { border-top: 0; }
+.tree button.g { border: 0; background: transparent; width: 100%; display: flex; align-items: center; gap: 12px; min-height: 45px; cursor: pointer; font-weight: 600; text-align: left; padding: 0; }
+.tree .g svg { transition: transform .15s; color: var(--muted); }
+.tree .open > .g svg { transform: rotate(90deg); }
+.tree label { display: flex; align-items: center; gap: 12px; flex: 1; min-height: 45px; cursor: pointer; }
+.tree .r.sel { background: var(--row-hi); }
+.tree .m { margin-left: auto; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.tree .note { font-size: 13.5px; color: var(--muted); font-style: italic; }
+.stack { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+.ql > *, .ql-top .rh > * { min-width: 0; }
+.field { display: grid; gap: 8px; } .field > b, .field > label > b { font-size: 15px; }
+.opt { display: flex; align-items: center; gap: 10px; min-height: 40px; cursor: pointer; }
+.opt .nt { margin-left: auto; font-size: 13px; color: var(--muted); }
+.selitem { display: flex; justify-content: space-between; align-items: center; background: var(--bg); border-radius: 8px; padding: 10px 12px; font-size: 14.5px; }
+.selitem button { border: 0; background: none; cursor: pointer; color: var(--muted); font-size: 18px; line-height: 1; padding: 4px; }
+.callout { padding: 10px 14px; border-radius: 8px; font-size: 14px; }
+.result ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14.5px; }
+.formgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.formgrid .full { grid-column: 1 / -1; }
+.formgrid select, .formgrid input[type="text"] { width: 100%; }
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px; max-width: 800px; }
+.stat { padding: 18px 20px; } .stat span { font-size: 14px; color: var(--muted); } .stat b { display: block; font-size: 28px; line-height: 1.2; }
+.runs { display: grid; gap: 16px; }
+.run { padding: 22px 20px; display: grid; gap: 16px; }
+.run .rh { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.run h3 { font-size: 19px; } .run .meta { font-size: 14px; color: var(--muted); }
+.steps { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.steps div { display: grid; gap: 6px; font-size: 13.5px; } .steps i { height: 5px; border-radius: 99px; display: block; }
+.run .acts { display: flex; gap: 10px; flex-wrap: wrap; }
+.report { background: var(--bg); border-radius: 8px; padding: 14px 16px; font-size: 14px; display: grid; gap: 4px; }
+.foot-note { font-size: 13.5px; color: var(--muted); margin-top: 20px; }
+
+.stabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.stabs button { border: 1px solid var(--edge); background: var(--surface); border-radius: 99px; padding: 8px 14px; font-weight: 600; cursor: pointer; display: inline-flex; gap: 8px; }
+.stabs button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #FFFFFF; }
+.fbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.fbar input { flex: 1 1 260px; max-width: 360px; } .fbar label { display: flex; gap: 10px; align-items: center; color: var(--muted); }
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 860px; }
+th { text-align: left; font-weight: 600; color: var(--muted); font-size: 14px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tr:last-child td { border-bottom: 0; }
+td .tt { font-weight: 600; } td .tp { font-size: 13px; color: var(--muted); }
+td a { font-weight: 600; }
+
+.review { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
+.doc { padding: 32px; }
+.doc .dh { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); padding-bottom: 12px; border-bottom: 2px solid #A51D45; margin-bottom: 24px; gap: 12px; flex-wrap: wrap; }
+.doc h2.title { color: #A51D45; font-size: 24px; margin-bottom: 20px; }
+.doc h3 { font-size: 16px; margin-block: 18px 8px; } .doc h4 { font-size: 15px; margin: 10px 0 6px; }
+.doc ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.doc .ph { color: var(--muted); }
+.doc table { min-width: 560px; font-size: 14px; border: 1px solid #E8B9C6; }
+.doc th { background: #F7E4EA; color: var(--ink); border: 1px solid #E8B9C6; }
+.doc td { border: 1px solid #E8B9C6; vertical-align: top; }
+.rtabs { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--line); padding: 4px; border-radius: 12px; gap: 4px; margin-bottom: 16px; }
+.rtabs button { border: 0; background: transparent; border-radius: 9px; padding: 10px; font-weight: 600; color: var(--muted); cursor: pointer; }
+.rtabs button[aria-pressed="true"] { background: var(--surface); color: var(--ink); }
+.checks { display: grid; gap: 12px; } .checks div { display: grid; grid-template-columns: 74px 1fr; gap: 12px; font-size: 14.5px; align-items: start; }
+.checks .chip { justify-content: center; }
+.crit { display: grid; gap: 12px; } .crit .c { display: grid; gap: 6px; font-size: 14.5px; }
+.crit .opts { display: flex; gap: 6px; } .crit .opts button { min-width: 44px; min-height: 36px; border: 1px solid var(--edge); background: var(--surface); border-radius: 8px; cursor: pointer; font-weight: 600; }
+.crit .opts button[aria-pressed="true"] { background: var(--ink); color: #FFFFFF; border-color: var(--ink); }
+.notes { display: grid; gap: 12px; } .notes .n { background: var(--bg); padding: 12px 14px; border-radius: 8px; font-size: 14.5px; } .notes .n small { display: block; color: var(--muted); font-size: 12.5px; margin-bottom: 4px; }
+
+/* Quản lý khoá học */
+.ql { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 24px; align-items: start; }
+.ql aside input[type="search"] { width: 100%; }
+.ql-list { overflow: hidden; }
+.ql-item { display: grid; gap: 6px; width: 100%; text-align: left; border: 0; border-top: 1px solid var(--line); background: var(--surface); padding: 14px 16px; cursor: pointer; }
+.ql-item:first-child { border-top: 0; }
+.ql-item[aria-current="true"] { background: var(--accent-soft); }
+.ql-item .t { font-weight: 600; line-height: 1.35; }
+.ql-item .m { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: 13px; color: var(--muted); }
+.ql-top .rh { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+.ql-top h2 { font-size: 22px; margin: 10px 0 4px; }
+.ql-top .acts { display: flex; gap: 10px; flex-wrap: wrap; }
+.ql-mod { border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
+.ql-mh, .ql-lr { display: flex; align-items: center; gap: 10px; }
+.ql-mh input, .ql-lr input { flex: 1; min-width: 0; }
+.ql-mh input { font-weight: 600; }
+.ql-mh .dot { width: 30px; height: 30px; border-radius: 50%; background: var(--line); display: grid; place-items: center; font-weight: 700; font-size: 13px; flex: none; }
+.ql-tools { display: flex; gap: 4px; flex: none; }
+.tool { width: 36px; height: 36px; border: 1px solid var(--edge); background: var(--surface); border-radius: 8px; display: grid; place-items: center; cursor: pointer; color: var(--ink); padding: 0; }
+.tool[disabled] { color: var(--edge); cursor: not-allowed; }
+.ql-les { list-style: none; margin: 0; padding: 0 0 0 40px; display: grid; gap: 14px; }
+.ql-les li { display: grid; gap: 8px; grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 760px) { .ql-mod { padding: 10px; } .tool { width: 32px; height: 32px; } }
+.ql-mats { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ql-mats .linkbtn { min-height: 28px; }
+.mat { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-soft); color: var(--accent-dark); font-size: 13px; font-weight: 600; padding: 3px 8px; border-radius: 6px; vertical-align: middle; }
+.mod li .mat { margin-left: 8px; }
+.mat button { border: 0; background: none; color: inherit; cursor: pointer; font-size: 16px; line-height: 1; padding: 0 2px; }
+.newv { display: inline-flex; align-items: center; gap: 6px; background: var(--warn-soft); color: var(--warn); font-size: 13px; font-weight: 600; padding: 3px 8px; border-radius: 6px; }
+.newv .linkbtn { min-height: 0; font-size: 13px; color: var(--warn); text-decoration: underline; padding: 0; }
+.picker { border: 1px solid var(--edge); border-radius: 10px; padding: 12px 14px; display: grid; gap: 4px; background: var(--bg); }
+.pk { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); }
+.pk:first-of-type { border-top: 0; }
+.pk .t { display: block; font-weight: 600; font-size: 14px; } .pk .s { display: block; font-size: 13px; color: var(--muted); }
+.btn.sm { min-height: 36px; padding: 0 12px; font-size: 14px; }
+.rolesel { display: flex; gap: 10px; align-items: center; color: var(--muted); font-size: 14px; flex-wrap: wrap; }
+.hrs { display: flex; align-items: center; gap: 10px; } .hrs input { width: 90px; }
+.audrow { display: flex; flex-wrap: wrap; gap: 0 22px; }
+.draftbar { background: var(--warn-soft); color: var(--warn); font-size: 14px; } .draftbar .wrap { padding-block: 10px; } .draftbar a { color: var(--warn); font-weight: 600; }
+input:disabled, select:disabled, textarea:disabled { background: var(--bg); color: var(--muted); }
+
+@media (max-width: 960px) {
+  .ql { grid-template-columns: minmax(0, 1fr); }
+  .dhead .wrap, .dbody, .two, .review { grid-template-columns: minmax(0, 1fr); }
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px; border-right: 0; border-bottom: 1px solid var(--line); padding: 12px max(16px, env(safe-area-inset-left, 0px)); }
+  .sidebar .brand { padding: 0 8px 0 0; } .sidebar nav { display: flex; flex-wrap: wrap; } .sidebar .pub, .sidebar .me { display: none; }
+}
+@media (max-width: 760px) {
+  .gut { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .cat { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .ftoggle { display: inline-flex; }
+  .filters.collapsed .fbody { display: none; }
+  .learn, .formgrid { grid-template-columns: minmax(0, 1fr); }
+  .mrow { grid-template-columns: 64px minmax(0, 1fr); } .mrow .thumb { width: 64px; height: 64px; } .mrow .acts { grid-column: 1 / -1; justify-content: stretch; } .mrow .acts .btn { flex: 1; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 14px; }
+  .doc { padding: 20px; } .sec { padding: 20px; }
+  .ql-les { padding-left: 0; } .ql-mh .dot { display: none; }
+  .who span:last-child, .proto .lbl { display: none; }
+  .mainnav { order: 3; flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="proto"><div class="wrap gut">
+  <span class="lbl"><b>Bản mẫu</b> · dữ liệu ví dụ, mọi thay đổi chỉ lưu trên trình duyệt này</span>
+  <nav aria-label="Chuyển khu">
+    <a href="#khoa-hoc" id="sw-pub">Trang giáo viên</a>
+    <a href="#noi-bo-tao" id="sw-inb">Khu nội bộ</a>
+  </nav>
+</div></div>
+<div id="app"></div>
+
+<script>
+/* ================= Icons ================= */
+const P = {
+  ai: 'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V17h5v-1.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z',
+  teach: 'M3 4h18v12H3zM8 20l4-4 4 4M7 9h6M7 12h9',
+  safe: 'M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6zM9 12l2 2 4-4',
+  digital: 'M4 5h16v11H4zM8 20h8M12 16v4',
+  search: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4',
+  clock: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2',
+  list: 'M4 6h16M4 12h16M4 18h10',
+  check: 'M5 12l5 5 9-10',
+  chevD: 'M6 9l6 6 6-6', chevR: 'M9 6l6 6-6 6',
+  plus: 'M12 5v14M5 12h14', pulse: 'M3 12h4l3-7 4 14 3-7h4',
+  rows: 'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01',
+  review: 'M4 4h16v16H4zM8 12l3 3 5-6',
+  doc: 'M7 3h7l5 5v13H7zM14 3v5h5', book: 'M4 5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2zM4 21V5',
+  up: 'M12 19V5M6 11l6-6 6 6', down: 'M12 5v14M6 13l6 6 6-6', x: 'M6 6l12 12M18 6L6 18'
+};
+const ico = (k, s = 18) => `<svg class="ico" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true"><path d="${P[k]}"/></svg>`;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fold = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
+
+/* ================= Public data (theo bản thiết kế) ================= */
+const TOPICS = {
+  ai: { label: 'Hiểu biết AI', tint: '#E8EEFB', ink: '#2152C5' },
+  teach: { label: 'Dạy học với AI', tint: '#E2F3EA', ink: '#1D6E47' },
+  safe: { label: 'An toàn & đạo đức AI', tint: '#FCECE3', ink: '#A3470F' },
+  digital: { label: 'Năng lực số', tint: '#F1EAFB', ink: '#6A3D9E' }
+};
+const AUD = { th: 'Tiểu học', thcs: 'THCS', thpt: 'THPT', ql: 'Cán bộ quản lý' };
+const FMT = { self: 'Tự học', guided: 'Có hướng dẫn' };
+const ALL = ['th', 'thcs', 'thpt', 'ql'];
+const COURSES = [
+  { id: 'hieu-biet-ai', title: 'Hiểu biết AI cho giáo viên và cán bộ quản lý', desc: 'Nắm các khái niệm cốt lõi về AI, cách AI học từ dữ liệu và những gì AI chưa làm được.', topic: 'ai', aud: ALL, h: [1, 2], fmt: 'self', level: 'Cơ bản',
+    learn: ['Giải thích AI là gì bằng ví dụ đời thường', 'Phân biệt AI theo luật và AI học từ dữ liệu', 'Nhận ra khi nào câu trả lời của AI có thể sai', 'Thấy cơ hội dùng AI trong công việc ở trường'],
+    who: 'Mọi giáo viên và cán bộ quản lý, không cần kiến thức kỹ thuật.',
+    mods: [['AI quanh ta', ['AI trong đời sống hằng ngày', 'AI khác phần mềm thường ở đâu']], ['AI học từ dữ liệu', ['Dữ liệu và mẫu', 'Huấn luyện và dự đoán']], ['Giới hạn của AI', ['AI sai khi nào', 'Ảo giác của mô hình ngôn ngữ']], ['AI trong nhà trường', ['Cơ hội cho giáo viên', 'Cơ hội cho cán bộ quản lý']]] },
+  { id: 'gd-ai-thcs', title: 'Dạy chuyên đề Giáo dục AI 12 tiết – THCS', desc: 'Đi qua 12 tiết theo QĐ 2422 cho khối 6–9: mục tiêu, hoạt động mẫu, phiếu học tập và cách đánh giá.', topic: 'teach', aud: ['thcs'], h: [4, 6], fmt: 'guided', level: 'Cơ bản',
+    lead: 'Đi qua 12 tiết theo QĐ 2422 cho khối 6–9: mục tiêu từng tiết, hoạt động mẫu, phiếu học tập và cách đánh giá học sinh. Cuối khoá, bạn chuẩn bị một bộ dạy thử cho lớp của mình.',
+    learn: ['Nắm mục tiêu và cấu trúc 12 tiết của chuyên đề cho khối 6–9', 'Giải thích AI cho học sinh mà không nhân hoá AI', 'Tổ chức hoạt động huấn luyện mô hình bằng Teachable Machine', 'Tự đánh giá kế hoạch bài dạy theo rubric 7 tiêu chí'],
+    who: 'Giáo viên THCS dạy chuyên đề Giáo dục AI, kể cả giáo viên chưa từng dạy Tin học. Không cần biết lập trình; cần máy tính có trình duyệt và kết nối mạng.',
+    mods: [['Tổng quan chương trình và QĐ 2422', ['Mục tiêu của chuyên đề', 'Cấu trúc 12 tiết theo khối', 'Cách dùng bộ học liệu']], ['AI là gì: giúp học sinh hiểu đúng', ['AI theo luật và AI học từ dữ liệu', 'Nói về AI mà không nhân hoá', 'Hoạt động khởi động mẫu']], ['Dữ liệu và học máy với Teachable Machine', ['Thu thập dữ liệu trong lớp', 'Huấn luyện và kiểm thử mô hình', 'Thảo luận về sai lệch dữ liệu']], ['Thiết kế hoạt động và phiếu học tập', ['Chuỗi Khởi động – Khám phá – Luyện tập – Vận dụng', 'Phiếu học tập và exit ticket']], ['An toàn và đạo đức khi dùng AI trong lớp', ['Quy tắc dùng AI với học sinh', 'Hướng dẫn học sinh kiểm chứng thông tin']], ['Đánh giá theo rubric và dạy thử', ['Rubric 7 tiêu chí', 'Chuẩn bị bộ dạy thử', 'Gửi phản hồi sau tiết dạy']]] },
+  { id: 'gd-ai-th', title: 'Dạy chuyên đề Giáo dục AI 12 tiết – Tiểu học', desc: 'Tổ chức tiết học AI 35 phút cho lớp 4–5 với trò chơi, thẻ và hoạt động trải nghiệm.', topic: 'teach', aud: ['th'], h: [3, 5], fmt: 'guided', level: 'Cơ bản',
+    learn: ['Tổ chức tiết AI 35 phút đúng nhịp lớp 4–5', 'Dùng trò chơi và thẻ để dạy khái niệm', 'Đánh giá bằng quan sát, không chấm điểm riêng'],
+    who: 'Giáo viên tiểu học dạy lớp 4–5, không cần biết lập trình.',
+    mods: [['Tổng quan chuyên đề cho lớp 4–5', ['Mục tiêu từng tiết', 'Chuẩn bị lớp học']], ['Trò chơi và thẻ hoạt động', ['Trò chơi Người hay máy', 'Bộ thẻ phân loại']], ['Tiết học 35 phút mẫu', ['Xem tiết mẫu', 'Điều chỉnh cho lớp đông']], ['Đánh giá bằng quan sát', ['Phiếu quan sát', 'Nhận xét học sinh']]] },
+  { id: 'gd-ai-thpt', title: 'Dạy chuyên đề Giáo dục AI 12 tiết – THPT', desc: 'Dẫn dắt học sinh lớp 10–12 tìm hiểu dữ liệu, mô hình học máy và ứng dụng AI có trách nhiệm.', topic: 'teach', aud: ['thpt'], h: [4, 6], fmt: 'guided', level: 'Nâng cao',
+    learn: ['Dạy dữ liệu và thiên kiến bằng ví dụ thật', 'Giải thích mô hình học máy và mô hình ngôn ngữ lớn', 'Hướng dẫn dự án nhóm có sản phẩm'],
+    who: 'Giáo viên THPT dạy chuyên đề Giáo dục AI cho lớp 10–12.',
+    mods: [['Tổng quan QĐ 2422 cho THPT', ['Yêu cầu cần đạt lớp 10–12', 'Phân bổ tiết']], ['Dữ liệu và thiên kiến', ['Dữ liệu lệch dẫn tới kết quả lệch', 'Hoạt động tranh luận']], ['Mô hình học máy', ['Cây quyết định', 'Thẻ mô hình']], ['Mô hình ngôn ngữ lớn', ['Cách mô hình tạo câu trả lời', 'Dùng có trách nhiệm']], ['Dự án và đánh giá', ['Thiết kế dự án nhóm', 'Rubric sản phẩm']]] },
+  { id: 'teachable-machine', title: 'Teachable Machine trong lớp học', desc: 'Hướng dẫn học sinh tự huấn luyện mô hình nhận dạng hình ảnh, âm thanh mà không cần lập trình.', topic: 'teach', aud: ['thcs', 'thpt'], h: [2, 3], fmt: 'self', level: 'Cơ bản',
+    learn: ['Tạo mô hình nhận dạng ảnh và âm thanh', 'Thiết kế hoạt động nhóm quanh mô hình', 'Giải thích vì sao mô hình đoán sai'],
+    who: 'Giáo viên THCS và THPT, chỉ cần máy tính có webcam.',
+    mods: [['Làm quen công cụ', ['Giao diện Teachable Machine', 'Chuẩn bị máy và webcam']], ['Huấn luyện mô hình', ['Mô hình hình ảnh', 'Mô hình âm thanh']], ['Tổ chức tiết học', ['Hoạt động nhóm', 'Thảo luận khi mô hình sai']]] },
+  { id: 'prompt-gv', title: 'Viết prompt hiệu quả cho giáo viên', desc: 'Cách giao việc cho trợ lý AI để soạn bài, ra đề và nhận xét học sinh, kèm mẫu câu lệnh dùng ngay.', topic: 'ai', aud: ALL, h: [1, 2], fmt: 'self', level: 'Cơ bản',
+    learn: ['Viết câu lệnh có bối cảnh, yêu cầu và định dạng', 'Dùng mẫu câu lệnh soạn bài, ra đề', 'Kiểm tra lại kết quả trước khi dùng'],
+    who: 'Mọi giáo viên và cán bộ quản lý đã từng dùng trợ lý AI.',
+    mods: [['Cấu trúc một câu lệnh tốt', ['Bối cảnh, yêu cầu, định dạng', 'Ví dụ trước và sau']], ['Mẫu câu lệnh dùng ngay', ['Soạn bài', 'Ra đề và đáp án', 'Nhận xét học sinh']], ['Kiểm tra kết quả của AI', ['Danh sách kiểm tra', 'Khi nào không nên dùng AI']]] },
+  { id: 'an-toan-ai', title: 'An toàn, đạo đức và bảo vệ dữ liệu khi dùng AI', desc: 'Nhận diện rủi ro, quy tắc dùng AI trong trường học và cách hướng dẫn học sinh kiểm chứng thông tin.', topic: 'safe', aud: ALL, h: [2, 3], fmt: 'self', level: 'Cơ bản',
+    learn: ['Nhận diện rủi ro thường gặp khi dùng AI', 'Bảo vệ dữ liệu cá nhân của học sinh', 'Xây quy tắc dùng AI cho lớp và trường'],
+    who: 'Mọi giáo viên và cán bộ quản lý.',
+    mods: [['Rủi ro khi dùng AI', ['Thông tin sai', 'Thiên kiến']], ['Bảo vệ dữ liệu học sinh', ['Dữ liệu nào không đưa vào AI', 'Độ tuổi dùng công cụ']], ['Quy tắc dùng AI trong trường', ['Mẫu quy tắc lớp học', 'Khai báo khi dùng AI']], ['Kiểm chứng thông tin', ['Ba bước kiểm chứng', 'Hoạt động cho học sinh']], ['Trao đổi với phụ huynh', ['Thư mẫu', 'Câu hỏi thường gặp']]] },
+  { id: 'nang-luc-so', title: 'Tích hợp năng lực số vào bài dạy', desc: 'Gắn mục tiêu năng lực số vào kế hoạch bài dạy và chọn công cụ số phù hợp từng hoạt động.', topic: 'digital', aud: ['th', 'thcs', 'thpt'], h: [3, 4], fmt: 'guided', level: 'Cơ bản',
+    learn: ['Đọc khung năng lực số theo lớp', 'Gắn mục tiêu năng lực số vào KHBD', 'Chọn công cụ số cho từng hoạt động'],
+    who: 'Giáo viên mọi môn ở tiểu học, THCS và THPT.',
+    mods: [['Khung năng lực số', ['Các miền năng lực', 'Yêu cầu theo lớp']], ['Gắn mục tiêu vào KHBD', ['Viết mục tiêu', 'Ví dụ theo môn']], ['Chọn công cụ số', ['Tiêu chí chọn', 'Danh sách gợi ý']], ['Đánh giá năng lực số', ['Minh chứng', 'Rubric']]] },
+  { id: 'soan-khbd-ai', title: 'Soạn kế hoạch bài dạy với trợ lý AI', desc: 'Dùng AI để soạn nháp KHBD, tự rà soát theo rubric và chỉnh sửa trước khi đưa vào lớp.', topic: 'teach', aud: ['th', 'thcs', 'thpt'], h: [2, 4], fmt: 'guided', level: 'Nâng cao',
+    learn: ['Soạn nháp KHBD theo CV 5588 với trợ lý AI', 'Rà soát bằng rubric 7 tiêu chí', 'Giữ phần sư phạm do giáo viên quyết định'],
+    who: 'Giáo viên đã quen dùng trợ lý AI và muốn soạn bài nhanh hơn.',
+    mods: [['Cấu trúc KHBD theo CV 5588', ['Bốn hoạt động', 'Mục tiêu và sản phẩm']], ['Giao việc cho trợ lý AI', ['Câu lệnh soạn nháp', 'Đưa học liệu nguồn']], ['Rà soát theo rubric 7 tiêu chí', ['Chấm thử', 'Sửa theo góp ý']], ['Chỉnh sửa và đưa vào lớp', ['Dạy thử', 'Rút kinh nghiệm']]] }
+];
+COURSES.push(
+  { id: 'thien-kien-ai', title: 'Dạy về thiên kiến trong AI cho lớp 6–9', desc: 'Giúp học sinh thấy dữ liệu lệch dẫn tới kết quả lệch qua hoạt động phân loại và tranh luận.', topic: 'safe', aud: ['thcs'], h: [2, 3], fmt: 'self', level: 'Cơ bản', status: 'draft',
+    learn: ['Giải thích thiên kiến bằng ví dụ học sinh hiểu được', 'Tổ chức hoạt động phân loại dữ liệu lệch'], who: 'Giáo viên THCS dạy chủ đề thiên kiến trong AI.',
+    mods: [['Thiên kiến là gì', ['Ví dụ trong đời sống', 'Thiên kiến trong dữ liệu']], ['Hoạt động trên lớp', ['Phân loại dữ liệu lệch', 'Tranh luận: ai chịu trách nhiệm?']]] },
+  { id: 'scratch-ai', title: 'Lập trình Scratch kết hợp AI', desc: 'Khoá cũ, đang ẩn để cập nhật theo QĐ 2422.', topic: 'teach', aud: ['th', 'thcs'], h: [6, 8], fmt: 'guided', level: 'Nâng cao', status: 'hidden',
+    learn: ['Kết nối mô hình nhận dạng với Scratch'], who: 'Giáo viên tiểu học và THCS.', mods: [['Làm quen Scratch', ['Giao diện', 'Khối lệnh cơ bản']]] }
+);
+/* Mỗi khoá: status (published | draft | hidden) và modules → lessons → mats (học liệu gắn đúng một phiên bản) */
+COURSES.forEach(c => {
+  if (!c.status) c.status = 'published';
+  c.modules = c.mods.map(([t, ls]) => ({ title: t, lessons: ls.map(x => ({ title: x, mats: [] })) }));
+  delete c.mods;
+  Object.defineProperty(c, 'mods', { get() { return this.modules.map(m => [m.title, m.lessons.map(l => l.title)]); } });
+});
+const PUB = () => COURSES.filter(c => c.status === 'published');
+const byId = id => COURSES.find(c => c.id === id);
+const matChip = mt => ` <span class="mat">${ico('doc', 14)}Tải ${esc(DOCS[mt.doc].short)} · v${mt.v}</span>`;
+const durBucket = c => c.h[1] <= 2 ? 'short' : c.h[1] <= 4 ? 'mid' : 'long';
+const DUR = { short: 'Tối đa 2 giờ', mid: '2–4 giờ', long: 'Trên 4 giờ' };
+
+/* ================= State ================= */
+const KEY = 'aiedu-hub-proto-v1';
+const SEED = { learn: { 'hieu-biet-ai': { done: 4 }, 'gd-ai-thcs': { done: 2 }, 'an-toan-ai': { done: 3 } }, saved: ['teachable-machine'] };
+let store;
+try { store = JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { store = null; }
+if (!store) store = JSON.parse(JSON.stringify(SEED));
+const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} };
+
+const S = {
+  q: '', f: { aud: [], topic: [], dur: [], fmt: [] }, sort: 'default', filtersOpen: false,
+  open: {}, mineTab: 'learning',
+  tao: { mode: 'kho', expanded: ['thcs', 'thcs-cd1'], selected: ['thcs-cd1/b2', 'thcs-cd1/b5'], format: 'chuyen-de', bases: {}, grade: '6', topic: '0', periods: '1', lessonName: '', codeMode: 'auto', codes: '', note: '', srcNote: '' },
+  reports: [],
+  ds: { tab: 'all', q: '', grade: 'all', source: 'all' },
+  dv: { tab: 'check', scores: {}, notes: [{ meta: 'Comment trên Google Doc · [Người duyệt] · Hoạt động 2', text: '[Nội dung góp ý]' }, { meta: 'Claude · kết quả đối chiếu', text: 'Thêm phương án dự phòng cho video ở Hoạt động 1 khi lớp không có mạng.' }], draft: '', decision: null }
+};
+const prog = c => { const l = store.learn[c.id]; return l ? Math.round(100 * l.done / c.mods.length) : null; };
+const status = c => { const p = prog(c); return p === null ? (store.saved.includes(c.id) ? 'saved' : null) : p >= 100 ? 'done' : 'learning'; };
+
+/* ================= Public: shell ================= */
+function pubShell(active, inner) {
+  return `<header class="pub-head"><div class="wrap gut">
+    <a class="brand" href="#khoa-hoc"><span class="logo">AI</span><span class="name">AI Edu <span>Training Hub</span></span></a>
+    <nav class="mainnav" aria-label="Điều hướng chính">
+      <a href="#khoa-hoc" ${active === 'cat' ? 'aria-current="page"' : ''}>Khoá học</a>
+      <a href="#cua-toi" ${active === 'mine' ? 'aria-current="page"' : ''}>Khoá học của tôi</a>
+      <a href="#tro-giup">Trợ giúp</a>
+    </nav>
+    <div class="who"><span class="avatar" aria-hidden="true">GV</span><span>[Tên giáo viên]</span></div>
+  </div></header>
+  <main>${inner}</main>
+  <footer class="pub-foot"><div class="wrap gut"><span>AI Edu Training Hub</span><nav><a href="#tro-giup">Trợ giúp</a><a href="#tro-giup">Điều khoản</a><a href="#tro-giup">Quyền riêng tư</a></nav></div></footer>`;
+}
+
+/* ================= Public: catalog ================= */
+function matches(c, skip) {
+  const s = S;
+  if (s.q && !fold(c.title + ' ' + c.desc).includes(fold(s.q))) return false;
+  if (skip !== 'aud' && s.f.aud.length && !s.f.aud.some(a => c.aud.includes(a))) return false;
+  if (skip !== 'topic' && s.f.topic.length && !s.f.topic.includes(c.topic)) return false;
+  if (skip !== 'dur' && s.f.dur.length && !s.f.dur.includes(durBucket(c))) return false;
+  if (skip !== 'fmt' && s.f.fmt.length && !s.f.fmt.includes(c.fmt)) return false;
+  return true;
+}
+const FDEFS = [
+  { key: 'aud', title: 'Đối tượng', map: AUD, test: (c, v) => c.aud.includes(v) },
+  { key: 'topic', title: 'Chủ đề', map: Object.fromEntries(Object.entries(TOPICS).map(([k, v]) => [k, v.label])), test: (c, v) => c.topic === v },
+  { key: 'dur', title: 'Thời lượng', map: DUR, test: (c, v) => durBucket(c) === v },
+  { key: 'fmt', title: 'Hình thức', map: FMT, test: (c, v) => c.fmt === v }
+];
+function courseCard(c) {
+  const t = TOPICS[c.topic], st = status(c), p = prog(c);
+  const badge = st === 'learning' ? `Đang học · ${p}%` : st === 'done' ? 'Đã hoàn thành' : st === 'saved' ? 'Đã lưu' : '';
+  return `<a class="card ccard" href="#kh-${c.id}">
+    <div class="top" style="background:${t.tint};color:${t.ink}">${badge ? `<span class="badge">${badge}</span>` : ''}${ico(c.topic, 40)}</div>
+    <div class="body">
+      <span><span class="chip" style="background:${t.tint};color:${t.ink}">${t.label}</span></span>
+      <h3>${esc(c.title)}</h3>
+      <p>${esc(c.desc)}</p>
+      <div class="foot">
+        <div class="meta"><span>${ico('clock', 15)}${c.h[0]}–${c.h[1]} giờ</span><span>${FMT[c.fmt]}</span><span>${c.level}</span></div>
+        <div>Đối tượng: ${c.aud.length === 4 ? 'Mọi cấp học' : c.aud.map(a => AUD[a]).join(', ')}</div>
+      </div>
+    </div></a>`;
+}
+function catResults() {
+  let list = PUB().filter(c => matches(c, null));
+  if (S.sort === 'short') list = list.slice().sort((a, b) => (a.h[0] - b.h[0]) || (a.h[1] - b.h[1]));
+  if (S.sort === 'az') list = list.slice().sort((a, b) => a.title.localeCompare(b.title, 'vi'));
+  const chips = [];
+  FDEFS.forEach(d => S.f[d.key].forEach(v => chips.push(`<button type="button" data-act="ftoggle" data-k="${d.key}" data-v="${v}" aria-label="Bỏ lọc ${esc(d.map[v])}">${esc(d.map[v])} ✕</button>`)));
+  if (S.q) chips.push(`<button type="button" data-act="clearq" aria-label="Bỏ từ khoá">“${esc(S.q)}” ✕</button>`);
+  const count = list.length === PUB().length ? `Tất cả ${list.length} khoá học` : `Hiển thị ${list.length} / ${PUB().length} khoá học`;
+  return `<div class="toolbar"><span class="muted" aria-live="polite">${count}</span>
+      <label for="sort">Sắp xếp <select id="sort" data-in="sort">
+        <option value="default" ${S.sort === 'default' ? 'selected' : ''}>Gợi ý</option>
+        <option value="short" ${S.sort === 'short' ? 'selected' : ''}>Ngắn nhất trước</option>
+        <option value="az" ${S.sort === 'az' ? 'selected' : ''}>Tên A–Z</option></select></label></div>
+    ${chips.length ? `<div class="chips">${chips.join('')}</div>` : ''}
+    ${list.length ? `<div class="grid">${list.map(courseCard).join('')}</div>`
+      : `<div class="empty"><b>Không có khoá học nào khớp</b><span>Thử bỏ bớt bộ lọc hoặc tìm bằng từ khác.</span><button class="btn ghost" type="button" data-act="clearall">Xoá tất cả bộ lọc</button></div>`}`;
+}
+function filtersHtml() {
+  const any = S.q || FDEFS.some(d => S.f[d.key].length);
+  return `<div class="hd"><h2>Bộ lọc</h2>
+      ${any ? '<button type="button" class="linkbtn" data-act="clearall">Xoá tất cả</button>' : ''}
+      <button type="button" class="linkbtn ftoggle" data-act="fpanel" aria-expanded="${S.filtersOpen}">${S.filtersOpen ? 'Ẩn' : 'Hiện'}</button></div>
+    <div class="fbody stack">${FDEFS.map(d => {
+      const pool = PUB().filter(c => matches(c, d.key));
+      return `<fieldset class="fgroup"><legend>${d.title}</legend>${Object.keys(d.map).map(v => {
+        const n = pool.filter(c => d.test(c, v)).length, id = `loc-${d.key}-${v}`;
+        return `<label for="${id}" class="${n ? '' : 'zero'}"><input type="checkbox" id="${id}" data-act="ftoggle" data-k="${d.key}" data-v="${v}" ${S.f[d.key].includes(v) ? 'checked' : ''}> ${d.map[v]}<span class="n num">${n}</span></label>`;
+      }).join('')}</fieldset>`;
+    }).join('')}</div>`;
+}
+function viewCatalog() {
+  return pubShell('cat', `
+  <section class="band"><div class="wrap gut">
+    <h1>Khoá học</h1>
+    <p class="lead">Khoá học trực tuyến giúp giáo viên hiểu AI, dạy chuyên đề Giáo dục AI và đưa công cụ số vào lớp học. Học theo tốc độ của bạn, tiến độ được lưu tự động.</p>
+    <label class="search" for="tim-khoa-hoc"><span class="sr">Tìm khoá học</span>${ico('search', 20)}<input id="tim-khoa-hoc" type="search" data-in="q" value="${esc(S.q)}" placeholder="Tìm theo tên hoặc nội dung khoá học" autocomplete="off"></label>
+  </div></section>
+  <div class="wrap gut">
+    <div class="cat">
+      <aside class="card filters ${S.filtersOpen ? '' : 'collapsed'}" id="filters" aria-label="Bộ lọc khoá học">${filtersHtml()}</aside>
+      <div id="results">${catResults()}</div>
+    </div>
+    <section class="card cta-band"><div><h2>Theo dõi việc học của bạn</h2><p>Đăng nhập bằng tài khoản Google công ty để đăng ký khoá học, lưu tiến độ và xem lại các khoá đã hoàn thành.</p></div>
+      <a class="btn" href="#cua-toi">Xem khoá học của tôi</a></section>
+  </div>`);
+}
+
+/* ================= Public: detail ================= */
+function viewDetail(c) {
+  const t = TOPICS[c.topic], l = store.learn[c.id], done = l ? l.done : 0, enrolled = !!l;
+  const nLessons = c.mods.reduce((n, m) => n + m[1].length, 0), p = prog(c) || 0, finished = enrolled && done >= c.mods.length;
+  if (!S.open[c.id]) S.open[c.id] = [Math.min(done, c.mods.length - 1)];
+  const open = S.open[c.id], allOpen = open.length === c.mods.length, saved = store.saved.includes(c.id);
+  const cur = c.mods[Math.min(done, c.mods.length - 1)];
+  const related = PUB().filter(x => x.id !== c.id && (x.topic === c.topic || x.aud.some(a => c.aud.includes(a)))).slice(0, 3);
+  const mods = c.mods.map((m, i) => {
+    const isDone = i < done, isCur = enrolled && i === done && !finished, isOpen = open.includes(i);
+    const dot = isDone ? `background:var(--ok);color:#fff` : isCur ? `background:var(--accent);color:#fff` : `background:var(--line);color:var(--ink)`;
+    return `<div class="mod ${isCur ? 'cur' : ''} ${isOpen ? 'open' : ''}">
+      <button type="button" class="mh" data-act="mod" data-i="${i}" aria-expanded="${isOpen}">
+        <span class="dot" style="${dot}">${isDone ? ico('check', 16) : i + 1}</span>
+        <span><span class="t">Học phần ${i + 1}. ${esc(m[0])}</span><br><span class="s">${m[1].length} bài${isDone ? ' · Đã hoàn thành' : isCur ? ' · Đang học' : ''}</span></span>
+        <span class="chev">${ico('chevD', 20)}</span></button>
+      ${isOpen ? `<ul>${c.modules[i].lessons.map(l => `<li>${esc(l.title)}${l.mats.map(matChip).join('')}</li>`).join('')}</ul>` : ''}</div>`;
+  }).join('');
+  return pubShell('cat', `${c.status !== 'published' ? `<div class="draftbar"><div class="wrap gut">Bản xem trước: khoá này ${c.status === 'draft' ? 'đang là bản nháp' : 'đang ẩn'}, giáo viên chưa thấy. <a href="#noi-bo-khoa-hoc">Về Quản lý khoá học</a></div></div>` : ''}
+  <section class="dhead"><div class="wrap gut">
+    <div>
+      <div class="crumbs"><a href="#khoa-hoc">Khoá học</a>${ico('chevR', 14)}<span>${t.label}</span></div>
+      <span class="chip" style="background:${t.tint};color:${t.ink}">${t.label}</span>
+      <h1>${esc(c.title)}</h1>
+      <p class="lead">${esc(c.lead || c.desc)}</p>
+      <div class="facts"><span>${ico('clock')}${c.h[0]}–${c.h[1]} giờ</span><span>${ico('list')}${c.mods.length} học phần · ${nLessons} bài</span><span>${FMT[c.fmt]}</span><span>${c.level}</span><span>Đối tượng: ${c.aud.length === 4 ? 'mọi cấp học' : 'giáo viên ' + c.aud.map(a => AUD[a]).join(', ')}</span></div>
+    </div>
+    <div class="card prog-card">
+      ${enrolled ? `<div class="row1"><span>Tiến độ của bạn</span><span class="num">${p}%</span></div>
+        <div class="bar"><i style="width:${p}%;${finished ? 'background:var(--ok)' : ''}"></i></div>
+        <div class="now">${finished ? 'Bạn đã hoàn thành khoá học này.' : `Đang học: Học phần ${done + 1}. ${esc(cur[0])}`}</div>
+        ${finished ? `<a class="btn block" href="#cua-toi">Xem chứng nhận</a><button type="button" class="btn ghost block" data-act="reset">Học lại từ đầu</button>`
+          : `<button type="button" class="btn block" data-act="next">Tiếp tục học</button><button type="button" class="btn ghost block" data-act="save">${saved ? 'Đã lưu vào danh sách' : 'Lưu để học sau'}</button>`}`
+      : `<div class="row1"><span>Miễn phí cho giáo viên</span></div>
+        <div class="now">Đăng ký để lưu tiến độ và nhận nhắc học tiếp.</div>
+        <button type="button" class="btn block" data-act="enroll">Đăng ký học</button>
+        <button type="button" class="btn ghost block" data-act="save">${saved ? 'Đã lưu vào danh sách' : 'Lưu để học sau'}</button>`}
+    </div>
+  </div></section>
+  <div class="wrap gut dbody">
+    <div class="main">
+      <section class="card sec"><h2>Bạn sẽ học được gì</h2><ul class="learn">${c.learn.map(x => `<li>${ico('check')}<span>${esc(x)}</span></li>`).join('')}</ul></section>
+      <section class="card sec"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px"><h2 style="margin:0">Nội dung khoá học</h2><button type="button" class="linkbtn" data-act="modall">${allOpen ? 'Thu gọn tất cả' : 'Mở tất cả'}</button></div>
+        <div class="mods">${mods}</div></section>
+      <section class="card sec"><h2>Dành cho ai</h2><p class="muted" style="margin:0;line-height:1.65">${esc(c.who)}</p></section>
+    </div>
+    <aside class="side">
+      <section class="card info"><h2>Thông tin khoá học</h2><dl>
+        <dt>Thời lượng</dt><dd>${c.h[0]}–${c.h[1]} giờ</dd><dt>Hình thức</dt><dd>${FMT[c.fmt]}</dd><dt>Trình độ</dt><dd>${c.level}</dd>
+        <dt>Căn cứ</dt><dd>QĐ 2422/QĐ-BGDĐT</dd><dt>Chứng nhận</dt><dd>[Có / Không]</dd></dl></section>
+      <section class="card info"><h2>Khoá học liên quan</h2><div class="related">${related.map(r => `<a href="#kh-${r.id}">${esc(r.title)}</a>`).join('')}</div></section>
+    </aside>
+  </div>`);
+}
+
+/* ================= Public: mine ================= */
+function viewMine() {
+  const groups = { learning: [], done: [], saved: [] };
+  PUB().forEach(c => { const s = status(c); if (s) groups[s].push(c); });
+  const tabs = [['learning', 'Đang học'], ['done', 'Đã hoàn thành'], ['saved', 'Đã lưu']];
+  const items = groups[S.mineTab];
+  const row = c => {
+    const t = TOPICS[c.topic], l = store.learn[c.id], p = prog(c) || 0, g = S.mineTab;
+    const note = g === 'learning' ? (c.id === 'gd-ai-thcs' || l.done === 0 ? `Tiếp theo: Học phần ${l.done + 1}. ${c.mods[l.done][0]}` : `Đã xong ${l.done} / ${c.mods.length} học phần`)
+      : g === 'done' ? 'Hoàn thành ngày [dd/mm/yyyy]' : `${c.h[0]}–${c.h[1]} giờ · ${FMT[c.fmt]} · Đã lưu để học sau`;
+    return `<div class="card mrow">
+      <div class="thumb" style="background:${t.tint};color:${t.ink}">${ico(c.topic, 32)}</div>
+      <div style="min-width:0"><div class="tp" style="color:${t.ink}">${t.label}</div><h3>${esc(c.title)}</h3><div class="note">${esc(note)}</div>
+        ${g !== 'saved' ? `<div class="pr"><div class="bar"><i style="width:${p}%;${g === 'done' ? 'background:var(--ok)' : ''}"></i></div><span class="num">${p}%</span></div>` : ''}</div>
+      <div class="acts">${g === 'done' ? `<a class="btn ghost" href="#kh-${c.id}">Xem lại khoá học</a><a class="btn" href="#cua-toi">Xem chứng nhận</a>`
+        : `<a class="btn" href="#kh-${c.id}">${g === 'learning' ? 'Tiếp tục học' : 'Bắt đầu học'}</a>`}</div></div>`;
+  };
+  return pubShell('mine', `
+  <section class="band mhead" style="padding:0"><div class="wrap gut">
+    <div><h1>Khoá học của tôi</h1><p class="muted" style="margin:0">Tiếp tục khoá đang học, xem lại khoá đã xong và các khoá bạn đã lưu.</p></div>
+    <a class="btn ghost" href="#khoa-hoc">Tìm thêm khoá học</a>
+  </div>
+  <div class="wrap gut"><div class="tabs" role="tablist">${tabs.map(([k, label]) => `<button type="button" role="tab" aria-selected="${S.mineTab === k}" data-act="minetab" data-v="${k}">${label}<span class="c num">${groups[k].length}</span></button>`).join('')}</div></div></section>
+  <div class="wrap gut mlist">${items.length ? items.map(row).join('') : `<div class="empty"><b>Chưa có khoá nào ở đây</b><span>${S.mineTab === 'saved' ? 'Bấm “Lưu để học sau” ở trang khoá học để thêm vào danh sách này.' : 'Chọn một khoá trong danh mục và bấm “Đăng ký học”.'}</span><a class="btn" href="#khoa-hoc">Xem danh mục khoá học</a></div>`}</div>`);
+}
+
+/* ================= Internal data (theo bản thiết kế) ================= */
+const TREE = [
+  { id: 'th', label: 'Tiểu học', groups: null },
+  { id: 'thcs', label: 'THCS', groups: [
+    { id: 'thcs-cd1', label: 'Chủ đề 1: Nền tảng của công nghệ AI', lop: 6, lessons: [
+      { id: 'b1', name: 'Bài 1. Làm quen với nền tảng Google Deepmind', tiet: 1 }, { id: 'b2', name: 'Bài 2. AI là gì?', tiet: 2 },
+      { id: 'b3', name: 'Bài 3. AI tạo sinh', tiet: 1 }, { id: 'b4', name: 'Bài 4. Mô hình', tiet: 1, badge: 'Đã có v1' },
+      { id: 'b5', name: 'Bài 5. Dữ liệu', tiet: 2 }, { id: 'b6', name: 'Bài 6. Thị giác máy tính', tiet: 1 },
+      { id: 'b7', name: 'Bài 7. Ứng dụng của AI', tiet: 2 }, { id: 'b8', name: 'Bài 8. Ôn tập chủ đề 1', tiet: 1 }] },
+    { id: 'thcs-cd2', label: 'Chủ đề 2: Máy tính học từ dữ liệu như thế nào?', lop: 6, lessons: [
+      { id: 'b9', name: 'Bài 9. Làm quen với máy học (Machine Learning)', tiet: 2 }, { id: 'b10', name: 'Bài 10. Cách máy học hoạt động', tiet: 1 }] },
+    { id: 'thcs-cd3', label: 'Chủ đề 3 đến 7', lop: null, lessons: null }] },
+  { id: 'thpt', label: 'THPT', groups: null }
+];
+const GRADE_TOPICS = {
+  6: ['Nền tảng của công nghệ AI', 'Máy tính học từ dữ liệu như thế nào?', 'Thiên kiến trong trí tuệ nhân tạo'],
+  7: ['Cây quyết định', 'Giải quyết vấn đề bằng mô hình máy học', 'Thẻ mô hình'],
+  8: ['Dữ liệu và trí tuệ nhân tạo', 'Sử dụng công cụ AI có trách nhiệm', 'Kiến thức truyền thông trong kỷ nguyên AI'],
+  9: ['Mô hình ngôn ngữ lớn', 'Trí tuệ nhân tạo và cuộc sống', 'Cơ hội nghề nghiệp'],
+  10: ['Nền tảng của AI', 'Máy tính hoạt động như thế nào?', 'Thiên kiến trong trí tuệ nhân tạo', 'Sử dụng AI trong học tập'],
+  11: ['Cây quyết định', 'Giải quyết vấn đề bằng máy học', 'Thẻ mô hình', 'Kiến thức truyền thông trong kỷ nguyên AI'],
+  12: ['Mô hình ngôn ngữ lớn', 'Sử dụng công cụ AI có trách nhiệm']
+};
+const BASES = [
+  { key: 'qd2422', label: 'QĐ 2422', note: 'bắt buộc', locked: true }, { key: 'cv5588', label: 'CV 5588', note: 'bắt buộc', locked: true },
+  { key: 'tt02', label: 'TT 02', note: '[tên văn bản]' }, { key: 'tt16', label: 'TT 16', note: '[tên văn bản]' },
+  { key: 'tt18', label: 'TT 18', note: '[tên văn bản]' }, { key: 'tt85', label: 'TT 85', note: 'tăng cường, theo nhu cầu' }
+];
+const FORMATS = [['chuyen-de', 'Chuyên đề giáo dục AI (mặc định)'], ['long-ghep', 'Lồng ghép trong môn học'], ['nhu-cau', 'Hoạt động theo nhu cầu']];
+const STEPS = ['Đọc bài nguồn', 'Chọn mã 2422', 'Soạn KHBD + spec', 'Kiểm tra 2422 · 5588', 'Lưu Google Doc', 'Ghi nhật ký'];
+const lessonInfo = key => { for (const lv of TREE) for (const g of lv.groups || []) for (const l of g.lessons || []) if (g.id + '/' + l.id === key) return { ...l, lop: g.lop, cd: g.label.split(':')[0] }; return null; };
+let RUNS = [
+  { id: 'b3', title: 'Bài 3. AI tạo sinh', meta: 'Lớp 6 · Chủ đề 1 · 1 tiết · bắt đầu [hh:mm] · [x] phút', status: 'done', at: 6, version: 'v1' },
+  { id: 'b2', title: 'Bài 2. AI là gì?', meta: 'Lớp 6 · Chủ đề 1 · 2 tiết · bắt đầu [hh:mm]', status: 'running', at: 2 },
+  { id: 'b9', title: 'Bài 9. Làm quen với máy học (Machine Learning)', meta: 'Lớp 6 · Chủ đề 2 · 2 tiết · bắt đầu [hh:mm]', status: 'error', at: 4, error: 'Lỗi ở bước Lưu Google Doc: lệnh điền Doc báo sai chỉ số. Spec KHBD và spec PBT đã lưu, chạy lại sẽ bắt đầu từ bước này.' },
+  { id: 'b5', title: 'Bài 5. Dữ liệu', meta: 'Lớp 6 · Chủ đề 1 · 2 tiết · đang chờ', status: 'queued', at: 0 }
+];
+const ST = {
+  draft: ['Nháp', '#EEF0F3', '#4B5565'], review: ['Chờ duyệt', '#E8EEFB', '#163B91'], fix: ['Cần sửa', '#FCECE3', '#8A3A0C'],
+  approved: ['Đã duyệt KHBD', '#E2F3EA', '#1D6E47'], pbt: ['Đã có PBT', '#D7EFE2', '#155A39'], error: ['Lỗi khi soạn', '#FBE4E4', '#9B1C1C']
+};
+let ITEMS = [
+  { id: 'b2', title: 'Bài 2. AI là gì?', topic: 'Chủ đề 1: Nền tảng của công nghệ AI', grade: 6, source: 'kho', version: 'v2', status: 'fix', warn: 2 },
+  { id: 'b3', title: 'Bài 3. AI tạo sinh', topic: 'Chủ đề 1: Nền tảng của công nghệ AI', grade: 6, source: 'kho', version: 'v1', status: 'review', warn: 1 },
+  { id: 'b4', title: 'Bài 4. Mô hình', topic: 'Chủ đề 1: Nền tảng của công nghệ AI', grade: 6, source: 'kho', version: 'v1', status: 'review', warn: 0 },
+  { id: 'new', title: '[Tên bài mới]', topic: 'Ngoài khung (bài mở rộng)', grade: 8, source: 'moi', version: 'v1', status: 'draft', warn: 0 },
+  { id: 'b9', title: 'Bài 9. Làm quen với máy học (Machine Learning)', topic: 'Chủ đề 2: Máy tính học từ dữ liệu như thế nào?', grade: 6, source: 'kho', version: '–', status: 'error', warn: 0 },
+  { id: 'b1', title: 'Bài 1. Làm quen với nền tảng Google Deepmind', topic: 'Chủ đề 1: Nền tảng của công nghệ AI', grade: 6, source: 'kho', version: 'v2', status: 'approved', warn: 0 },
+  { id: 'b10', title: 'Bài 10. Cách máy học hoạt động', topic: 'Chủ đề 2: Máy tính học từ dữ liệu như thế nào?', grade: 6, source: 'kho', version: 'v1', status: 'pbt', warn: 0 }
+];
+const ACTION = { draft: ['Gửi duyệt', '#noi-bo-duyet'], review: ['Duyệt bài', '#noi-bo-duyet'], fix: ['Soạn lại bản mới', '#noi-bo-tao'], approved: ['Làm PBT', '#noi-bo-tien-do'], pbt: ['Mở KHBD + PBT', '#noi-bo-duyet'], error: ['Xem lỗi', '#noi-bo-tien-do'] };
+
+/* ================= Internal: shell ================= */
+function inbShell(active, inner) {
+  const nav = [['noi-bo-tao', 'plus', 'Tạo KHBD'], ['noi-bo-tien-do', 'pulse', 'Tiến độ'], ['noi-bo-danh-sach', 'rows', 'Danh sách KHBD'], ['noi-bo-duyet', 'review', 'Duyệt bài'], ['noi-bo-khoa-hoc', 'book', 'Quản lý khoá học']];
+  return `<div class="app">
+    <aside class="sidebar">
+      <a class="brand" href="#noi-bo-tao"><span class="logo">AI</span><span class="name">AI Edu</span><span class="tag-inb">Nội bộ</span></a>
+      <nav aria-label="Khu nội bộ">${nav.map(([h, i, l]) => `<a href="#${h}" ${active === h ? 'aria-current="page"' : ''}>${ico(i)}${l}</a>`).join('')}</nav>
+      <div class="pub"><a href="#khoa-hoc">Xem trang khoá học public</a></div>
+      <div class="me"><span class="avatar">NV</span><span><b>[Tên nhân viên]</b><span class="muted">Academic</span></span></div>
+    </aside>
+    <main class="ws gut">${inner}</main></div>`;
+}
+
+/* ================= Internal: Tạo KHBD ================= */
+function viewTao() {
+  const t = S.tao, isKho = t.mode === 'kho', g = parseInt(t.grade, 10);
+  let left;
+  if (isKho) {
+    const rows = [];
+    TREE.forEach(lv => {
+      const open = t.expanded.includes(lv.id);
+      rows.push(`<div class="r ${open ? 'open' : ''}" style="padding-left:14px"><button type="button" class="g" data-act="expand" data-v="${lv.id}" aria-expanded="${open}">${ico('chevR', 16)}${lv.label}</button></div>`);
+      if (!open) return;
+      if (!lv.groups) { rows.push(`<div class="r" style="padding-left:44px"><span class="note">Nối Drive để hiện cây thư mục thật của nhánh này.</span></div>`); return; }
+      lv.groups.forEach(gr => {
+        const gOpen = t.expanded.includes(gr.id);
+        rows.push(`<div class="r ${gOpen ? 'open' : ''}" style="padding-left:40px"><button type="button" class="g" data-act="expand" data-v="${gr.id}" aria-expanded="${gOpen}">${ico('chevR', 16)}${gr.label}</button>${gr.lop ? `<span class="m">Lớp ${gr.lop}</span>` : ''}</div>`);
+        if (!gOpen) return;
+        if (!gr.lessons) { rows.push(`<div class="r" style="padding-left:70px"><span class="note">Các chủ đề còn lại lấy từ Drive khi đồng bộ.</span></div>`); return; }
+        gr.lessons.forEach(l => {
+          const key = gr.id + '/' + l.id, sel = t.selected.includes(key), id = `chon-${gr.id}-${l.id}`;
+          rows.push(`<div class="r ${sel ? 'sel' : ''}" style="padding-left:66px"><label for="${id}"><input type="checkbox" id="${id}" data-act="pick" data-v="${key}" ${sel ? 'checked' : ''}>${esc(l.name)}</label><span class="m">${l.tiet} tiết</span>${l.badge ? `<span class="chip" style="background:var(--ok-soft);color:var(--ok)">${l.badge}</span>` : ''}</div>`);
+        });
+      });
+    });
+    left = `<section class="card panel"><div class="sub"><h2>Chọn bài nguồn</h2><span class="muted" style="font-size:13px">Đồng bộ từ Drive lúc [hh:mm]</span></div>
+      <div class="path">Kho học liệu chung › 3. Giáo dục trí tuệ nhân tạo dành cho học sinh phổ thông › 1. Học liệu</div>
+      <div class="tree">${rows.join('')}</div></section>`;
+  } else {
+    let note, nb, ni;
+    if (g <= 3) { note = 'Lớp 1–3 chưa có chuẩn trong skill nên chưa soạn được.'; nb = 'var(--err-soft)'; ni = 'var(--err)'; }
+    else if (g <= 5) { note = `Lớp ${g} chưa có khung NLS trong skill: mục tiêu lấy từ tài liệu bạn đưa, Claude ghi rõ giả định.`; nb = 'var(--warn-soft)'; ni = 'var(--warn)'; }
+    else { note = `Mục tiêu bài học lấy theo khung NLS lớp ${g}; mã yêu cầu cần đạt lấy đúng lớp ${g} theo QĐ 2422.`; nb = 'var(--ok-soft)'; ni = 'var(--ok)'; }
+    let topics = (GRADE_TOPICS[g] || []).map((x, i) => [String(i), `Chủ đề ${i + 1}: ${x}`]).concat([['ngoai', 'Ngoài khung (bài mở rộng)']]);
+    if (g <= 5) topics = [['ngoai', 'Theo tài liệu nguồn']];
+    left = `<section class="card panel stack"><h2>Thông tin bài mới</h2>
+      <div class="formgrid">
+        <label class="field" for="moi-lop"><b>Lớp</b><select id="moi-lop" data-in="tao.grade">${Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}" ${t.grade == i + 1 ? 'selected' : ''}>Lớp ${i + 1}</option>`).join('')}</select></label>
+        <label class="field" for="moi-tiet"><b>Số tiết</b><select id="moi-tiet" data-in="tao.periods">${[1, 2, 3].map(n => `<option value="${n}" ${t.periods == n ? 'selected' : ''}>${n} tiết (${n * 45} phút)</option>`).join('')}</select></label>
+        <div class="full callout" style="background:${nb};color:${ni}">${note}</div>
+        <label class="field full" for="moi-cd"><b>Chủ đề</b><select id="moi-cd" data-in="tao.topic">${topics.map(([v, l]) => `<option value="${v}" ${t.topic === v ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></label>
+        <label class="field full" for="moi-ten"><b>Tên bài</b><input type="text" id="moi-ten" data-in="tao.lessonName" value="${esc(t.lessonName)}" placeholder="vd: Bài 4. Thẻ mô hình">
+          <span class="muted" style="font-size:13.5px">Trùng tên bài trong khung thì Claude lấy đúng mục tiêu của khung; tên mới thì Claude soạn như bài mở rộng và ghi giả định.</span></label>
+        <fieldset class="field full" style="border:0;padding:0;margin:0"><legend style="padding:0;margin-bottom:4px"><b>Mã yêu cầu cần đạt QĐ 2422</b></legend>
+          ${[['auto', 'Claude tự chọn 2–4 mã đúng lớp'], ['manual', 'Tôi chỉ định mã']].map(([v, l]) => `<label class="opt" for="ma-${v}"><input type="radio" name="ma" id="ma-${v}" data-act="codemode" data-v="${v}" ${t.codeMode === v ? 'checked' : ''}>${l}</label>`).join('')}
+          ${t.codeMode === 'manual' ? `<input type="text" id="moi-ma" data-in="tao.codes" value="${esc(t.codes)}" placeholder="vd: 6.1.a, 6.1.c" aria-label="Mã 2422 tự chọn">` : ''}</fieldset>
+        <label class="field full" for="moi-nguon"><b>Tài liệu nguồn (không bắt buộc)</b><textarea id="moi-nguon" data-in="tao.srcNote" placeholder="Dán link Google Doc hoặc thư mục Drive">${esc(t.srcNote)}</textarea></label>
+      </div></section>`;
+  }
+  const canRun = isKho ? t.selected.length > 0 : g > 3;
+  const savePath = isKho ? 'AIE Product › 1. Pre-Review › AI Agent › [ngày chạy] › sao y đường dẫn bài nguồn' : `AIE Product › 1. Pre-Review › AI Agent › [ngày chạy] › Lớp ${g} › Bài NN. ${t.lessonName || '[Tên bài]'}`;
+  const right = `<div class="stack">
+    <section class="card panel stack">
+      ${isKho ? `<h2>Đã chọn ${t.selected.length} bài</h2>${t.selected.length ? t.selected.map(k => { const l = lessonInfo(k); return `<div class="selitem"><span>${esc(l.name)} · Lớp ${l.lop}</span><button type="button" data-act="pick" data-v="${k}" aria-label="Bỏ chọn ${esc(l.name)}">×</button></div>`; }).join('') : '<p class="muted" style="margin:0;font-size:14px">Tick bài ở cây bên trái. Chọn nhiều bài là soạn hàng loạt.</p>'}
+        <label class="field" for="tao-lop"><b>Lớp</b><select id="tao-lop"><option>Tự nhận theo khung NLS</option>${[6, 7, 8, 9, 10, 11, 12].map(n => `<option>Lớp ${n}</option>`).join('')}</select></label>` : ''}
+      <fieldset class="field" style="border:0;padding:0;margin:0"><legend style="padding:0"><b>Hình thức triển khai (CV 5588)</b></legend>
+        ${FORMATS.map(([v, l]) => `<label class="opt" for="ht-${v}"><input type="radio" name="ht" id="ht-${v}" data-act="format" data-v="${v}" ${t.format === v ? 'checked' : ''}>${l}</label>`).join('')}</fieldset>
+      <fieldset class="field" style="border:0;padding:0;margin:0"><legend style="padding:0"><b>Căn cứ đối chiếu</b></legend>
+        ${BASES.map(b => `<label class="opt" for="cc-${b.key}"><input type="checkbox" id="cc-${b.key}" data-act="base" data-v="${b.key}" ${b.locked || t.bases[b.key] ? 'checked' : ''} ${b.locked ? 'disabled' : ''}>${b.label}<span class="nt">${b.note}</span></label>`).join('')}</fieldset>
+      <label class="field" for="tao-ghichu"><b>${isKho ? 'Ghi chú cho Claude' : 'Ý tưởng, yêu cầu riêng'}</b><textarea id="tao-ghichu" data-in="tao.note" placeholder="vd: bỏ phần giới thiệu chương trình Experience AI">${esc(t.note)}</textarea></label>
+    </section>
+    <section class="card panel stack result"><h2>Kết quả sẽ có</h2>
+      <ul><li>Google Doc KHBD theo mẫu mới, đuôi – vN</li><li>Spec KHBD và spec PBT trong _spec (Claude dùng)</li><li>Kết quả đối chiếu căn cứ và cảnh báo</li><li>Một dòng trong Nhật ký chạy của ngày</li></ul>
+      <p class="muted" style="margin:0;font-size:13.5px">Lưu vào: ${esc(savePath)}</p>
+      <button type="button" class="btn block" data-act="run" ${canRun ? '' : 'disabled'}>${canRun ? (isKho ? `Tạo KHBD cho ${t.selected.length} bài` : 'Soạn bài mới') : (isKho ? 'Chọn ít nhất 1 bài' : 'Lớp này chưa soạn được')}</button>
+    </section></div>`;
+  return inbShell('noi-bo-tao', `
+    <div class="ws-head"><div><h1>Tạo kế hoạch bài dạy</h1><p>Claude soạn theo skill aca-khbd-ai12 v6, đối chiếu QĐ 2422 và CV 5588. Giai đoạn 1 tạo KHBD và spec PBT; phiếu bài tập chỉ dựng sau khi KHBD được duyệt.</p></div></div>
+    <div class="seg" role="group" aria-label="Cách soạn"><button type="button" data-act="mode" data-v="kho" aria-pressed="${isKho}">Soạn lại từ kho học liệu</button><button type="button" data-act="mode" data-v="moi" aria-pressed="${!isKho}">Soạn bài mới</button></div>
+    <div class="two">${left}${right}</div>`);
+}
+
+/* ================= Internal: Tiến độ ================= */
+function viewTienDo() {
+  const chipOf = r => ({ done: ['Xong · ' + (r.version || 'v1'), 'var(--ok-soft)', 'var(--ok)', 'var(--line)'], running: ['Đang chạy', 'var(--accent-soft)', 'var(--accent-dark)', '#C9D6F5'], error: ['Lỗi', 'var(--err-soft)', 'var(--err)', '#F2C7AE'], queued: ['Đang chờ', 'var(--grey-soft)', 'var(--muted)', 'var(--line)'] }[r.status]);
+  const count = k => RUNS.filter(r => r.status === k).length;
+  const stats = [['Xong', count('done'), 'var(--ok)'], ['Đang chạy', count('running'), 'var(--accent-dark)'], ['Lỗi', count('error'), 'var(--err)'], ['Đang chờ', count('queued'), 'var(--muted)']];
+  const runs = RUNS.map(r => {
+    const c = chipOf(r), open = S.reports.includes(r.id);
+    const steps = STEPS.map((label, i) => {
+      const st = r.status === 'done' ? 'done' : r.status === 'queued' ? 'todo' : i < r.at ? 'done' : i === r.at ? (r.status === 'error' ? 'error' : 'now') : 'todo';
+      const bar = { done: 'var(--ok)', now: 'var(--accent)', error: 'var(--err-bar)', todo: 'var(--line)' }[st];
+      return `<div style="color:${st === 'todo' ? 'var(--muted)' : 'var(--ink)'};font-weight:${st === 'now' || st === 'error' ? 700 : 500}"><i style="background:${bar}"></i>${label}</div>`;
+    }).join('');
+    return `<article class="card run" style="border-color:${c[3]}">
+      <div class="rh"><div><h3>${esc(r.title)}</h3><div class="meta">${esc(r.meta)}</div></div><span class="pill" style="background:${c[1]};color:${c[2]}">${c[0]}</span></div>
+      <div class="steps">${steps}</div>
+      ${r.status === 'error' ? `<div class="callout" style="background:var(--err-soft);color:var(--err)">${esc(r.error)}</div>` : ''}
+      ${open ? `<div class="report"><b>Báo cáo đối chiếu</b><span>Mã 2422: 6.1.a, 6.1.c (đúng lớp 6) · CV 5588: đủ 4 hoạt động · 1 cảnh báo: thiếu bước nhắc HS khai báo khi dùng AI.</span><span class="muted">Bản mẫu: báo cáo thật do Claude ghi sau bước Kiểm tra.</span></div>` : ''}
+      ${r.status === 'done' ? `<div class="acts"><a class="btn" href="#noi-bo-duyet">Mở để duyệt</a><button type="button" class="btn ghost" data-act="report" data-v="${r.id}">${open ? 'Ẩn báo cáo' : 'Xem báo cáo'}</button></div>` : ''}
+      ${r.status === 'error' ? `<div class="acts"><button type="button" class="btn" data-act="retry" data-v="${r.id}">Chạy lại từ bước lỗi</button></div>` : ''}
+      ${r.status === 'queued' ? `<div class="acts"><button type="button" class="btn ghost" data-act="cancel" data-v="${r.id}">Huỷ bài này</button></div>` : ''}
+    </article>`;
+  }).join('');
+  return inbShell('noi-bo-tien-do', `
+    <div class="ws-head"><div><h1>Tiến độ soạn</h1><p>Lượt chạy ngày [dd/mm/yyyy] · ${RUNS.length} bài · trang tự cập nhật khi Claude xong từng bước</p></div><button type="button" class="btn ghost">Mở Nhật ký chạy của ngày</button></div>
+    <div class="stats">${stats.map(([l, v, c]) => `<div class="card stat"><span>${l}</span><b class="num" style="color:${c}">${v}</b></div>`).join('')}</div>
+    <div class="runs">${runs || '<div class="empty"><b>Chưa có lượt chạy nào hôm nay</b><a class="btn" href="#noi-bo-tao">Tạo KHBD</a></div>'}</div>
+    <p class="foot-note">Nhật ký chạy: Google Sheet trong thư mục ngày của AI Agent, mỗi bài một dòng (giờ bắt đầu, giờ kết thúc, số phút, lớp, chủ đề, bài, số tiết, bản KHBD, link, cảnh báo). Trong bản mẫu, các bước tự chạy giả lập vài giây một bước.</p>`);
+}
+
+/* ================= Internal: Danh sách ================= */
+function dsRows() {
+  const d = S.ds;
+  const base = ITEMS.filter(it => (!d.q || fold(it.title).includes(fold(d.q))) && (d.grade === 'all' || String(it.grade) === d.grade) && (d.source === 'all' || it.source === d.source));
+  const keys = ['all', 'draft', 'review', 'fix', 'approved', 'pbt', 'error'];
+  const tabs = keys.map(k => `<button type="button" data-act="dstab" data-v="${k}" aria-pressed="${d.tab === k}">${k === 'all' ? 'Tất cả' : ST[k][0]} <span class="num">${base.filter(it => k === 'all' || it.status === k).length}</span></button>`).join('');
+  const rows = base.filter(it => d.tab === 'all' || it.status === d.tab).map(it => {
+    const s = ST[it.status], a = ACTION[it.status];
+    return `<tr><td><div class="tt">${esc(it.title)}</div><div class="tp">${esc(it.topic)}</div></td><td>Lớp ${it.grade}</td><td>${it.source === 'kho' ? 'Soạn lại từ kho' : 'Bài mới'}</td><td>${it.version}</td>
+      <td><span class="chip" style="background:${s[1]};color:${s[2]};border-radius:99px;padding:3px 10px">${s[0]}</span></td>
+      <td style="color:${it.warn ? 'var(--err)' : 'var(--muted)'}">${it.warn ? it.warn + ' cảnh báo' : 'Không'}</td><td class="muted">[dd/mm/yyyy]</td><td><a href="${a[1]}">${a[0]}</a></td></tr>`;
+  }).join('');
+  return { tabs, table: rows ? `<div class="card tbl-wrap"><table><thead><tr><th>Bài</th><th>Lớp</th><th>Cách soạn</th><th>Bản</th><th>Trạng thái</th><th>Cảnh báo</th><th>Cập nhật</th><th>Việc tiếp</th></tr></thead><tbody>${rows}</tbody></table></div>` : '<div class="empty"><b>Không có bài nào khớp</b><span>Đổi bộ lọc hoặc từ khoá tìm kiếm.</span></div>' };
+}
+function viewDanhSach() {
+  const d = S.ds, r = dsRows();
+  return inbShell('noi-bo-danh-sach', `
+    <div class="ws-head"><div><h1>Danh sách KHBD</h1><p>Mọi bản Claude đã soạn trong AI Agent, mới nhất ở trên. Mỗi lần sửa là một bản mới, bản cũ vẫn giữ.</p></div><a class="btn" href="#noi-bo-tao">Tạo KHBD</a></div>
+    <div class="stabs" id="ds-tabs">${r.tabs}</div>
+    <div class="fbar"><input type="search" id="ds-q" data-in="ds.q" value="${esc(d.q)}" placeholder="Tìm theo tên bài" aria-label="Tìm theo tên bài">
+      <label for="ds-lop">Lớp <select id="ds-lop" data-in="ds.grade"><option value="all">Tất cả</option>${[6, 7, 8, 9, 10, 11, 12].map(n => `<option value="${n}" ${d.grade == n ? 'selected' : ''}>Lớp ${n}</option>`).join('')}</select></label>
+      <label for="ds-cach">Cách soạn <select id="ds-cach" data-in="ds.source"><option value="all">Tất cả</option><option value="kho" ${d.source === 'kho' ? 'selected' : ''}>Soạn lại từ kho</option><option value="moi" ${d.source === 'moi' ? 'selected' : ''}>Bài mới</option></select></label></div>
+    <div id="ds-table">${r.table}</div>`);
+}
+
+/* ================= Internal: Duyệt bài ================= */
+const CHECKS = [['pass', 'Mã 2422 đúng lớp, 2 đến 4 mã, bám nội dung bài'], ['pass', 'Mục tiêu bài học phủ đủ yêu cầu của khung NLS'], ['pass', 'Không bài kiểm tra định kì, không điểm riêng'], ['warn', 'Hoạt động có AI: cần thêm bước nhắc HS khai báo khi sản phẩm dùng AI'], ['fixed', 'Bài nguồn bắt HS đăng nhập tài khoản: đã đổi thành GV thao tác'], ['pass', 'Công cụ nêu rõ độ tuổi, không đưa dữ liệu cá nhân của HS vào công cụ'], ['pass', 'Hình thức triển khai: chuyên đề'], ['warn', 'Video trong bài chưa có phương án khi mất mạng']];
+const TAG = { pass: ['Đạt', 'var(--ok-soft)', 'var(--ok)'], warn: ['Cần xem', 'var(--warn-soft)', 'var(--warn)'], fixed: ['Đã sửa', 'var(--accent-soft)', 'var(--accent-dark)'] };
+const CRITERIA = ['1. Nội dung kiến thức', '2. Hoạt động học tập', '3. Thời lượng', '4. Công nghệ & công cụ', '5. Mức độ phù hợp với HS', '6. Sản phẩm / Minh chứng', '7. An toàn khi sử dụng AI'];
+function viewDuyet() {
+  const v = S.dv;
+  let scored = 0, total = 0, na = 0;
+  CRITERIA.forEach((_, i) => { const c = v.scores[i]; if (c === 'na') na++; else if (c) { scored++; total += c; } });
+  const status = v.decision === 'approved' ? ST.approved : v.decision === 'back' ? ST.fix : ST.review;
+  let tab;
+  if (v.tab === 'check') tab = `<section class="card panel stack"><h2 style="font-size:19px">Checklist QĐ 2422 và CV 5588</h2>
+      <div class="checks">${CHECKS.map(([k, t]) => `<div><span class="chip" style="background:${TAG[k][1]};color:${TAG[k][2]}">${TAG[k][0]}</span><span>${t}</span></div>`).join('')}</div>
+      <div><b>Văn bản khác</b><p class="muted" style="margin:6px 0 0;font-size:14.5px">TT 02, TT 16, TT 18, TT 85: chưa bật cho lượt này. Bật ở màn Tạo KHBD hoặc chạy đối chiếu lại.</p></div></section>`;
+  else if (v.tab === 'rubric') tab = `<section class="card panel stack"><div class="sub" style="margin:0"><h2 style="font-size:19px">Rubric 7 tiêu chí</h2><span class="muted num" style="font-size:13.5px">${scored + na === 0 ? 'Chưa chấm' : `${total} / ${scored * 3} điểm · ${scored + na}/7 tiêu chí`}</span></div>
+      <div class="crit">${CRITERIA.map((label, i) => `<div class="c"><span>${label}</span><div class="opts" role="group" aria-label="${label}">${[3, 2, 1, 'na'].map(o => `<button type="button" data-act="score" data-i="${i}" data-v="${o}" aria-pressed="${v.scores[i] === o}">${o === 'na' ? 'N/A' : o}</button>`).join('')}</div></div>`).join('')}</div></section>`;
+  else tab = `<section class="card panel stack"><h2 style="font-size:19px">Góp ý (${v.notes.length})</h2>
+      <div class="notes">${v.notes.map(n => `<div class="n"><small>${esc(n.meta)}</small>${esc(n.text)}</div>`).join('')}</div>
+      <label for="dv-draft" class="sr">Thêm góp ý</label><textarea id="dv-draft" data-in="dv.draft" placeholder="Thêm góp ý cho bản v2">${esc(v.draft)}</textarea>
+      <button type="button" class="btn ghost" data-act="addnote">Thêm góp ý</button></section>`;
+  return inbShell('noi-bo-duyet', `
+    <div class="crumbs"><a href="#noi-bo-danh-sach">Danh sách KHBD</a>${ico('chevR', 14)}<span>Bài 3. AI tạo sinh</span></div>
+    <div class="ws-head"><div><h1>Bài 3. AI tạo sinh</h1><p>Lớp 6 · Chủ đề 1: Nền tảng của công nghệ AI · 1 tiết · Soạn lại từ kho · Chuyên đề</p></div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span class="pill" style="background:${status[1]};color:${status[2]}">${status[0]}</span>
+        <select aria-label="Phiên bản"><option>v1 (bản mới nhất)</option></select><button type="button" class="btn ghost">Mở Google Doc</button></div></div>
+    <div class="review">
+      <article class="card doc">
+        <div class="dh"><span>[Logo] Kế hoạch giảng dạy</span><span>Bản xem trước · Do Claude soạn · v1</span></div>
+        <h2 class="title">Bài 3. AI tạo sinh</h2>
+        <h3>I. Mục tiêu</h3><h4>1. Năng lực trí tuệ nhân tạo</h4><p class="ph" style="margin:0">[Yêu cầu cần đạt lấy theo mã QĐ 2422 lớp 6, mặc định không in mã]</p>
+        <h4>2. Mục tiêu bài học</h4><ul><li>Định nghĩa được AI tạo sinh.</li><li>Liệt kê được các sản phẩm đầu ra của AI tạo sinh.</li><li>Nhận diện được một số hạn chế của AI tạo sinh.</li></ul>
+        <h3>II. Thiết bị dạy học và học liệu</h3><ul><li>Máy tính kết nối máy chiếu hoặc màn hình tương tác.</li><li class="ph">[Học liệu khác: PBT 3.1, ảnh chụp màn hình dự phòng khi mất mạng]</li></ul>
+        <h3>III. Tiến trình dạy học</h3>
+        <div class="tbl-wrap"><table><thead><tr><th>Hoạt động</th><th>Mô tả</th><th>Sản phẩm / Minh chứng</th></tr></thead><tbody>
+          <tr><td><b>1. Khởi động</b><br>[x] phút</td><td>[GV chiếu…; <b>Hỏi:</b> “…” → <i>đáp án gợi ý</i>]</td><td>[Câu trả lời miệng]</td></tr>
+          <tr><td><b>2. Hình thành kiến thức</b><br>[x] phút</td><td>[Nội dung Claude soạn theo spec]</td><td>[PBT 3.1 – phần A]</td></tr>
+          <tr><td><b>3. Luyện tập</b><br>[x] phút</td><td>[Nội dung Claude soạn theo spec]</td><td>[PBT 3.1 – phần B]</td></tr>
+          <tr><td><b>4. Vận dụng</b><br>[x] phút</td><td>[… <b>GV tổng kết:</b> …]</td><td>[Sản phẩm vận dụng]</td></tr></tbody></table></div>
+        <p class="muted" style="font-size:13px;margin:12px 0 0">Tổng thời gian các hoạt động phải bằng 45 phút × số tiết.</p>
+      </article>
+      <div class="stack">
+        <div class="rtabs" role="group" aria-label="Công cụ duyệt">${[['check', 'Đối chiếu'], ['rubric', 'Rubric'], ['notes', 'Góp ý']].map(([k, l]) => `<button type="button" data-act="dvtab" data-v="${k}" aria-pressed="${v.tab === k}">${l}</button>`).join('')}</div>
+        ${tab}
+        <section class="card panel stack">${v.decision
+          ? `<div class="callout" style="background:${status[1]};color:${status[2]}">${v.decision === 'approved' ? 'Đã duyệt KHBD. Bước tiếp: Claude dựng phiếu bài tập từ spec PBT.' : 'Đã trả về. Claude sẽ soạn bản v2 theo các góp ý ở tab Góp ý.'}</div>
+             ${v.decision === 'approved' ? '<a class="btn block" href="#noi-bo-tien-do">Làm PBT</a>' : ''}<button type="button" class="btn ghost block" data-act="undo">Hoàn tác</button>`
+          : `<button type="button" class="btn block" data-act="approve">Duyệt KHBD</button><button type="button" class="btn ghost block" data-act="sendback">Trả về, soạn bản v2 theo góp ý</button>`}</section>
+      </div>
+    </div>`);
+}
+
+/* ================= Internal: Quản lý khoá học ================= */
+/* Phiên bản KHBD / PBT (tương ứng document_versions). Chỉ approved | pbt mới gắn được vào bài. */
+const DOCS = {
+  b1: { short: 'KHBD Bài 1', title: 'Bài 1. Làm quen với nền tảng Google Deepmind', lop: 6, kind: 'KHBD', versions: [{ v: 1, st: 'approved' }, { v: 2, st: 'approved' }] },
+  b2: { short: 'KHBD Bài 2', title: 'Bài 2. AI là gì?', lop: 6, kind: 'KHBD', versions: [{ v: 1, st: 'approved' }, { v: 2, st: 'fix' }] },
+  b3: { short: 'KHBD Bài 3', title: 'Bài 3. AI tạo sinh', lop: 6, kind: 'KHBD', versions: [{ v: 1, st: 'review' }] },
+  b4: { short: 'KHBD Bài 4', title: 'Bài 4. Mô hình', lop: 6, kind: 'KHBD', versions: [{ v: 1, st: 'review' }] },
+  b10: { short: 'KHBD + PBT Bài 10', title: 'Bài 10. Cách máy học hoạt động', lop: 6, kind: 'KHBD + PBT', versions: [{ v: 1, st: 'pbt' }] }
+};
+const OKST = ['approved', 'pbt'];
+const latestOk = d => d.versions.filter(x => OKST.includes(x.st)).reduce((m, x) => Math.max(m, x.v), 0);
+const QL_ST = { published: ['Đã xuất bản', 'var(--ok-soft)', 'var(--ok)'], draft: ['Nháp', 'var(--grey-soft)', 'var(--muted)'], hidden: ['Đang ẩn', 'var(--warn-soft)', 'var(--warn)'] };
+const staleCount = c => c.modules.reduce((n, m) => n + m.lessons.reduce((k, l) => k + l.mats.filter(mt => latestOk(DOCS[mt.doc]) > mt.v).length, 0), 0);
+const nLes = c => c.modules.reduce((n, m) => n + m.lessons.length, 0);
+(() => { const gd = byId('gd-ai-thcs');
+  gd.modules[0].lessons[2].mats.push({ doc: 'b1', v: 1 });
+  gd.modules[1].lessons[2].mats.push({ doc: 'b2', v: 1 });
+  gd.modules[2].lessons[1].mats.push({ doc: 'b10', v: 1 }); })();
+S.ql = { sel: 'gd-ai-thcs', role: 'lead', picker: null, q: '' };
+const qlCourse = () => byId(S.ql.sel) || COURSES[0];
+const qlEditable = () => S.ql.role === 'lead' || qlCourse().status !== 'published';
+const tool = (act, i, j, icon, label, off) => `<button type="button" class="tool" data-act="${act}" data-i="${i}" data-j="${j}" aria-label="${label}" title="${label}" ${off || !qlEditable() ? 'disabled' : ''}>${ico(icon, 16)}</button>`;
+
+function qlListHtml() {
+  const q = S.ql, cur = qlCourse();
+  const rows = COURSES.filter(x => !q.q || fold(x.title).includes(fold(q.q))).map(x => {
+    const s = QL_ST[x.status], stale = staleCount(x);
+    return `<button type="button" class="ql-item" data-act="qlsel" data-v="${x.id}" aria-current="${x.id === cur.id}">
+      <span class="t">${esc(x.title)}</span>
+      <span class="m"><span class="chip" style="background:${s[1]};color:${s[2]}">${s[0]}</span><span>${x.modules.length} học phần · ${nLes(x)} bài</span>${stale ? `<span class="chip" style="background:var(--warn-soft);color:var(--warn)">${stale} có bản mới</span>` : ''}</span></button>`;
+  }).join('');
+  return rows || '<p class="muted" style="margin:0;padding:16px;font-size:14px">Không có khoá nào khớp.</p>';
+}
+function pickerHtml(i, j, l) {
+  return `<div class="picker"><b>Chọn KHBD, PBT đã duyệt</b>${Object.entries(DOCS).map(([id, d]) => {
+    const ok = latestOk(d), nw = d.versions[d.versions.length - 1], has = l.mats.some(mt => mt.doc === id);
+    const note = nw.v > ok ? ` · v${nw.v} đang ${ST[nw.st][0].toLowerCase()}, chưa gắn được` : '';
+    return `<div class="pk"><span><span class="t">${esc(d.kind)} ${esc(d.title)}</span><span class="s">Lớp ${d.lop}${note}</span></span>
+      <button type="button" class="btn ghost sm" data-act="matadd" data-i="${i}" data-j="${j}" data-v="${id}" ${ok && !has ? '' : 'disabled'}>${has ? 'Đã gắn' : ok ? `Gắn v${ok}` : 'Chưa có bản duyệt'}</button></div>`;
+  }).join('')}<p class="muted" style="margin:0;font-size:13px">Chỉ bản đã duyệt mới gắn được. Mỗi lần gắn là gắn đúng một phiên bản.</p></div>`;
+}
+function viewQuanLy() {
+  const q = S.ql, c = qlCourse(), lead = q.role === 'lead', editable = qlEditable(), dis = editable ? '' : 'disabled';
+  const st = QL_ST[c.status], stale = staleCount(c);
+  const pubBtn = c.status === 'published'
+    ? `<button type="button" class="btn ghost" data-act="qlstatus" data-v="hidden" ${lead ? '' : 'disabled'}>Ẩn khỏi trang giáo viên</button>`
+    : `<button type="button" class="btn" data-act="qlstatus" data-v="published" ${lead ? '' : 'disabled'}>${c.status === 'hidden' ? 'Hiện lại' : 'Xuất bản'}</button>`;
+  const opt = (map, cur) => Object.entries(map).map(([k, v]) => `<option value="${k}" ${k === cur ? 'selected' : ''}>${esc(v)}</option>`).join('');
+  const mods = c.modules.map((m, i) => `<div class="ql-mod">
+      <div class="ql-mh"><span class="dot">${i + 1}</span><label class="sr" for="m-${i}">Tên học phần ${i + 1}</label><input type="text" id="m-${i}" data-in="mod.${i}" value="${esc(m.title)}" ${dis}>
+        <span class="ql-tools">${tool('mup', i, '', 'up', 'Chuyển học phần lên', i === 0)}${tool('mdown', i, '', 'down', 'Chuyển học phần xuống', i === c.modules.length - 1)}${tool('mdel', i, '', 'x', 'Xoá học phần', c.modules.length === 1)}</span></div>
+      <ol class="ql-les">${m.lessons.map((l, j) => {
+        const key = i + '-' + j, picking = q.picker === key;
+        return `<li><div class="ql-lr"><label class="sr" for="l-${key}">Tên bài ${j + 1}</label><input type="text" id="l-${key}" data-in="les.${i}.${j}" value="${esc(l.title)}" ${dis}>
+            <span class="ql-tools">${tool('lup', i, j, 'up', 'Chuyển bài lên', j === 0)}${tool('ldown', i, j, 'down', 'Chuyển bài xuống', j === m.lessons.length - 1)}${tool('ldel', i, j, 'x', 'Xoá bài', m.lessons.length === 1)}</span></div>
+          <div class="ql-mats">${l.mats.map((mt, k) => { const d = DOCS[mt.doc], nv = latestOk(d);
+            return `<span class="mat">${ico('doc', 14)}${esc(d.short)} · v${mt.v}${editable ? `<button type="button" data-act="matdel" data-i="${i}" data-j="${j}" data-k="${k}" aria-label="Gỡ ${esc(d.short)}">×</button>` : ''}</span>${nv > mt.v ? `<span class="newv">Có v${nv} đã duyệt${editable ? ` <button type="button" class="linkbtn" data-act="matup" data-i="${i}" data-j="${j}" data-k="${k}">Cập nhật lên v${nv}</button>` : ''}</span>` : ''}`; }).join('')}
+            ${editable ? `<button type="button" class="linkbtn" data-act="picker" data-v="${key}" aria-expanded="${picking}">${picking ? 'Đóng' : '+ Gắn học liệu'}</button>` : (l.mats.length ? '' : '<span class="muted" style="font-size:13px">Chưa gắn học liệu</span>')}</div>
+          ${picking ? pickerHtml(i, j, l) : ''}</li>`;
+      }).join('')}</ol>
+      ${editable ? `<button type="button" class="linkbtn" style="justify-self:start;margin-left:40px" data-act="ladd" data-i="${i}">+ Thêm bài</button>` : ''}</div>`).join('');
+  return inbShell('noi-bo-khoa-hoc', `
+    <div class="ws-head"><div><h1>Quản lý khoá học</h1><p>Tạo, sửa và xuất bản khoá học trên trang giáo viên. Gắn KHBD, PBT đã duyệt làm học liệu cho từng bài.</p></div>
+      <label class="rolesel" for="ql-role">Xem với vai trò <select id="ql-role" data-in="ql.role"><option value="lead" ${lead ? 'selected' : ''}>Academic lead (quản lý nội dung)</option><option value="editor" ${lead ? '' : 'selected'}>Người soạn KHBD</option></select></label></div>
+    <div class="ql">
+      <aside class="stack"><button type="button" class="btn" data-act="qlnew">+ Khoá học mới</button>
+        <input type="search" id="ql-q" data-in="ql.q" value="${esc(q.q)}" placeholder="Tìm khoá học" aria-label="Tìm khoá học">
+        <div class="card ql-list" id="ql-list">${qlListHtml()}</div></aside>
+      <div class="stack">
+        <section class="card panel stack ql-top">
+          <div class="rh"><div><span class="pill" style="background:${st[1]};color:${st[2]}">${st[0]}</span><h2>${esc(c.title)}</h2><span class="muted" style="font-size:14px">${c.modules.length} học phần · ${nLes(c)} bài · Thay đổi được lưu tự động</span></div>
+            <div class="acts"><a class="btn ghost" href="#kh-${c.id}">Xem như giáo viên</a>${pubBtn}</div></div>
+          ${!lead ? `<div class="callout" style="background:var(--grey-soft);color:var(--muted)">Chỉ Academic lead được xuất bản hoặc ẩn khoá học${c.status === 'published' ? ' và sửa khoá đang xuất bản' : ''}. Bạn vẫn soạn được khoá ở trạng thái nháp.</div>` : ''}
+          ${stale ? `<div class="callout" style="background:var(--warn-soft);color:var(--warn)">${stale} học liệu có bản mới đã duyệt. Chọn “Cập nhật” ở từng bài bên dưới; bản đang gắn vẫn giữ nguyên cho đến khi bạn đổi.</div>` : ''}
+        </section>
+        <section class="card panel stack"><h2>Thông tin chung</h2><div class="formgrid">
+          <label class="field full" for="c-title"><b>Tên khoá học</b><input type="text" id="c-title" data-in="course.title" value="${esc(c.title)}" ${dis}></label>
+          <label class="field full" for="c-desc"><b>Mô tả ngắn</b><textarea id="c-desc" data-in="course.desc" ${dis}>${esc(c.desc)}</textarea></label>
+          <label class="field" for="c-topic"><b>Chủ đề</b><select id="c-topic" data-in="course.topic" ${dis}>${opt(Object.fromEntries(Object.entries(TOPICS).map(([k, v]) => [k, v.label])), c.topic)}</select></label>
+          <label class="field" for="c-fmt"><b>Hình thức</b><select id="c-fmt" data-in="course.fmt" ${dis}>${opt(FMT, c.fmt)}</select></label>
+          <label class="field" for="c-level"><b>Trình độ</b><select id="c-level" data-in="course.level" ${dis}>${opt({ 'Cơ bản': 'Cơ bản', 'Nâng cao': 'Nâng cao' }, c.level)}</select></label>
+          <div class="field"><b>Thời lượng (giờ)</b><div class="hrs"><input type="number" min="0" id="c-h0" data-in="course.h0" value="${c.h[0]}" aria-label="Từ (giờ)" ${dis}><span>đến</span><input type="number" min="0" id="c-h1" data-in="course.h1" value="${c.h[1]}" aria-label="Đến (giờ)" ${dis}></div></div>
+          <fieldset class="field full" style="border:0;padding:0;margin:0"><legend style="padding:0"><b>Đối tượng</b></legend><div class="audrow">${Object.entries(AUD).map(([k, v]) => `<label class="opt" for="c-aud-${k}"><input type="checkbox" id="c-aud-${k}" data-act="aud" data-v="${k}" ${c.aud.includes(k) ? 'checked' : ''} ${dis}>${v}</label>`).join('')}</div></fieldset>
+        </div></section>
+        <section class="card panel stack"><div class="sub" style="margin:0"><h2>Học phần và bài</h2><span class="muted" style="font-size:13.5px">Học liệu là KHBD, PBT đã duyệt ở khu nội bộ</span></div>
+          ${mods}${editable ? '<button type="button" class="btn ghost" style="justify-self:start" data-act="madd">+ Thêm học phần</button>' : ''}</section>
+        <section class="card panel stack"><h2>Chứng nhận</h2>
+          <label class="opt" for="c-cert"><input type="checkbox" id="c-cert" disabled>Cấp chứng nhận PDF có mã xác minh khi hoàn thành</label>
+          <p class="muted" style="margin:0;font-size:14px">Chưa cấp ở bản đầu: giáo viên học xong chỉ thấy “Đã hoàn thành” trên web. Mẫu chứng nhận, người ký và giá trị với trường, sở chờ công ty chốt.</p></section>
+      </div>
+    </div>`);
+}
+
+/* ================= Router ================= */
+const app = document.getElementById('app');
+function route() {
+  const h = location.hash.slice(1) || 'khoa-hoc';
+  const inb = h.startsWith('noi-bo');
+  document.getElementById('sw-pub').toggleAttribute('aria-current', !inb);
+  document.getElementById('sw-inb').toggleAttribute('aria-current', inb);
+  let html, title = 'AI Edu Training Hub';
+  if (h.startsWith('kh-') && byId(h.slice(3))) { const c = byId(h.slice(3)); html = viewDetail(c); title = c.title + ' · AI Edu'; }
+  else if (h === 'cua-toi') html = viewMine();
+  else if (h === 'noi-bo-tao') html = viewTao();
+  else if (h === 'noi-bo-tien-do') html = viewTienDo();
+  else if (h === 'noi-bo-danh-sach') html = viewDanhSach();
+  else if (h === 'noi-bo-duyet') html = viewDuyet();
+  else if (h === 'noi-bo-khoa-hoc') html = viewQuanLy();
+  else if (h === 'tro-giup') html = pubShell('', `<div class="wrap gut" style="padding-block:48px"><div class="empty"><b>Trang Trợ giúp chưa có trong bản mẫu</b><span>Trang này sẽ có câu hỏi thường gặp, liên hệ hỗ trợ, điều khoản và quyền riêng tư.</span><a class="btn" href="#khoa-hoc">Về danh mục khoá học</a></div></div>`);
+  else html = viewCatalog();
+  document.title = title;
+  app.innerHTML = html;
+}
+const rerender = () => { const y = scrollY; route(); scrollTo(0, y); };
+const curCourse = () => byId(location.hash.slice(4));
+
+/* ================= Events ================= */
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const a = el.dataset.act, v = el.dataset.v;
+  const tog = (arr, x) => arr.includes(x) ? arr.filter(y => y !== x) : arr.concat([x]);
+  switch (a) {
+    case 'ftoggle': S.f[el.dataset.k] = tog(S.f[el.dataset.k], v); document.getElementById('filters').innerHTML = filtersHtml(); document.getElementById('results').innerHTML = catResults(); return;
+    case 'clearq': S.q = ''; return rerender();
+    case 'clearall': S.q = ''; S.f = { aud: [], topic: [], dur: [], fmt: [] }; return rerender();
+    case 'fpanel': S.filtersOpen = !S.filtersOpen; return rerender();
+    case 'mod': { const c = curCourse(), i = +el.dataset.i; S.open[c.id] = tog(S.open[c.id], i); return rerender(); }
+    case 'modall': { const c = curCourse(); S.open[c.id] = S.open[c.id].length === c.mods.length ? [] : c.mods.map((_, i) => i); return rerender(); }
+    case 'enroll': { const c = curCourse(); store.learn[c.id] = { done: 0 }; S.open[c.id] = [0]; persist(); return rerender(); }
+    case 'next': { const c = curCourse(), l = store.learn[c.id]; l.done = Math.min(c.mods.length, l.done + 1); S.open[c.id] = l.done < c.mods.length ? [l.done] : []; persist(); return rerender(); }
+    case 'reset': { const c = curCourse(); store.learn[c.id] = { done: 0 }; S.open[c.id] = [0]; persist(); return rerender(); }
+    case 'save': { const c = curCourse(); store.saved = tog(store.saved, c.id); persist(); return rerender(); }
+    case 'minetab': S.mineTab = v; return rerender();
+    case 'mode': S.tao.mode = v; return rerender();
+    case 'expand': S.tao.expanded = tog(S.tao.expanded, v); return rerender();
+    case 'pick': S.tao.selected = tog(S.tao.selected, v); return rerender();
+    case 'format': S.tao.format = v; return;
+    case 'codemode': S.tao.codeMode = v; return rerender();
+    case 'base': S.tao.bases[v] = !S.tao.bases[v]; return;
+    case 'run': {
+      const t = S.tao;
+      const items = t.mode === 'kho' ? t.selected.map(k => { const l = lessonInfo(k); return { id: l.id + '-' + Date.now(), title: l.name, meta: `Lớp ${l.lop} · ${l.cd} · ${l.tiet} tiết · đang chờ` }; })
+        : [{ id: 'moi-' + Date.now(), title: t.lessonName || '[Tên bài mới]', meta: `Lớp ${t.grade} · ${t.periods} tiết · bài mới · đang chờ` }];
+      items.forEach(x => RUNS.push({ ...x, status: 'queued', at: 0 }));
+      t.selected = []; location.hash = 'noi-bo-tien-do'; return;
+    }
+    case 'report': S.reports = tog(S.reports, v); return rerender();
+    case 'retry': { const r = RUNS.find(x => x.id === v); r.status = 'running'; r.error = ''; return rerender(); }
+    case 'cancel': RUNS = RUNS.filter(x => x.id !== v); return rerender();
+    case 'dstab': S.ds.tab = v; document.getElementById('ds-tabs').innerHTML = dsRows().tabs; document.getElementById('ds-table').innerHTML = dsRows().table; return;
+    case 'dvtab': S.dv.tab = v; return rerender();
+    case 'qlsel': S.ql.sel = v; S.ql.picker = null; return rerender();
+    case 'qlnew': { const id = 'khoa-moi-' + Date.now().toString(36);
+      COURSES.push({ id, title: 'Khoá học mới', desc: '', topic: 'ai', aud: [], h: [1, 2], fmt: 'self', level: 'Cơ bản', status: 'draft', learn: [], who: '', modules: [{ title: 'Học phần 1', lessons: [{ title: 'Bài 1', mats: [] }] }] });
+      Object.defineProperty(byId(id), 'mods', { get() { return this.modules.map(m => [m.title, m.lessons.map(l => l.title)]); } });
+      S.ql.sel = id; S.ql.q = ''; return rerender(); }
+    case 'qlstatus': if (S.ql.role === 'lead') qlCourse().status = v; return rerender();
+    case 'aud': { const c = qlCourse(); c.aud = tog(c.aud, v); return; }
+    case 'mup': case 'mdown': { const M = qlCourse().modules, i = +el.dataset.i, k = a === 'mup' ? i - 1 : i + 1; [M[i], M[k]] = [M[k], M[i]]; S.ql.picker = null; return rerender(); }
+    case 'mdel': qlCourse().modules.splice(+el.dataset.i, 1); S.ql.picker = null; return rerender();
+    case 'madd': qlCourse().modules.push({ title: 'Học phần mới', lessons: [{ title: 'Bài mới', mats: [] }] }); return rerender();
+    case 'lup': case 'ldown': { const L = qlCourse().modules[+el.dataset.i].lessons, j = +el.dataset.j, k = a === 'lup' ? j - 1 : j + 1; [L[j], L[k]] = [L[k], L[j]]; S.ql.picker = null; return rerender(); }
+    case 'ldel': qlCourse().modules[+el.dataset.i].lessons.splice(+el.dataset.j, 1); S.ql.picker = null; return rerender();
+    case 'ladd': qlCourse().modules[+el.dataset.i].lessons.push({ title: 'Bài mới', mats: [] }); return rerender();
+    case 'picker': S.ql.picker = S.ql.picker === v ? null : v; return rerender();
+    case 'matadd': qlCourse().modules[+el.dataset.i].lessons[+el.dataset.j].mats.push({ doc: v, v: latestOk(DOCS[v]) }); S.ql.picker = null; return rerender();
+    case 'matdel': qlCourse().modules[+el.dataset.i].lessons[+el.dataset.j].mats.splice(+el.dataset.k, 1); return rerender();
+    case 'matup': { const mt = qlCourse().modules[+el.dataset.i].lessons[+el.dataset.j].mats[+el.dataset.k]; mt.v = latestOk(DOCS[mt.doc]); return rerender(); }
+    case 'score': { const i = +el.dataset.i, val = v === 'na' ? 'na' : +v; S.dv.scores[i] = S.dv.scores[i] === val ? undefined : val; return rerender(); }
+    case 'addnote': if (!S.dv.draft.trim()) return; S.dv.notes.push({ meta: 'Bạn · vừa xong', text: S.dv.draft.trim() }); S.dv.draft = ''; return rerender();
+    case 'approve': S.dv.decision = 'approved'; ITEMS.find(x => x.id === 'b3').status = 'approved'; DOCS.b3.versions[0].st = 'approved'; return rerender();
+    case 'sendback': S.dv.decision = 'back'; S.dv.tab = 'notes'; ITEMS.find(x => x.id === 'b3').status = 'fix'; DOCS.b3.versions[0].st = 'fix'; return rerender();
+    case 'undo': S.dv.decision = null; ITEMS.find(x => x.id === 'b3').status = 'review'; DOCS.b3.versions[0].st = 'review'; return rerender();
+  }
+});
+document.addEventListener('input', e => {
+  const k = e.target.dataset.in; if (!k) return;
+  const val = e.target.value;
+  if (k === 'q') { S.q = val; document.getElementById('filters').innerHTML = filtersHtml(); document.getElementById('results').innerHTML = catResults(); return; }
+  if (k === 'sort') return;
+  if (/^(course|mod|les)\./.test(k)) {
+    const c = qlCourse(), p = k.split('.');
+    if (p[0] === 'course') { if (p[1] === 'h0' || p[1] === 'h1') c.h[p[1] === 'h0' ? 0 : 1] = Math.max(0, +val || 0); else c[p[1]] = val; }
+    else if (p[0] === 'mod') c.modules[+p[1]].title = val;
+    else c.modules[+p[1]].lessons[+p[2]].title = val;
+    if (k === 'course.title') document.querySelector('.ql-top h2').textContent = val;
+    return;
+  }
+  const [obj, field] = k.split('.');
+  if (k === 'ql.q') { S.ql.q = val; document.getElementById('ql-list').innerHTML = qlListHtml(); return; }
+  S[obj][field] = val;
+  if (k === 'ds.q') { const r = dsRows(); document.getElementById('ds-tabs').innerHTML = r.tabs; document.getElementById('ds-table').innerHTML = r.table; }
+});
+document.addEventListener('change', e => {
+  const k = e.target.dataset.in; if (!k) return;
+  const val = e.target.value;
+  if (k === 'sort') { S.sort = val; document.getElementById('results').innerHTML = catResults(); return; }
+  if (k === 'ql.role') { S.ql.role = val; S.ql.picker = null; return rerender(); }
+  if (k === 'course.title' || k === 'course.h0' || k === 'course.h1') { document.getElementById('ql-list').innerHTML = qlListHtml(); return; }
+  if (k === 'tao.grade') { S.tao.grade = val; S.tao.topic = parseInt(val, 10) <= 5 ? 'ngoai' : '0'; return rerender(); }
+  if (k === 'ds.grade' || k === 'ds.source') { const [o, f] = k.split('.'); S[o][f] = val; const r = dsRows(); document.getElementById('ds-tabs').innerHTML = r.tabs; document.getElementById('ds-table').innerHTML = r.table; }
+});
+
+/* Giả lập Claude chạy từng bước ở màn Tiến độ */
+setInterval(() => {
+  let changed = false;
+  const running = RUNS.find(r => r.status === 'running');
+  if (running) { running.at++; changed = true; if (running.at >= STEPS.length) { running.status = 'done'; running.version = 'v1'; running.meta = running.meta.replace(' · đang chờ', '') + ' · [x] phút'; } }
+  else { const q = RUNS.find(r => r.status === 'queued'); if (q) { q.status = 'running'; q.meta = q.meta.replace('đang chờ', 'bắt đầu [hh:mm]'); changed = true; } }
+  if (changed && location.hash === '#noi-bo-tien-do') rerender();
+}, 2500);
+
+addEventListener('hashchange', () => { route(); scrollTo(0, 0); });
+route();
+</script>

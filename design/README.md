@@ -13,6 +13,8 @@ Bản sao mã nguồn của canvas thiết kế (8 màn). Canvas trên claude.ai
 | `artboards/DuyetBai.dc.html` | Duyệt bài | `/noi-bo/khbd/[id]` |
 | `artboards/QuanLyKhoaHoc.dc.html` | Quản lý khoá học | `/noi-bo/khoa-hoc`, `/noi-bo/khoa-hoc/[id]` |
 
+`prototype.html` là bản bấm thử nối các màn (thanh chuyển Trang giáo viên/Khu nội bộ, công tắc vai trò). Dùng để hiểu luồng; chỗ nào khác các file `.dc.html` thì theo `.dc.html`.
+
 `canvas.json` ghi vị trí và kích thước từng màn trên canvas.
 
 ## Cách đọc một file `.dc.html`

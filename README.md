@@ -3,7 +3,7 @@
 Web khoá học cho giáo viên và khu nội bộ tạo KHBD của AI Edu.
 
 - Hướng dẫn cho Claude Code và người phát triển: [`CLAUDE.md`](CLAUDE.md)
-- Schema: [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) (đã chạy thử trên PostgreSQL 16)
+- Schema: `supabase/migrations/` (lõi + khoá học), thử bằng `supabase/tests/run.sh <ten_db>` trên PostgreSQL 16
 - Biến môi trường mẫu: [`.env.example`](.env.example)
 
 ## Bắt đầu

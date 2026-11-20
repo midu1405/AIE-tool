@@ -23,7 +23,7 @@ Repo có hai bên Claude, mỗi bên một vai. Midu là người chốt.
 
 - **Giao diện:** đúng bố cục, chữ, màu, bo góc so với `design/artboards/<Màn>.dc.html`; có trạng thái rỗng, lỗi, đang tải; hiển thị được ở 1280 px và 390 px.
 - **Tiếng Việt và a11y:** chữ đúng dấu; ô nhập có `<label>`; nút biểu tượng có `aria-label`; điều hướng được bằng bàn phím; tương phản ≥ 4.5:1; vùng bấm ≥ 44 px.
-- **Dữ liệu và phân quyền:** mọi bảng có RLS; thay đổi schema nằm trong migration mới; khu `/noi-bo` chặn người không phải nhân viên ở cả server lẫn DB; chỉ `quan_ly_noi_dung`/`admin` xuất bản khoá học; chỉ gắn được phiên bản đã duyệt.
+- **Dữ liệu và phân quyền:** mọi bảng có RLS; thay đổi schema nằm trong migration mới; khu `/noi-bo` chặn người không phải nhân viên ở cả server lẫn DB; chỉ `content_manager`/`admin` xuất bản khoá học; `supabase/tests/run.sh` đạt; chỉ gắn được phiên bản đã duyệt.
 - **Bảo mật:** không secret, ID Drive, email viết cứng; service role key không lộ ra trình duyệt; worker không gọi lệnh ghi/xoá nào vào kho nguồn.
 - **Chất lượng:** `npm run lint`, `npm run typecheck`, test đều qua; tìm kiếm bỏ dấu đúng.
 

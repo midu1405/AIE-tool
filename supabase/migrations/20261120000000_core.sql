@@ -1,6 +1,6 @@
--- AI Edu Training Hub · migration đầu tiên
--- Hai khu: trang giáo viên (khoá học) và khu nội bộ (KHBD). Drive là bản gốc của học liệu;
--- database giữ chỉ mục, hàng đợi job, phiên bản, duyệt và khoá học.
+-- AI Edu Training Hub · phần lõi: người dùng, vai trò, kho Drive, KHBD, duyệt bài.
+-- Drive là bản gốc của học liệu; database giữ chỉ mục, hàng đợi job, phiên bản và kết quả duyệt.
+-- Khoá học cho giáo viên nằm ở migration 20261120000100_courses.sql (chạy sau file này).
 
 create extension if not exists pgcrypto;
 create extension if not exists pg_trgm;
@@ -9,30 +9,52 @@ create extension if not exists unaccent;
 -- ============================================================
 -- 1. Người dùng và phân quyền
 -- ============================================================
-create type user_role as enum ('teacher', 'soan_bai', 'duyet', 'quan_ly_noi_dung', 'admin');
-
 create table profiles (
   id          uuid primary key references auth.users on delete cascade,
   email       text unique not null,
   full_name   text,
-  role        user_role not null default 'teacher',
-  created_at  timestamptz not null default now(),
-  -- vai trò nhân viên chỉ dành cho tài khoản công ty
-  constraint staff_domain check (role = 'teacher' or email like '%@aiedu.com.vn')
+  created_at  timestamptz not null default now()
 );
 
-create function is_staff() returns boolean language sql stable security definer as $$
-  select exists (select 1 from profiles where id = auth.uid() and role <> 'teacher');
+-- Một người có thể giữ nhiều vai trò (vd vừa soạn vừa duyệt). Không có dòng nào = giáo viên.
+create table user_roles (
+  user_id    uuid not null references auth.users (id) on delete cascade,
+  role       text not null check (role in ('admin', 'content_manager', 'khbd_editor', 'reviewer')),
+  granted_at timestamptz not null default now(),
+  granted_by uuid references auth.users (id),
+  primary key (user_id, role)
+);
+
+-- admin ngầm có mọi vai trò
+create function has_role(r text) returns boolean
+language sql stable security definer set search_path = '' as $$
+  select exists (
+    select 1 from public.user_roles
+    where user_id = (select auth.uid()) and role in (r, 'admin')
+  );
 $$;
 
-create function has_role(variadic roles user_role[]) returns boolean language sql stable security definer as $$
-  select exists (select 1 from profiles where id = auth.uid() and role = any(roles));
+create function is_staff() returns boolean
+language sql stable security definer set search_path = '' as $$
+  select exists (select 1 from public.user_roles where user_id = (select auth.uid()));
 $$;
+
+-- vai trò nhân viên chỉ dành cho tài khoản công ty
+create function user_roles_staff_domain() returns trigger
+language plpgsql security definer set search_path = '' as $$
+begin
+  if not exists (select 1 from auth.users where id = new.user_id and email like '%@aiedu.com.vn') then
+    raise exception 'Chỉ tài khoản @aiedu.com.vn được giữ vai trò nhân viên.' using errcode = '23514';
+  end if;
+  return new;
+end $$;
+create trigger user_roles_staff_domain before insert or update on user_roles
+  for each row execute function user_roles_staff_domain();
 
 -- tạo profile khi đăng nhập lần đầu
-create function handle_new_user() returns trigger language plpgsql security definer as $$
+create function handle_new_user() returns trigger language plpgsql security definer set search_path = '' as $$
 begin
-  insert into profiles (id, email, full_name)
+  insert into public.profiles (id, email, full_name)
   values (new.id, new.email, new.raw_user_meta_data->>'full_name')
   on conflict (id) do nothing;
   return new;
@@ -125,7 +147,7 @@ create table documents (
   title               text not null,            -- vd 'Bài 3. AI tạo sinh'
   grade               smallint not null check (grade between 1 and 12),
   created_mode        text not null check (created_mode in ('soan_lai', 'bai_moi')),
-  status              doc_status not null default 'draft',
+  status              doc_status not null default 'draft',  -- = trạng thái của current_version_id
   pair_id             uuid references documents, -- KHBD <-> PBT
   current_version_id  uuid,
   stale_source        boolean not null default false,
@@ -176,6 +198,7 @@ create table document_versions (
   skill_version    text,                          -- 'aca-khbd-ai12 v6'
   created_by       uuid references profiles,
   created_at       timestamptz not null default now(),
+  status           doc_status not null default 'draft',  -- trạng thái của riêng phiên bản này
   approved_at      timestamptz,
   approved_by      uuid references profiles,
   unique (document_id, version_no)
@@ -220,100 +243,7 @@ create table feedback_items (
 );
 
 -- ============================================================
--- 6. Khoá học cho giáo viên
--- ============================================================
-create type course_status as enum ('draft', 'published', 'hidden');
-
-create table courses (
-  id            uuid primary key default gen_random_uuid(),
-  slug          text unique not null,
-  title         text not null,
-  summary       text not null,
-  description   text,
-  topic         text not null check (topic in ('hieu_biet_ai', 'day_hoc_voi_ai', 'an_toan_dao_duc', 'nang_luc_so')),
-  audiences     text[] not null default '{}',   -- tieu_hoc, thcs, thpt, quan_ly
-  hours_min     smallint not null,
-  hours_max     smallint not null,
-  format        text not null check (format in ('tu_hoc', 'co_huong_dan')),
-  level         text not null check (level in ('co_ban', 'nang_cao')),
-  status        course_status not null default 'draft',
-  published_at  timestamptz,
-  created_by    uuid references profiles,
-  updated_at    timestamptz not null default now()
-);
-
-create table course_modules (
-  id         uuid primary key default gen_random_uuid(),
-  course_id  uuid not null references courses on delete cascade,
-  position   smallint not null,
-  title      text not null,
-  unique (course_id, position)
-);
-
-create table course_lessons (
-  id         uuid primary key default gen_random_uuid(),
-  module_id  uuid not null references course_modules on delete cascade,
-  position   smallint not null,
-  title      text not null,
-  body_md    text,
-  unique (module_id, position)
-);
-
--- học liệu: ghim đúng một phiên bản KHBD/PBT đã duyệt
-create table lesson_materials (
-  id                  uuid primary key default gen_random_uuid(),
-  lesson_id           uuid not null references course_lessons on delete cascade,
-  document_version_id uuid not null references document_versions,
-  attached_by         uuid references profiles,
-  attached_at         timestamptz not null default now(),
-  unique (lesson_id, document_version_id)
-);
-
-create function only_approved_material() returns trigger language plpgsql as $$
-begin
-  if not exists (select 1 from document_versions where id = new.document_version_id and approved_at is not null) then
-    raise exception 'Chỉ gắn được phiên bản đã duyệt';
-  end if;
-  return new;
-end $$;
-create trigger lesson_materials_approved before insert or update on lesson_materials
-  for each row execute function only_approved_material();
-
--- học liệu đã gắn đang có phiên bản mới hơn được duyệt
-create view material_updates as
-select lm.id as material_id, lm.lesson_id, dv.document_id, dv.version_no as pinned_version,
-       max(newer.version_no) as latest_approved_version
-from lesson_materials lm
-join document_versions dv on dv.id = lm.document_version_id
-join document_versions newer on newer.document_id = dv.document_id
-  and newer.approved_at is not null and newer.version_no > dv.version_no
-group by lm.id, lm.lesson_id, dv.document_id, dv.version_no;
-
-create table enrollments (
-  user_id      uuid references profiles on delete cascade,
-  course_id    uuid references courses on delete cascade,
-  enrolled_at  timestamptz not null default now(),
-  completed_at timestamptz,
-  primary key (user_id, course_id)
-);
-
-create table saved_courses (
-  user_id   uuid references profiles on delete cascade,
-  course_id uuid references courses on delete cascade,
-  saved_at  timestamptz not null default now(),
-  primary key (user_id, course_id)
-);
-
-create table lesson_progress (
-  user_id      uuid references profiles on delete cascade,
-  lesson_id    uuid references course_lessons on delete cascade,
-  completed_at timestamptz not null default now(),
-  primary key (user_id, lesson_id)
-);
--- Chứng nhận: chưa làm ở bản đầu (quyết định 20/11/2026).
-
--- ============================================================
--- 7. Nhật ký thao tác
+-- 6. Nhật ký thao tác
 -- ============================================================
 create table audit_log (
   id         bigserial primary key,
@@ -326,9 +256,10 @@ create table audit_log (
 );
 
 -- ============================================================
--- 8. Row Level Security
+-- 7. Row Level Security
 -- ============================================================
 alter table profiles            enable row level security;
+alter table user_roles          enable row level security;
 alter table drive_sources       enable row level security;
 alter table drive_files         enable row level security;
 alter table file_contents       enable row level security;
@@ -340,18 +271,16 @@ alter table job_steps           enable row level security;
 alter table document_versions   enable row level security;
 alter table reviews             enable row level security;
 alter table feedback_items      enable row level security;
-alter table courses             enable row level security;
-alter table course_modules      enable row level security;
-alter table course_lessons      enable row level security;
-alter table lesson_materials    enable row level security;
-alter table enrollments         enable row level security;
-alter table saved_courses       enable row level security;
-alter table lesson_progress     enable row level security;
 alter table audit_log           enable row level security;
 
 -- profiles: tự xem mình; nhân viên xem tất cả; chỉ admin đổi vai trò
-create policy profiles_self on profiles for select using (id = auth.uid() or is_staff());
-create policy profiles_admin on profiles for update using (has_role('admin'));
+create policy profiles_self on profiles for select using (id = (select auth.uid()) or (select is_staff()));
+create policy profiles_update_self on profiles for update
+  using (id = (select auth.uid())) with check (id = (select auth.uid()));
+
+-- vai trò: tự xem của mình; admin xem và cấp/thu hồi
+create policy user_roles_self on user_roles for select using (user_id = (select auth.uid()) or (select has_role('admin')));
+create policy user_roles_admin on user_roles for all using ((select has_role('admin'))) with check ((select has_role('admin')));
 
 -- khu nội bộ: nhân viên đọc; ghi qua server (service role) hoặc theo vai trò
 create policy staff_read_drive_sources on drive_sources for select using (is_staff());
@@ -368,36 +297,7 @@ create policy staff_read_feedback on feedback_items for select using (is_staff()
 create policy staff_read_audit on audit_log for select using (has_role('admin'));
 
 create policy create_jobs on generation_jobs for insert
-  with check (requested_by = auth.uid() and has_role('soan_bai', 'duyet', 'quan_ly_noi_dung', 'admin'));
+  with check (requested_by = (select auth.uid()) and (has_role('khbd_editor') or has_role('reviewer') or has_role('content_manager')));
 create policy write_reviews on reviews for insert
-  with check (reviewer_id = auth.uid() and has_role('duyet', 'quan_ly_noi_dung', 'admin'));
+  with check (reviewer_id = (select auth.uid()) and (has_role('reviewer') or has_role('content_manager')));
 create policy write_feedback on feedback_items for insert with check (is_staff());
-
--- khoá học: ai cũng xem khoá đã xuất bản; nhân viên xem mọi khoá; chỉ quản lý nội dung sửa và xuất bản
-create policy courses_public on courses for select using (status = 'published' or is_staff());
-create policy courses_manage on courses for all
-  using (has_role('quan_ly_noi_dung', 'admin')) with check (has_role('quan_ly_noi_dung', 'admin'));
-create policy modules_public on course_modules for select
-  using (exists (select 1 from courses c where c.id = course_id and (c.status = 'published' or is_staff())));
-create policy modules_manage on course_modules for all
-  using (has_role('quan_ly_noi_dung', 'admin')) with check (has_role('quan_ly_noi_dung', 'admin'));
-create policy lessons_public on course_lessons for select
-  using (exists (select 1 from course_modules m join courses c on c.id = m.course_id
-                 where m.id = module_id and (c.status = 'published' or is_staff())));
-create policy lessons_manage on course_lessons for all
-  using (has_role('quan_ly_noi_dung', 'admin')) with check (has_role('quan_ly_noi_dung', 'admin'));
-create policy materials_read on lesson_materials for select
-  using (exists (select 1 from course_lessons l join course_modules m on m.id = l.module_id join courses c on c.id = m.course_id
-                 where l.id = lesson_id and (c.status = 'published' or is_staff())));
--- giáo viên mở được phiên bản KHBD/PBT đã gắn vào khoá đã xuất bản
-create policy versions_in_published_course on document_versions for select
-  using (exists (select 1 from lesson_materials lm join course_lessons l on l.id = lm.lesson_id
-                 join course_modules m on m.id = l.module_id join courses c on c.id = m.course_id
-                 where lm.document_version_id = document_versions.id and c.status = 'published'));
-create policy materials_manage on lesson_materials for all
-  using (has_role('quan_ly_noi_dung', 'admin')) with check (has_role('quan_ly_noi_dung', 'admin'));
-
--- việc học của từng người: chỉ chính người đó
-create policy own_enrollments on enrollments for all using (user_id = auth.uid()) with check (user_id = auth.uid());
-create policy own_saved on saved_courses for all using (user_id = auth.uid()) with check (user_id = auth.uid());
-create policy own_progress on lesson_progress for all using (user_id = auth.uid()) with check (user_id = auth.uid());

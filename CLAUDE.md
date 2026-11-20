@@ -9,7 +9,7 @@ Web giáo dục của AI Edu, gồm hai khu dùng chung một codebase và một
 
 ## Thiết kế giao diện
 
-Bản mẫu bấm thử được (canvas, 8 màn): https://claude.ai/artifact/VgnCQGvYs9rCRsU1BBCwx1 (riêng tư, nhờ Midu chia sẻ nếu cần). Bản sao mã nguồn từng màn nằm ở `design/artboards/*.dc.html` (đọc được bằng trình soạn thảo: HTML + dữ liệu mẫu + logic lọc/tìm). Canvas là nguồn chuẩn; khi canvas đổi, bên thiết kế cập nhật lại thư mục `design/`.
+Bản mẫu bấm thử được (canvas, 8 màn): https://claude.ai/artifact/VgnCQGvYs9rCRsU1BBCwx1 (riêng tư, nhờ Midu chia sẻ nếu cần). Bản sao mã nguồn từng màn nằm ở `design/artboards/*.dc.html` (đọc được bằng trình soạn thảo: HTML + dữ liệu mẫu + logic lọc/tìm). Canvas là nguồn chuẩn; khi canvas đổi, bên thiết kế cập nhật lại thư mục `design/`. `design/prototype.html` là bản mẫu bấm thử nối các màn với nhau (có thanh chuyển Trang giáo viên/Khu nội bộ và công tắc vai trò); dùng nó để hiểu luồng đi giữa các màn, chỗ nào khác canvas thì theo canvas.
 
 | Màn trong bản mẫu | Route |
 |---|---|
@@ -29,6 +29,8 @@ Giữ đúng giao diện bản mẫu. Token gốc:
 - Màu chủ đề: Hiểu biết AI `#E8EEFB/#2152C5`, Dạy học với AI `#E2F3EA/#1D6E47`, An toàn & đạo đức AI `#FCECE3/#A3470F`, Năng lực số `#F1EAFB/#6A3D9E`.
 - Bo góc 8 (nút, ô nhập), 10–12 (thẻ), 999 (chip). Vùng bấm tối thiểu 44 px.
 - Khu nội bộ: menu trái 256 px, nhãn "Nội bộ" nền `#172033`.
+- Nhấn khi hover `#163B91`. Màu trạng thái lấy theo bảng `ST` và `QL_ST` trong `design/prototype.html`.
+- Chữ giữ cách đặt dấu như thiết kế ("khoá", "hoá"). Nút ghi rõ việc sẽ xảy ra ("Xuất bản", "Gắn v2"). Thông báo lỗi nói lỗi gì và cách sửa. Dùng được ở chiều rộng 390 px.
 
 ## Phân vai và quy trình làm việc
 
@@ -37,6 +39,27 @@ Xem chi tiết ở `docs/quy-trinh-lam-viec.md`. Tóm tắt:
 - **Thiết kế và code (Claude của Midu):** giữ canvas và thư mục `design/`, viết code theo từng giai đoạn. Mỗi phần làm trên nhánh `feat/<giai-doan>-<ten-ngan>`, mở Pull Request vào `main`, tự kiểm theo mẫu PR rồi mới merge.
 - **Theo dõi (Claude công ty):** chỉ đọc repo (không có quyền ghi), xem PR và commit mới, đối chiếu với nghiệp vụ KHBD và skill `aca-khbd-ai12`. Góp ý gửi Midu để chuyển lại.
 - **Chốt:** Midu duyệt PR trước khi merge và trả lời các mục "Chưa chốt".
+
+## Vai trò
+
+| role (bảng `user_roles`) | Là ai | Được làm |
+|---|---|---|
+| (không có vai trò) | Giáo viên | Xem khoá đã xuất bản, đăng ký, đánh dấu bài đã học, lưu khoá, mở học liệu đã gắn |
+| `khbd_editor` | Người soạn KHBD | Tạo job KHBD, tạo và sửa khoá nháp |
+| `reviewer` | Người duyệt | Duyệt KHBD |
+| `content_manager` | Academic lead | Mọi việc với khoá học, gồm xuất bản và ẩn; duyệt KHBD |
+| `admin` | Quản trị | Như mọi vai trò; cấp và thu hồi vai trò |
+
+Một người giữ được nhiều vai trò. Chỉ tài khoản `@aiedu.com.vn` được giữ vai trò (trigger kiểm email trong `auth.users`). Trong SQL kiểm tra bằng `public.has_role('...')` (admin ngầm có mọi vai trò), `public.is_staff()` và `public.can_edit_course(course_id)`.
+
+## Database (Supabase)
+
+- Migration ở `supabase/migrations/`, tên `YYYYMMDDHHMMSS_ten.sql`. **Không sửa migration đã chạy trên dự án thật**; muốn đổi thì viết migration mới. Mọi bảng mới bật RLS và có policy ngay trong cùng migration.
+- `20261120000000_core.sql`: người dùng, vai trò, chỉ mục Drive, khung chương trình, job soạn KHBD, phiên bản (`document_versions.status`), duyệt bài, nhật ký.
+- `20261120000100_courses.sql`: khoá học, học phần, bài, học liệu, đăng ký, đã lưu, tiến độ; view `lesson_material_updates`, `my_course_progress`; hàm `course_material_links(course_id)`.
+- Thứ tự học phần và bài dùng cột `position` với unique deferrable; đổi chỗ hai dòng thì làm trong một transaction.
+- Giáo viên **không** đọc trực tiếp `document_versions`; lấy link học liệu qua `course_material_links()`.
+- Thử trên Postgres trống, không cần Supabase: `supabase/tests/run.sh <ten_db>`. Đạt khi số lỗi thực tế bằng số mục "PHẢI LỖI" (hiện là 9).
 
 ## Stack
 
@@ -47,9 +70,9 @@ Xem chi tiết ở `docs/quy-trinh-lam-viec.md`. Tóm tắt:
 
 ## Quyết định đã chốt
 
-1. **Chứng nhận:** bản đầu chưa cấp, chỉ đánh dấu "Đã hoàn thành". Nếu cấp sau này: PDF có mã/QR xác minh trên web. Chưa tạo bảng `certificates`.
-2. **Quản lý khoá học:** có màn riêng trong khu nội bộ. Chỉ vai trò `quan_ly_noi_dung` và `admin` được xuất bản hoặc ẩn khoá học.
-3. **KHBD và khoá học:** không tự biến KHBD thành bài học. KHBD/PBT **đã duyệt** được gắn tay làm *học liệu* của một bài trong khoá, ghim đúng một phiên bản. Bản chưa duyệt không gắn được. Khi bản đã gắn có phiên bản mới được duyệt, màn Quản lý khoá học báo để người quản lý chọn cập nhật.
+1. **Chứng nhận:** bản đầu chưa cấp. Học xong mọi bài thì khoá tự được đánh dấu "Đã hoàn thành" (`enrollments.completed_at`); ô "Chứng nhận" ở trang chi tiết giữ chữ `[Có / Không]`. Nếu cấp sau này: PDF có mã/QR xác minh trên web. Chưa tạo bảng `certificates`.
+2. **Quản lý khoá học:** có màn riêng trong khu nội bộ. Chỉ `content_manager` (Academic lead) và `admin` được xuất bản, ẩn và sửa khoá đang xuất bản; `khbd_editor` chỉ tạo và sửa khoá nháp. Quyền nằm ở database (RLS và trigger `courses_guard`); giao diện chỉ ẩn nút, không thay kiểm tra ở database.
+3. **KHBD và khoá học:** không tự biến KHBD thành bài học. KHBD/PBT **đã duyệt** được gắn tay làm *học liệu* của một bài (`lesson_materials`), ghim đúng một phiên bản; một bài không gắn hai phiên bản của cùng tài liệu. Bản chưa duyệt không gắn được (trigger `lesson_materials_check_version`). Khi có bản mới hơn đã duyệt, view `lesson_material_updates` báo và màn Quản lý khoá học hiện "Có vN đã duyệt" để người quản lý tự chọn cập nhật.
 4. **Khoá học vs KHBD:** khoá học dạy giáo viên *cách dạy*; KHBD là tài liệu giáo viên dùng *dạy học sinh*.
 
 ## Quy trình KHBD (theo skill `aca-khbd-ai12` v6)
@@ -69,10 +92,11 @@ Xem chi tiết ở `docs/quy-trinh-lam-viec.md`. Tóm tắt:
 - Tên đầy đủ và phạm vi TT 02, TT 16, TT 18.
 - Màn Duyệt bài dùng skill `aca-khbd-review` hay checklist của `aca-khbd-ai12`.
 - Tiêu chí lọc khoá học (đối tượng, chủ đề, thời lượng, hình thức) đã khớp với cách Academic phân loại chưa.
+- Link học liệu cho giáo viên: Doc trong `AI Agent` là thư mục nội bộ, giáo viên ngoài công ty không mở được. Cần chốt bản đã duyệt được chép/chia sẻ ra đâu (bước public B9–B10) trước khi giáo viên dùng link.
 
 ## Các giai đoạn dựng
 
-1. **Nền:** Next.js, Supabase (migration `0001_init.sql`), đăng nhập Google, phân quyền, layout hai khu, danh mục khoá học đọc từ DB với dữ liệu seed.
+1. **Nền:** Next.js (`@supabase/ssr`), Supabase (hai migration ở trên), đăng nhập Google, phân quyền, layout hai khu, danh mục khoá học đọc từ DB với dữ liệu seed.
 2. **Khu nội bộ – KHBD:** đồng bộ cây kho (chỉ đọc), Tạo KHBD với `MockExecutor`, Tiến độ qua Realtime, Danh sách, Duyệt bài (checklist, rubric 7 tiêu chí, góp ý, duyệt/trả về).
 3. **Khoá học:** Quản lý khoá học (học phần, bài, gắn học liệu đã duyệt, xuất bản), chi tiết khoá, Khoá học của tôi, tiến độ học.
 4. **Executor thật** khi đã chốt.
@@ -86,7 +110,13 @@ Xem chi tiết ở `docs/quy-trinh-lam-viec.md`. Tóm tắt:
 - Giao diện tiếng Việt, đúng dấu. Mọi ô nhập có `<label>`; nút chỉ có biểu tượng có `aria-label`; tương phản chữ ≥ 4.5:1.
 - Chỗ bản mẫu để trong ngoặc vuông (`[Tên giáo viên]`, `[dd/mm/yyyy]`) là dữ liệu thật lấy từ DB, không giữ ngoặc trong code.
 - Tìm kiếm phải bỏ dấu tiếng Việt (chuẩn hoá NFD, bỏ dấu, `đ` → `d`).
-- Chạy `npm run lint`, `npm run typecheck` và test trước khi báo xong.
+- Chạy `npm run lint`, `npm run typecheck`, `supabase/tests/run.sh` và test trước khi báo xong.
+
+## Không làm
+
+- Không cài thêm skill soạn giáo án nào bên cạnh `aca-khbd-ai12`: skill trùng mô tả làm Claude gọi nhầm.
+- Không đưa token LMS, khoá Google hay khoá API vào code, log hoặc commit.
+- Không để tên model Claude trong code, commit hay mô tả PR.
 
 ## Thư mục
 
@@ -96,6 +126,7 @@ components/          UI dùng chung
 lib/                 supabase client, executor, drive
 worker/              đồng bộ Drive, chạy job
 supabase/migrations/ schema
+supabase/tests/      thử migration và quyền trên Postgres trống
 docs/                quy trình làm việc, tài liệu lịch sử
-design/              bản sao canvas (8 màn .dc.html + canvas.json)
+design/              bản sao canvas (8 màn .dc.html + canvas.json) và prototype.html
 ```
