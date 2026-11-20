@@ -9,6 +9,6 @@ Web khoá học cho giáo viên và khu nội bộ tạo KHBD của AI Edu.
 ## Bắt đầu
 
 1. Tạo project Supabase, bật đăng nhập Google.
-2. Chạy migration: `supabase db push` (hoặc dán file SQL vào SQL editor).
+2. Chạy migration: `supabase db push` (hoặc dán từng file SQL vào SQL editor), rồi `supabase/seed.sql` nếu cần dữ liệu mẫu.
 3. Chép `.env.example` thành `.env.local` và điền giá trị.
-4. Mở Claude Code trong thư mục này và yêu cầu: "Đọc CLAUDE.md, dựng giai đoạn 1."
+4. `npm install && npm run dev`, mở http://localhost:3000.

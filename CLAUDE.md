@@ -19,8 +19,9 @@ Bản mẫu bấm thử được (canvas, 8 màn): https://claude.ai/artifact/Vg
 | Tạo KHBD | `/noi-bo/tao-khbd` |
 | Tiến độ | `/noi-bo/tien-do` |
 | Danh sách KHBD | `/noi-bo/khbd` |
-| Duyệt bài | `/noi-bo/khbd/[id]` |
+| Duyệt bài | `/noi-bo/duyet-bai` (hàng chờ) và `/noi-bo/khbd/[id]` (một bài) |
 | Quản lý khoá học | `/noi-bo/khoa-hoc` và `/noi-bo/khoa-hoc/[id]` |
+| (không có trong bản mẫu) Đăng nhập | `/dang-nhap`, `/auth/callback`, `/auth/dang-xuat` (POST) |
 
 Giữ đúng giao diện bản mẫu. Token gốc:
 
@@ -63,6 +64,25 @@ Một người giữ được nhiều vai trò. Chỉ tài khoản `@aiedu.com.v
 - Giáo viên **không** đọc trực tiếp `document_versions`; lấy link học liệu qua `course_material_links()`.
 - Thử trên Postgres trống, không cần Supabase: `supabase/tests/run.sh <ten_db>`. Đạt khi số lỗi thực tế bằng số mục "PHẢI LỖI" (hiện là 9).
 
+## Chạy và kiểm tra
+
+```bash
+npm install
+cp .env.example .env.local      # điền NEXT_PUBLIC_SUPABASE_URL và NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+npm run dev                     # http://localhost:3000
+npm run lint && npm run typecheck && npm test
+npm run test:db -- <ten_db>     # cần Postgres cục bộ; xem supabase/tests/run.sh
+```
+
+Dữ liệu mẫu: `supabase/seed.sql` (9 khoá, đã nạp vào project). Chạy trong SQL editor; chạy lại không bị trùng.
+
+## Lưu ý Next.js 16
+
+- Next.js 16 khác bản cũ: đọc `node_modules/next/dist/docs/` trước khi dùng API lạ (xem `AGENTS.md`).
+- Middleware nay là `proxy.ts`: chỉ làm mới phiên Supabase và chặn sớm `/noi-bo`, `/khoa-hoc-cua-toi` khi chưa đăng nhập.
+- Bật `cacheComponents`: mọi chỗ đọc cookie/phiên (`getCurrentUser()`, `createClient()` ở `lib/supabase/server.ts`) và `usePathname()` phải nằm trong `<Suspense>`, nếu không build lỗi. Dữ liệu công khai (danh mục khoá) đọc bằng `createPublicClient()` trong hàm `"use cache"` có `cacheTag("courses")`; sửa khoá thì gọi `updateTag("courses")`.
+- Global CSS đặt trong `@layer base` để class Tailwind thắng (trước đó `a { color }` đè `text-white` của nút).
+
 ## Stack
 
 - Next.js (App Router) + TypeScript + Tailwind (khai báo token ở trên trong theme). Triển khai web trên Vercel.
@@ -98,7 +118,7 @@ Một người giữ được nhiều vai trò. Chỉ tài khoản `@aiedu.com.v
 
 ## Các giai đoạn dựng
 
-1. **Nền:** Next.js (`@supabase/ssr`), Supabase (đã tạo project và chạy 3 migration), đăng nhập Google, phân quyền, layout hai khu, danh mục khoá học đọc từ DB với dữ liệu seed.
+1. **Nền (đã xong):** Next.js (`@supabase/ssr`), Supabase (project + 3 migration + seed), đăng nhập Google (chờ bật provider), chặn khu nội bộ theo vai trò, layout hai khu, danh mục khoá học đọc từ DB, trang chi tiết bản đầu, các màn nội bộ để chỗ.
 2. **Khu nội bộ – KHBD:** đồng bộ cây kho (chỉ đọc), Tạo KHBD với `MockExecutor`, Tiến độ qua Realtime, Danh sách, Duyệt bài (checklist, rubric 7 tiêu chí, góp ý, duyệt/trả về).
 3. **Khoá học:** Quản lý khoá học (học phần, bài, gắn học liệu đã duyệt, xuất bản), chi tiết khoá, Khoá học của tôi, tiến độ học.
 4. **Executor thật** khi đã chốt.
