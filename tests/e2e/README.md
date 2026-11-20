@@ -16,8 +16,9 @@ Dùng khi máy không ra được supabase.co, hoặc muốn thử phá dữ li�
 5. Build và chạy web với `NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321` (khoá publishable để chuỗi bất kỳ), cổng 3005.
 6. `python3 flow_khbd.py`: tạo 2 bài, chờ xong, thử lỗi `#loi` và chạy lại, góp ý, trả về, duyệt v2, bài mới lớp 8; ảnh lưu ở `shots/`.
 
-7. Giai đoạn 3: thêm giáo viên thử (không vai trò) vào `auth.users` (id `22222222-…`, email giả), tạo cookie của người đó theo mẫu
-   `token.cjs` (đổi `sub`, `email`, thêm `name`), rồi `E2E_TEACHER_COOKIE_FILE=<file> python3 flow_khoa_hoc.py`: tạo khoá nháp, học phần,
-   bài, gắn KHBD đã duyệt, xuất bản, menu 390 px; giáo viên đăng ký, đánh dấu bài, lưu, xem Khoá học của tôi.
+7. Khoá học (khung 3 tầng): thêm giáo viên thử (không vai trò) vào `auth.users` (id `22222222-…`, email giả), tạo cookie của người đó theo
+   mẫu `token.cjs` (đổi `sub`, `email`, thêm `name`), rồi `E2E_TEACHER_COOKIE_FILE=<file> python3 flow_noi_dung.py`: nhân viên tạo khoá,
+   soạn thông tin trang khoá, học phần, phần, 4 bước (bài đọc có học liệu, quiz, phản tư, tổng kết), kiểm tra, xuất bản; giáo viên
+   đăng ký, học từng bước (quiz sai rồi làm lại đạt 80%), hoàn thành khoá; menu nội bộ 390 px; người phụ trách xem câu trả lời phản tư.
 
 Realtime không có trong cách này (trang vẫn tự cập nhật nhờ vòng gọi `advance_mock_jobs`).

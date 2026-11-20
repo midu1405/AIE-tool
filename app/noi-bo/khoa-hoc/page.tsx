@@ -13,8 +13,8 @@ export default function Page() {
       <div className="flex flex-col gap-2">
         <h1 className={pageTitle}>Quản lý khoá học</h1>
         <p className={pageLead}>
-          Sắp xếp học phần, gắn KHBD và PBT đã duyệt làm học liệu, rồi xuất bản lên trang giáo viên. Chỉ Academic lead (Quản lý nội dung)
-          được xuất bản.
+          Soạn từng khoá theo Học phần → Phần → Bước (bài đọc, video, quiz, phản tư, tổng kết), gắn KHBD và PBT đã duyệt làm học liệu,
+          kiểm tra rồi xuất bản lên trang giáo viên. Chỉ Academic lead (Quản lý nội dung) được xuất bản.
         </p>
       </div>
       <Suspense fallback={<p className="text-muted">Đang tải khoá học…</p>}>
@@ -42,7 +42,7 @@ async function Body() {
       )}
       <div className="flex flex-wrap items-start gap-6">
         <AdminCourseList courses={courses} />
-        <div className={`${card} flex-[999_1_520px] p-6 text-[15px] text-muted`}>Chọn một khoá ở cột bên trái để sửa học phần, gắn học liệu và xuất bản.</div>
+        <div className={`${card} flex-[999_1_520px] p-6 text-[15px] text-muted`}>Chọn một khoá ở cột bên trái để soạn nội dung, kiểm tra và xuất bản.</div>
       </div>
     </>
   );
