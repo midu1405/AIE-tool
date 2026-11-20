@@ -53,8 +53,16 @@ export type CourseForm = {
   format: Format;
   level: Level;
   outcomes: string;
+  prerequisites: string;
+  materials_needed: string;
   audience_note: string;
 };
+
+const listOf = (s: string) =>
+  s
+    .split("\n")
+    .map((x) => x.replace(/^\s*[-•]\s*/, "").trim())
+    .filter(Boolean);
 
 /** Kiểm form trước khi gửi; trả danh sách lỗi theo ô (rỗng = hợp lệ). */
 export function validateCourse(f: CourseForm): Partial<Record<keyof CourseForm, string>> {
@@ -81,10 +89,9 @@ export function formToRow(f: CourseForm) {
     hours_max: Number(f.hours_max.replace(",", ".")),
     format: f.format,
     level: f.level,
-    outcomes: f.outcomes
-      .split("\n")
-      .map((s) => s.trim())
-      .filter(Boolean),
+    outcomes: listOf(f.outcomes),
+    prerequisites: listOf(f.prerequisites),
+    materials_needed: listOf(f.materials_needed),
     audience_note: f.audience_note.trim(),
   };
 }

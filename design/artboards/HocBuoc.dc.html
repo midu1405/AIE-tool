@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Học một bước</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#2152C5}a:hover{color:#163B91}
+</style>
+</helmet>
+<div style="font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #172033; background: #F6F7F9; min-height: 100vh">
+
+<header style="background: #FFFFFF; border-bottom: 1px solid #E3E6EB">
+<div style="max-width: 1280px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap">
+<a href="Main.dc.html" aria-label="AI Edu Training Hub – trang chủ" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #172033">
+<img src="/_blob/e48b7e068881affd450f30a4074a7921" alt="AI Edu" style="height: 40px; width: auto">
+<span aria-hidden="true" style="width: 1px; height: 28px; background: #E3E6EB"></span>
+<span style="font-weight: 500; font-size: 18px; color: #4B5565">Training Hub</span>
+</a>
+<nav aria-label="Điều hướng chính" style="display: flex; gap: 4px; flex-wrap: wrap; flex: 1">
+<a href="Main.dc.html" style="padding: 12px 14px; border-radius: 8px; color: #172033; font-weight: 500; text-decoration: none; font-size: 15px">Khoá học</a>
+<a href="MyCourses.dc.html" aria-current="page" style="padding: 12px 14px; border-radius: 8px; background: #E8EEFB; color: {{accent}}; font-weight: 600; text-decoration: none; font-size: 15px">Khoá học của tôi</a>
+<a href="#tro-giup" style="padding: 12px 14px; border-radius: 8px; color: #172033; font-weight: 500; text-decoration: none; font-size: 15px">Trợ giúp</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #E3E6EB; color: #172033; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px">GV</span>
+<span style="font-size: 14px; color: #4B5565">[Tên giáo viên]</span>
+</div>
+</div>
+</header>
+
+<div style="max-width: 1280px; margin: 0 auto; padding: 24px; display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start">
+
+<aside aria-label="Mục lục khoá học" style="flex: 1 1 300px; max-width: 360px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; overflow: hidden">
+<div style="padding: 18px 18px 14px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #E3E6EB">
+<a href="Detail.dc.html" style="font-size: 15px; font-weight: 700; line-height: 1.4; color: #172033; text-decoration: none">Dạy chuyên đề Giáo dục AI 12 tiết – THCS</a>
+<div style="display: flex; justify-content: space-between; font-size: 13px; color: #4B5565"><span>{{doneCount}} / {{total}} bước</span><span>{{percent}}%</span></div>
+<div role="progressbar" aria-label="Tiến độ khoá học" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" style="height: 8px; border-radius: 999px; background: #E3E6EB; overflow: hidden"><div style="height: 100%; width: {{percent}}%; background: {{accent}}"></div></div>
+<button type="button" onClick="{{toggleOutline}}" aria-expanded="{{outlineOpen}}" style="align-self: flex-start; border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-size: 14px; font-weight: 600; border-radius: 8px; min-height: 44px; padding: 0 14px; cursor: pointer; display: flex; align-items: center; gap: 8px">
+<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #172033; stroke-width: 2; stroke-linecap: round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>{{outlineLabel}}</button>
+</div>
+<sc-if value="{{outlineOpen}}" hint-placeholder-val="{{ true }}">
+<ol style="list-style: none; margin: 0; padding: 6px 0; display: flex; flex-direction: column">
+<sc-for list="{{outline}}" as="m" hint-placeholder-count="6">
+<li style="border-top: {{m.border}}">
+<button type="button" onClick="{{m.toggle}}" aria-expanded="{{m.open}}" style="width: 100%; border: 0; background: transparent; font: inherit; color: #172033; text-align: left; display: flex; align-items: center; gap: 10px; padding: 12px 18px; min-height: 52px; cursor: pointer">
+<span style="width: 26px; height: 26px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; background: {{m.dotBg}}; color: {{m.dotInk}}">{{m.mark}}</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600; line-height: 1.35">{{m.title}}</span><span style="font-size: 12px; color: #4B5565">{{m.sub}}</span></span>
+<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; transform: {{m.rotate}}; fill: none; stroke: #4B5565; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+<sc-if value="{{m.open}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 0 10px 10px 18px; display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{m.sections}}" as="s" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column">
+<span style="font-size: 12px; font-weight: 700; color: #4B5565; padding: 8px 8px 4px 36px; text-transform: uppercase; letter-spacing: .02em">{{s.title}}</span>
+<sc-for list="{{s.steps}}" as="st" hint-placeholder-count="3">
+<button type="button" onClick="{{st.go}}" aria-current="{{st.current}}" aria-label="{{st.aria}}" style="border: 0; background: {{st.bg}}; font: inherit; text-align: left; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 6px 8px; border-radius: 8px; cursor: pointer; color: {{st.ink}}">
+<span aria-hidden="true" style="width: 18px; height: 18px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: {{st.stateBg}}; border: {{st.stateBorder}}">
+<svg width="11" height="11" viewBox="0 0 24 24" style="fill: none; stroke: #FFFFFF; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round"><path d="{{st.stateIcon}}"></path></svg>
+</span>
+<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="{{st.icon}}"></path></svg>
+<span style="flex: 1; min-width: 0; font-size: 14px; line-height: 1.35; font-weight: {{st.weight}}">{{st.title}}</span>
+</button>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</li>
+</sc-for>
+</ol>
+</sc-if>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<nav aria-label="Đường dẫn" style="font-size: 14px; color: #4B5565; display: flex; gap: 8px; flex-wrap: wrap">
+<a href="MyCourses.dc.html" style="color: #4B5565">Khoá học của tôi</a><span aria-hidden="true">›</span>
+<a href="Detail.dc.html" style="color: #4B5565">Dạy chuyên đề Giáo dục AI 12 tiết – THCS</a><span aria-hidden="true">›</span>
+<span>Học phần {{moduleNo}}. {{moduleTitle}}</span>
+</nav>
+
+<article style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 32px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 13px; color: #4B5565">
+<span style="display: inline-flex; align-items: center; gap: 6px; background: #E8EEFB; color: #163B91; border-radius: 999px; padding: 4px 10px; font-weight: 600">
+<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #163B91; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="{{typeIcon}}"></path></svg>{{typeLabel}}</span>
+<span>{{mins}} phút</span>
+<span>Bước {{stepNoInModule}} / {{stepsInModule}} của học phần {{moduleNo}}</span>
+<span>{{sectionTitle}}</span>
+</div>
+<h1 style="margin: 0; font-size: 30px; line-height: 1.25; font-weight: 700">{{title}}</h1>
+</div>
+
+<sc-if value="{{isDoc}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 18px; font-size: 16px; line-height: 1.75; max-width: 720px">
+<p style="margin: 0; font-size: 17px">[Đoạn mở đầu, 2–3 câu: bước này giúp giáo viên làm được gì, vì sao cần cho tiết dạy.]</p>
+<h2 style="margin: 8px 0 0; font-size: 20px; font-weight: 700">[Tiêu đề ý thứ nhất]</h2>
+<p style="margin: 0">[Nội dung bài đọc do Academic soạn. Câu ngắn, mỗi đoạn một ý, ví dụ lấy từ lớp học thật.]</p>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<div role="img" aria-label="Chỗ đặt hình minh hoạ" style="aspect-ratio: 16 / 7; background: #F6F7F9; border: 1px dashed #CDD2DA; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #4B5565">[Hình minh hoạ hoặc sơ đồ]</div>
+<figcaption style="font-size: 14px; color: #4B5565">[Chú thích hình: nguồn, ý chính của hình]</figcaption>
+</figure>
+<div style="background: #E8EEFB; border-radius: 10px; padding: 16px 18px; display: flex; gap: 12px">
+<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 3px; fill: none; stroke: #163B91; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V17h5v-1.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 15px; color: #163B91">Gợi ý khi dạy</strong><span style="font-size: 15px; line-height: 1.6">[Một lưu ý cụ thể giáo viên dùng được ngay trên lớp.]</span></div>
+</div>
+<div style="background: #FCECE3; border-radius: 10px; padding: 16px 18px; display: flex; gap: 12px">
+<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 3px; fill: none; stroke: #8A3A0C; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M12 3l9 16H3zM12 10v4M12 17h.01"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 15px; color: #8A3A0C">Tránh</strong><span style="font-size: 15px; line-height: 1.6">[Lỗi hay gặp, ví dụ cách nói nhân hoá AI, và cách nói thay.]</span></div>
+</div>
+<h2 style="margin: 8px 0 0; font-size: 20px; font-weight: 700">Thử ngay</h2>
+<ol style="margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px">
+<li>[Việc 1 giáo viên tự làm trong 2–3 phút]</li>
+<li>[Việc 2]</li>
+</ol>
+<div style="border: 1px solid #E3E6EB; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<strong style="font-size: 15px">Học liệu kèm bước này</strong>
+<a href="#" style="display: flex; align-items: center; gap: 10px; font-size: 15px; min-height: 44px">
+<span style="background: #E8EEFB; color: #163B91; border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 700">KHBD</span>[Tên KHBD đã duyệt] · v2</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<strong style="font-size: 15px">Tóm tắt</strong>
+<ul style="margin: 0; padding-left: 22px"><li>[Ý chính 1]</li><li>[Ý chính 2]</li></ul>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isVideo}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<div role="img" aria-label="Khung video" style="aspect-ratio: 16 / 9; background: #172033; border-radius: 12px; display: flex; flex-direction: column; gap: 14px; align-items: center; justify-content: center; color: #FFFFFF">
+<span style="width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,.16); display: flex; align-items: center; justify-content: center"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="fill: #FFFFFF"><path d="M8 5v14l11-7z"></path></svg></span>
+<span style="font-size: 14px">[Video YouTube hoặc Google Drive]</span>
+</div>
+<p style="margin: 0; font-size: 14px; color: #4B5565">[Thời lượng mm:ss] · Có phụ đề tiếng Việt</p>
+<p style="margin: 0; font-size: 16px; line-height: 1.7">[Một câu giới thiệu: xem video để thấy điều gì, chú ý chi tiết nào.]</p>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 16px; line-height: 1.7">
+<strong style="font-size: 15px">Khi xem, để ý</strong>
+<ul style="margin: 0; padding-left: 22px"><li>[Chi tiết 1]</li><li>[Chi tiết 2]</li><li>[Chi tiết 3]</li></ul>
+</div>
+<details style="border: 1px solid #E3E6EB; border-radius: 10px; padding: 0 18px">
+<summary style="min-height: 48px; display: flex; align-items: center; font-weight: 600; font-size: 15px; cursor: pointer">Bản ghi lời video</summary>
+<p style="margin: 0 0 16px; font-size: 15px; line-height: 1.7; color: #4B5565">[Toàn văn lời thoại, cho người không xem được video hoặc muốn đọc lại.]</p>
+</details>
+</div>
+</sc-if>
+
+<sc-if value="{{isQuiz}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 18px; max-width: 760px">
+<p style="margin: 0; font-size: 16px; line-height: 1.7">Trả lời {{qCount}} câu. Cần đúng ít nhất 80% số câu ({{passMark}} / {{qCount}} câu) để hoàn thành bước. Làm lại bao nhiêu lần cũng được.</p>
+<sc-for list="{{questions}}" as="q" hint-placeholder-count="3">
+<fieldset style="margin: 0; border: 1px solid #E3E6EB; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<legend style="padding: 0 6px; font-size: 13px; font-weight: 600; color: #4B5565">Câu {{q.no}}</legend>
+<p style="margin: 0; font-size: 16px; font-weight: 600; line-height: 1.5">{{q.text}}</p>
+<sc-for list="{{q.options}}" as="o" hint-placeholder-count="3">
+<label for="{{o.id}}" style="display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 8px 12px; border-radius: 8px; border: {{o.border}}; background: {{o.bg}}; cursor: pointer; font-size: 15px">
+<input id="{{o.id}}" type="radio" name="{{q.name}}" checked="{{o.checked}}" disabled="{{submitted}}" onChange="{{o.pick}}" style="width: 18px; height: 18px; margin: 0; accent-color: {{accent}}">
+<span style="flex: 1">{{o.text}}</span>
+<span style="font-size: 13px; font-weight: 600; color: {{o.tagInk}}">{{o.tag}}</span>
+</label>
+</sc-for>
+<sc-if value="{{q.showExplain}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 14px; line-height: 1.6; background: #F6F7F9; border-radius: 8px; padding: 10px 12px">{{q.explain}}</p>
+</sc-if>
+</fieldset>
+</sc-for>
+<sc-if value="{{submitted}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="border-radius: 10px; padding: 14px 16px; background: {{resultBg}}; color: {{resultInk}}; font-size: 15px; font-weight: 600">{{resultText}}</div>
+</sc-if>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+<sc-if value="{{canSubmit}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{submitQuiz}}" disabled="{{submitDisabled}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 20px; cursor: pointer; opacity: {{submitOpacity}}">Nộp bài</button>
+</sc-if>
+<sc-if value="{{submitted}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{retryQuiz}}" style="border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 20px; cursor: pointer">Làm lại</button>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isReflect}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<div style="background: #F1EAFB; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<strong style="font-size: 15px; color: #6A3D9E">Câu hỏi phản tư</strong>
+<p style="margin: 0; font-size: 16px; line-height: 1.7">[Câu hỏi gắn nội dung vừa học với lớp của giáo viên, ví dụ: học sinh lớp bạn đã biết gì về AI, và bạn sẽ bắt đầu tiết 1 thế nào?]</p>
+</div>
+<ul style="margin: 0; padding-left: 22px; font-size: 15px; line-height: 1.7; color: #4B5565"><li>[Gợi ý 1]</li><li>[Gợi ý 2]</li></ul>
+<label for="phan-tu" style="font-size: 14px; font-weight: 600">Câu trả lời của bạn</label>
+<textarea id="phan-tu" rows="6" value="{{reflectText}}" onChange="{{onReflect}}" style="font: inherit; font-size: 15px; line-height: 1.6; border: 1px solid #CDD2DA; border-radius: 8px; padding: 12px; resize: vertical; color: #172033"></textarea>
+<label for="link-sp" style="font-size: 14px; font-weight: 600">Link sản phẩm (không bắt buộc)</label>
+<input id="link-sp" type="url" value="{{reflectLink}}" onChange="{{onLink}}" placeholder="https://docs.google.com/..." style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px; color: #172033">
+<p style="margin: 0; font-size: 13px; color: #4B5565">Bạn và người phụ trách khoá xem được câu trả lời này.</p>
+<div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap">
+<button type="button" onClick="{{saveReflect}}" disabled="{{reflectEmpty}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 20px; cursor: pointer; opacity: {{reflectOpacity}}">Lưu câu trả lời</button>
+<sc-if value="{{reflectSaved}}" hint-placeholder-val="{{ false }}">
+<span role="status" style="font-size: 14px; color: #1D6E47; font-weight: 600">Đã lưu. Bước này được tính là hoàn thành; bạn sửa lại lúc nào cũng được.</span>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isEnd}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 18px; align-items: flex-start; max-width: 720px">
+<span style="width: 64px; height: 64px; border-radius: 50%; background: #E2F3EA; display: flex; align-items: center; justify-content: center"><svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #1D6E47; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M5 12l5 5L19 7"></path></svg></span>
+<p style="margin: 0; font-size: 18px; font-weight: 600">{{endHeadline}}</p>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 16px; line-height: 1.7">
+<strong style="font-size: 15px">Trong học phần này bạn đã đi qua</strong>
+<ul style="margin: 0; padding-left: 22px">
+<sc-for list="{{endSections}}" as="es" hint-placeholder-count="3"><li>{{es}}</li></sc-for>
+</ul>
+</div>
+<p style="margin: 0; font-size: 15px; color: #4B5565">{{endStats}}</p>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+<sc-if value="{{hasNextModule}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{goNext}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 20px; cursor: pointer">{{nextModuleLabel}}</button>
+</sc-if>
+<a href="Detail.dc.html" style="border: 1px solid #CDD2DA; color: #172033; text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 20px; display: flex; align-items: center">Xem lại nội dung khoá</a>
+</div>
+</div>
+</sc-if>
+</article>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 14px 16px">
+<button type="button" onClick="{{goPrev}}" disabled="{{isFirst}}" style="border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 16px; cursor: pointer; opacity: {{prevOpacity}}; display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #172033; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M15 6l-6 6 6 6"></path></svg>Bước trước</button>
+<span role="status" style="font-size: 14px; color: {{statusInk}}; font-weight: 600; display: flex; align-items: center; gap: 6px">{{statusText}}</span>
+<div style="display: flex; gap: 10px; flex-wrap: wrap">
+<sc-if value="{{canMark}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{markDone}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 18px; cursor: pointer">Đánh dấu đã xong và sang bước tiếp</button>
+</sc-if>
+<sc-if value="{{showNext}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{goNext}}" disabled="{{isLast}}" style="border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 16px; cursor: pointer; display: flex; align-items: center; gap: 8px">Bước tiếp<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #172033; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 6l6 6-6 6"></path></svg></button>
+</sc-if>
+</div>
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2152C5","options":["#2152C5","#0F766E","#7C3AED","#B45309"]},"loai":{"editor":"enum","default":"doc","options":["doc","video","quiz","reflect","end"]},"$preview":{"width":1280,"height":1500}}'>
+// Cùng dữ liệu mẫu với Detail.dc.html. Mỗi bước: [loại, tên, phút].
+var MODULES = [
+  { title: 'Tổng quan chương trình và QĐ 2422', sections: [
+    { title: 'Chào mừng bạn', steps: [['doc', 'Chào mừng đến với khoá học', 3], ['video', 'Vì sao dạy AI ở THCS', 5]] },
+    { title: 'Chuyên đề 12 tiết', steps: [['doc', 'Mục tiêu và yêu cầu cần đạt theo QĐ 2422', 8], ['doc', 'Cấu trúc 12 tiết theo khối 6–9', 6], ['video', 'Một tiết học mẫu', 6]] },
+    { title: 'Tổng kết học phần 1', steps: [['quiz', 'Quiz học phần 1', 5], ['reflect', 'Phản tư: lớp của bạn bắt đầu từ đâu?', 5], ['end', 'Kết thúc học phần 1', 1]] }
+  ] },
+  { title: 'AI là gì: giúp học sinh hiểu đúng', sections: [
+    { title: 'AI theo luật và AI học từ dữ liệu', steps: [['doc', 'Hai cách máy đưa ra kết quả', 7], ['video', 'Hoạt động phân loại lá cây', 6]] },
+    { title: 'Nói về AI mà không nhân hoá', steps: [['doc', 'Thuật ngữ nên dùng và nên tránh', 6], ['quiz', 'Chọn cách nói đúng', 4]] },
+    { title: 'Tổng kết học phần 2', steps: [['reflect', 'Phản tư: câu hỏi học sinh hay hỏi', 5], ['end', 'Kết thúc học phần 2', 1]] }
+  ] },
+  { title: 'Dữ liệu và học máy với Teachable Machine', sections: [
+    { title: 'Chuẩn bị', steps: [['doc', 'Teachable Machine là gì', 5], ['video', 'Thu thập dữ liệu trong lớp', 7]] },
+    { title: 'Thực hành', steps: [['doc', 'Huấn luyện và kiểm thử mô hình', 10], ['reflect', 'Nộp ảnh chụp mô hình của bạn', 10]] },
+    { title: 'Tổng kết học phần 3', steps: [['quiz', 'Quiz học phần 3', 5], ['end', 'Kết thúc học phần 3', 1]] }
+  ] },
+  { title: 'Thiết kế hoạt động và phiếu học tập', sections: [
+    { title: 'Chuỗi hoạt động', steps: [['doc', 'Khởi động – Khám phá – Luyện tập – Vận dụng', 8], ['video', 'Phân tích một KHBD mẫu', 8]] },
+    { title: 'Phiếu học tập', steps: [['doc', 'Phiếu học tập và exit ticket', 6], ['reflect', 'Phác thảo phiếu cho lớp bạn', 15], ['end', 'Kết thúc học phần 4', 1]] }
+  ] },
+  { title: 'An toàn và đạo đức khi dùng AI trong lớp', sections: [
+    { title: 'Quy tắc trong lớp', steps: [['doc', 'Quy tắc dùng AI với học sinh', 6], ['doc', 'Hướng dẫn học sinh kiểm chứng thông tin', 6]] },
+    { title: 'Tổng kết học phần 5', steps: [['quiz', 'Quiz học phần 5', 5], ['end', 'Kết thúc học phần 5', 1]] }
+  ] },
+  { title: 'Đánh giá theo rubric và dạy thử', sections: [
+    { title: 'Rubric 7 tiêu chí', steps: [['doc', 'Đọc rubric', 8], ['quiz', 'Chấm thử một KHBD', 10]] },
+    { title: 'Dạy thử', steps: [['reflect', 'Nộp bộ dạy thử của bạn', 20], ['reflect', 'Phản tư và góp ý cho khoá học', 5], ['end', 'Kết thúc khoá học', 1]] }
+  ] }
+];
+var ICON = {
+  doc: 'M5 4a1 1 0 0 1 1-1h9l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1zM14 3v5h5M9 13h6M9 17h4',
+  video: 'M4 6h11v12H4zM15 10l5-3v10l-5-3',
+  quiz: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.4V14M12 17.5h.01',
+  reflect: 'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',
+  end: 'M5 21V4h11l-2 4 2 4H5'
+};
+var LABEL = { doc: 'Bài đọc', video: 'Video', quiz: 'Quiz', reflect: 'Phản tư', end: 'Tổng kết học phần' };
+var QUIZ = [
+  { text: 'Câu nào mô tả mô hình nhận dạng ảnh mà không nhân hoá AI?', options: ['Mô hình hiểu trong ảnh có con mèo', 'Mô hình dự đoán nhãn “mèo” dựa trên các mẫu trong dữ liệu huấn luyện', 'Mô hình nghĩ đây là con mèo'], answer: 1, explain: 'Mô hình tính ra nhãn có khả năng cao nhất từ dữ liệu đã học; nó không “hiểu” hay “nghĩ”.' },
+  { text: 'Trong Teachable Machine, mô hình học từ đâu?', options: ['Từ các ví dụ có gắn nhãn mà người dùng đưa vào', 'Từ toàn bộ Internet', 'Từ câu lệnh người dùng gõ'], answer: 0, explain: 'Người dùng chụp hoặc tải ảnh cho từng nhãn; mô hình chỉ học từ các ví dụ đó.' },
+  { text: 'Mô hình nhận sai nhiều khi dùng ở lớp khác. Nguyên nhân thường gặp nhất là gì?', options: ['Máy tính quá chậm', 'Dữ liệu huấn luyện ít và thiếu đa dạng', 'Mô hình cố tình trả lời sai'], answer: 1, explain: 'Khi ảnh huấn luyện ít, cùng ánh sáng, cùng phông nền, mô hình khó đúng với ảnh mới.' }
+];
+var PASS_RATE = 0.8; // đạt khi đúng ít nhất 80% số câu
+var PASS = Math.ceil(QUIZ.length * PASS_RATE);
+var START = { doc: 8, video: 9, quiz: 11, reflect: 12, end: 7 };
+
+var FLAT = [];
+MODULES.forEach(function (m, mi) {
+  var n = 0;
+  m.sections.forEach(function (sec) { sec.steps.forEach(function (st) { n++; FLAT.push({ mi: mi, sec: sec.title, type: st[0], title: st[1], mins: st[2], noInModule: n }); }); });
+});
+MODULES.forEach(function (m, mi) { m.count = FLAT.filter(function (x) { return x.mi === mi; }).length; });
+var INITIAL_DONE = [0, 1, 2, 3, 4, 5, 6];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { k: null, done: INITIAL_DONE, openMods: null, outlineOpen: true, answers: {}, submitted: false, reflectText: '', reflectLink: '', reflectSaved: {} };
+  }
+  go(k) {
+    var mi = FLAT[k].mi;
+    var open = this.state.openMods || [];
+    this.setState({ k: k, submitted: false, answers: {}, openMods: open.indexOf(mi) >= 0 ? open : open.concat([mi]) });
+  }
+  addDone(k) {
+    var d = this.state.done;
+    return d.indexOf(k) >= 0 ? d : d.concat([k]);
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var accent = this.props.accent ?? '#2152C5';
+    var k = s.k !== null ? s.k : (START[this.props.loai ?? 'doc'] ?? 8);
+    var step = FLAT[k];
+    var mod = MODULES[step.mi];
+    var openMods = s.openMods || [step.mi];
+    var isDone = s.done.indexOf(k) >= 0;
+
+    var idx = 0;
+    var outline = MODULES.map(function (m, i) {
+      var open = openMods.indexOf(i) >= 0;
+      var doneIn = 0;
+      var sections = m.sections.map(function (sec) {
+        return { title: sec.title, steps: sec.steps.map(function (st) {
+          var j = idx++;
+          var d = s.done.indexOf(j) >= 0;
+          if (d) doneIn++;
+          var cur = j === k;
+          return {
+            title: st[1], icon: ICON[st[0]],
+            current: cur ? 'step' : 'false',
+            aria: st[1] + ', ' + LABEL[st[0]] + (d ? ', đã xong' : ''),
+            bg: cur ? '#E8EEFB' : 'transparent',
+            ink: cur ? '#163B91' : '#172033',
+            weight: cur ? 600 : 400,
+            stateBg: d ? '#1D6E47' : '#FFFFFF',
+            stateBorder: d ? '0' : '1.5px solid #CDD2DA',
+            stateIcon: d ? 'M5 12l5 5L19 7' : '',
+            go: function () { self.go(j); }
+          };
+        }) };
+      });
+      var complete = doneIn === m.count;
+      var isCur = i === step.mi;
+      return {
+        title: (i + 1) + '. ' + m.title, sections: sections, open: open,
+        sub: doneIn + ' / ' + m.count + ' bước',
+        mark: complete ? '✓' : String(i + 1),
+        dotBg: complete ? '#1D6E47' : (isCur ? accent : '#E3E6EB'),
+        dotInk: complete || isCur ? '#FFFFFF' : '#172033',
+        border: i === 0 ? '0' : '1px solid #EEF0F3',
+        rotate: open ? 'rotate(180deg)' : 'none',
+        toggle: function () { self.setState({ openMods: open ? openMods.filter(function (x) { return x !== i; }) : openMods.concat([i]) }); }
+      };
+    });
+
+    var answered = Object.keys(s.answers).length;
+    var correct = QUIZ.filter(function (q, qi) { return s.answers[qi] === q.answer; }).length;
+    var passed = s.submitted && correct >= PASS;
+    var questions = QUIZ.map(function (q, qi) {
+      return {
+        no: qi + 1, text: q.text, name: 'cau-' + qi, explain: q.explain,
+        showExplain: s.submitted,
+        options: q.options.map(function (o, oi) {
+          var picked = s.answers[qi] === oi;
+          var right = oi === q.answer;
+          var showRight = s.submitted && right;
+          var showWrong = s.submitted && picked && !right;
+          return {
+            id: 'cau-' + qi + '-' + oi, text: o, checked: picked,
+            border: showRight ? '1.5px solid #1D6E47' : (showWrong ? '1.5px solid #8A3A0C' : (picked ? '1.5px solid ' + accent : '1px solid #E3E6EB')),
+            bg: showRight ? '#E2F3EA' : (showWrong ? '#FCECE3' : '#FFFFFF'),
+            tag: showRight ? 'Đáp án đúng' : (showWrong ? 'Chưa đúng' : ''),
+            tagInk: showRight ? '#1D6E47' : '#8A3A0C',
+            pick: function () { var a = Object.assign({}, s.answers); a[qi] = oi; self.setState({ answers: a }); }
+          };
+        })
+      };
+    });
+
+    var reflectSaved = !!s.reflectSaved[k];
+    var type = step.type;
+    var markable = type === 'doc' || type === 'video' || type === 'end';
+    var doneCount = s.done.length;
+    var nextModule = MODULES[step.mi + 1];
+
+    return {
+      accent: accent,
+      total: FLAT.length,
+      doneCount: doneCount,
+      percent: Math.round(doneCount / FLAT.length * 100),
+      outline: outline,
+      outlineOpen: s.outlineOpen,
+      outlineLabel: s.outlineOpen ? 'Ẩn mục lục' : 'Hiện mục lục',
+      toggleOutline: function () { self.setState({ outlineOpen: !s.outlineOpen }); },
+      moduleNo: step.mi + 1,
+      moduleTitle: mod.title,
+      sectionTitle: 'Phần: ' + step.sec,
+      stepNoInModule: step.noInModule,
+      stepsInModule: mod.count,
+      title: step.title,
+      mins: step.mins,
+      typeIcon: ICON[type],
+      typeLabel: LABEL[type],
+      isDoc: type === 'doc', isVideo: type === 'video', isQuiz: type === 'quiz', isReflect: type === 'reflect', isEnd: type === 'end',
+
+      qCount: QUIZ.length, passMark: PASS, questions: questions, submitted: s.submitted,
+      canSubmit: !s.submitted,
+      submitDisabled: answered < QUIZ.length,
+      submitOpacity: answered < QUIZ.length ? 0.5 : 1,
+      resultBg: passed ? '#E2F3EA' : '#FFF4DB',
+      resultInk: passed ? '#1D6E47' : '#7A4B00',
+      resultText: passed ? 'Bạn đúng ' + correct + ' / ' + QUIZ.length + ' câu. Bước này đã hoàn thành.' : 'Bạn đúng ' + correct + ' / ' + QUIZ.length + ' câu. Cần đúng ít nhất 80% (' + PASS + ' câu); đọc giải thích rồi bấm Làm lại.',
+      submitQuiz: function () {
+        var ok = QUIZ.filter(function (q, qi) { return s.answers[qi] === q.answer; }).length >= PASS;
+        self.setState({ submitted: true, done: ok ? self.addDone(k) : s.done });
+      },
+      retryQuiz: function () { self.setState({ submitted: false, answers: {} }); },
+
+      reflectText: s.reflectText, reflectLink: s.reflectLink, reflectSaved: reflectSaved,
+      reflectEmpty: s.reflectText.trim() === '',
+      reflectOpacity: s.reflectText.trim() === '' ? 0.5 : 1,
+      onReflect: function (e) { self.setState({ reflectText: e.target.value }); },
+      onLink: function (e) { self.setState({ reflectLink: e.target.value }); },
+      saveReflect: function () { var r = Object.assign({}, s.reflectSaved); r[k] = true; self.setState({ reflectSaved: r, done: self.addDone(k) }); },
+
+      endHeadline: step.mi === MODULES.length - 1 ? 'Bạn đã học hết khoá học.' : 'Bạn đã đi hết Học phần ' + (step.mi + 1) + '.',
+      endSections: mod.sections.map(function (x) { return x.title; }),
+      endStats: mod.count + ' bước · ' + FLAT.filter(function (x) { return x.mi === step.mi && s.done.indexOf(FLAT.indexOf(x)) >= 0; }).length + ' bước đã xong',
+      hasNextModule: !!nextModule,
+      nextModuleLabel: nextModule ? 'Sang Học phần ' + (step.mi + 2) : '',
+
+      isFirst: k === 0, isLast: k === FLAT.length - 1,
+      prevOpacity: k === 0 ? 0.5 : 1,
+      canMark: markable && !isDone,
+      showNext: !(markable && !isDone),
+      statusText: isDone ? '✓ Đã xong bước này' : (type === 'quiz' ? 'Hoàn thành khi đạt quiz' : (type === 'reflect' ? 'Hoàn thành khi lưu câu trả lời' : 'Chưa đánh dấu xong')),
+      statusInk: isDone ? '#1D6E47' : '#4B5565',
+      goPrev: function () { if (k > 0) self.go(k - 1); },
+      goNext: function () { if (k < FLAT.length - 1) self.go(k + 1); },
+      markDone: function () {
+        var d = self.addDone(k);
+        if (k < FLAT.length - 1) { self.go(k + 1); self.setState({ done: d }); } else self.setState({ done: d });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -13,6 +13,8 @@ const form = (over: Partial<CourseForm> = {}): CourseForm => ({
   format: "self",
   level: "basic",
   outcomes: " Ý 1 \n\n Ý 2 ",
+  prerequisites: "- Biết dùng Google Docs\n",
+  materials_needed: "",
   audience_note: "",
   ...over,
 });
@@ -34,6 +36,8 @@ describe("validateCourse / formToRow", () => {
     const r = formToRow(form());
     expect(r.hours_min).toBe(1.5);
     expect(r.outcomes).toEqual(["Ý 1", "Ý 2"]);
+    expect(r.prerequisites).toEqual(["Biết dùng Google Docs"]);
+    expect(r.materials_needed).toEqual([]);
   });
 });
 

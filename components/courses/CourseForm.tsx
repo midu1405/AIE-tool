@@ -17,6 +17,8 @@ export const EMPTY_COURSE: Form = {
   format: "self",
   level: "basic",
   outcomes: "",
+  prerequisites: "",
+  materials_needed: "",
   audience_note: "",
 };
 
@@ -31,7 +33,7 @@ export function CourseForm({
   initial: Form;
   submitLabel: string;
   onSubmit: (f: Form) => Promise<string | void>;
-  onCancel: () => void;
+  onCancel?: () => void;
   slugLocked?: boolean;
 }) {
   const [f, setF] = useState<Form>(initial);
@@ -108,15 +110,15 @@ export function CourseForm({
       </div>
       <div className="flex flex-col gap-1.5">
         <label htmlFor="kh-tom-tat" className={labelCls}>
-          Mô tả ngắn (trên thẻ khoá học)
+          Tóm tắt (trên thẻ khoá và đầu trang khoá, tối đa 200 ký tự)
         </label>
         <input id="kh-tom-tat" value={f.summary} onChange={(e) => set("summary", e.target.value)} className={field} maxLength={200} />
       </div>
       <div className="flex flex-col gap-1.5">
         <label htmlFor="kh-mo-ta" className={labelCls}>
-          Mô tả ở trang chi tiết
+          Giới thiệu khoá học (cách đoạn bằng một dòng trống)
         </label>
-        <textarea id="kh-mo-ta" rows={3} value={f.description} onChange={(e) => set("description", e.target.value)} className={textarea} />
+        <textarea id="kh-mo-ta" rows={5} value={f.description} onChange={(e) => set("description", e.target.value)} className={textarea} />
       </div>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4">
         <div className="flex flex-col gap-1.5">
@@ -190,9 +192,23 @@ export function CourseForm({
       </fieldset>
       <div className="flex flex-col gap-1.5">
         <label htmlFor="kh-hoc-duoc" className={labelCls}>
-          Bạn sẽ học được gì (mỗi dòng một ý)
+          Bạn sẽ học được gì (3–6 ý, mỗi dòng một ý, bắt đầu bằng động từ)
         </label>
         <textarea id="kh-hoc-duoc" rows={4} value={f.outcomes} onChange={(e) => set("outcomes", e.target.value)} className={textarea} />
+      </div>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="kh-can-co" className={labelCls}>
+            Cần có trước khi học (mỗi dòng một ý)
+          </label>
+          <textarea id="kh-can-co" rows={3} value={f.prerequisites} onChange={(e) => set("prerequisites", e.target.value)} className={textarea} />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="kh-chuan-bi" className={labelCls}>
+            Cần chuẩn bị (mỗi dòng một ý)
+          </label>
+          <textarea id="kh-chuan-bi" rows={3} value={f.materials_needed} onChange={(e) => set("materials_needed", e.target.value)} className={textarea} />
+        </div>
       </div>
       <div className="flex flex-col gap-1.5">
         <label htmlFor="kh-danh-cho" className={labelCls}>
@@ -205,9 +221,11 @@ export function CourseForm({
         <button type="submit" disabled={busy} className={btnPrimary}>
           {busy ? "Đang lưu…" : submitLabel}
         </button>
-        <button type="button" onClick={onCancel} className={btnSecondary}>
-          Huỷ
-        </button>
+        {onCancel && (
+          <button type="button" onClick={onCancel} className={btnSecondary}>
+            Huỷ
+          </button>
+        )}
       </div>
     </form>
   );

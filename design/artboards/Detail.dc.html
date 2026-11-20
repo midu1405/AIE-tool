@@ -19,19 +19,25 @@ a{color:#2152C5}a:hover{color:#163B91}
 
 <header style="background: #FFFFFF; border-bottom: 1px solid #E3E6EB">
 <div style="max-width: 1200px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap">
-<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #172033">
-<span style="width: 36px; height: 36px; border-radius: 8px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">AI</span>
-<span style="font-weight: 700; font-size: 18px">AI Edu <span style="font-weight: 500; color: #4B5565">Training Hub</span></span>
+<a href="Main.dc.html" aria-label="AI Edu Training Hub – trang chủ" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #172033">
+<img src="/_blob/e48b7e068881affd450f30a4074a7921" alt="AI Edu" style="height: 40px; width: auto">
+<span aria-hidden="true" style="width: 1px; height: 28px; background: #E3E6EB"></span>
+<span style="font-weight: 500; font-size: 18px; color: #4B5565">Training Hub</span>
 </a>
 <nav aria-label="Điều hướng chính" style="display: flex; gap: 4px; flex-wrap: wrap; flex: 1">
 <a href="Main.dc.html" aria-current="page" style="padding: 12px 14px; border-radius: 8px; background: #E8EEFB; color: {{accent}}; font-weight: 600; text-decoration: none; font-size: 15px">Khoá học</a>
 <a href="MyCourses.dc.html" style="padding: 12px 14px; border-radius: 8px; color: #172033; font-weight: 500; text-decoration: none; font-size: 15px">Khoá học của tôi</a>
 <a href="#tro-giup" style="padding: 12px 14px; border-radius: 8px; color: #172033; font-weight: 500; text-decoration: none; font-size: 15px">Trợ giúp</a>
 </nav>
+<sc-if value="{{signedIn}}" hint-placeholder-val="{{ true }}">
 <div style="display: flex; align-items: center; gap: 10px">
 <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #E3E6EB; color: #172033; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px">GV</span>
 <span style="font-size: 14px; color: #4B5565">[Tên giáo viên]</span>
 </div>
+</sc-if>
+<sc-if value="{{signedOut}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{signIn}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 18px; cursor: pointer">Đăng nhập</button>
+</sc-if>
 </div>
 </header>
 
@@ -43,28 +49,44 @@ a{color:#2152C5}a:hover{color:#163B91}
 </nav>
 <span style="align-self: flex-start; background: #E2F3EA; color: #1D6E47; border-radius: 6px; padding: 4px 10px; font-size: 13px; font-weight: 600">Dạy học với AI</span>
 <h1 style="margin: 0; font-size: 38px; line-height: 1.2; font-weight: 700">Dạy chuyên đề Giáo dục AI 12 tiết – THCS</h1>
-<p style="margin: 0; font-size: 17px; line-height: 1.6; color: #4B5565; max-width: 720px">Đi qua 12 tiết theo QĐ 2422 cho khối 6–9: mục tiêu từng tiết, hoạt động mẫu, phiếu học tập và cách đánh giá học sinh. Cuối khoá, bạn chuẩn bị một bộ dạy thử cho lớp của mình.</p>
-<ul style="list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 24px; font-size: 15px; color: #172033">
-<li style="display: flex; align-items: center; gap: 8px"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2"></path></svg>4–6 giờ</li>
-<li style="display: flex; align-items: center; gap: 8px"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M4 5h16M4 12h16M4 19h10"></path></svg>{{moduleCount}} học phần · {{lessonCount}} bài</li>
-<li>Có hướng dẫn</li>
-<li>Cơ bản</li>
-<li>Đối tượng: giáo viên THCS</li>
+<p style="margin: 0; font-size: 17px; line-height: 1.6; color: #4B5565; max-width: 720px">Đi qua 12 tiết theo QĐ 2422 cho khối 6–9: mục tiêu từng tiết, hoạt động mẫu, phiếu học tập và cách đánh giá học sinh.</p>
+
+<ul aria-label="Thông tin nhanh" style="list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px">
+<li style="background: #F6F7F9; border: 1px solid #E3E6EB; border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start">
+<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; fill: none; stroke: #1D6E47; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M3 4h18v12H3zM8 20l4-4 4 4M7 9h6M7 12h9"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #4B5565">Chủ đề</span><span style="font-size: 15px; font-weight: 600">Dạy học với AI</span></span>
+</li>
+<li style="background: #F6F7F9; border: 1px solid #E3E6EB; border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start">
+<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #4B5565">Thời lượng</span><span style="font-size: 15px; font-weight: 600">4–6 giờ</span></span>
+</li>
+<li style="background: #F6F7F9; border: 1px solid #E3E6EB; border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start">
+<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #4B5565">Chứng nhận</span><span style="font-size: 15px; font-weight: 600">[Có / Không]</span></span>
+</li>
+<li style="background: #F6F7F9; border: 1px solid #E3E6EB; border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start">
+<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM3 21v-1a6 6 0 0 1 12 0v1M16 3.5a4 4 0 0 1 0 7.5M21 21v-1a6 6 0 0 0-4-5.6"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #4B5565">Dành cho</span><span style="font-size: 15px; font-weight: 600">Giáo viên THCS</span></span>
+</li>
 </ul>
 </div>
 
 <div style="flex: 1 1 300px; max-width: 380px; background: #F6F7F9; border: 1px solid #E3E6EB; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
-<sc-if value="{{enrolled}}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{learning}}" hint-placeholder-val="{{ true }}">
 <div style="display: flex; flex-direction: column; gap: 10px">
 <div style="display: flex; justify-content: space-between; font-size: 14px"><span style="font-weight: 600">Tiến độ của bạn</span><span>{{progress}}%</span></div>
 <div role="progressbar" aria-label="Tiến độ khoá học" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="height: 10px; border-radius: 999px; background: #E3E6EB; overflow: hidden"><div style="height: 100%; width: {{progress}}%; background: {{accent}}"></div></div>
-<p style="margin: 0; font-size: 14px; color: #4B5565">Đang học: {{currentTitle}}</p>
+<p style="margin: 0; font-size: 14px; color: #4B5565">{{doneSteps}} / {{totalSteps}} bước · Tiếp theo: {{nextTitle}}</p>
 </div>
-<a href="#noi-dung" style="background: {{accent}}; color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 16px; border-radius: 10px; min-height: 48px; display: flex; align-items: center; justify-content: center">Tiếp tục học</a>
+<a href="HocBuoc.dc.html" style="background: {{accent}}; color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 16px; border-radius: 10px; min-height: 48px; display: flex; align-items: center; justify-content: center">Tiếp tục học</a>
 </sc-if>
 <sc-if value="{{notEnrolled}}" hint-placeholder-val="{{ false }}">
-<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5565">Đăng ký để lưu tiến độ và mở toàn bộ học phần.</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5565">Khoá học miễn phí. Đăng ký để mở mọi bước học, lưu tiến độ và đánh dấu hoàn thành.</p>
 <button type="button" onClick="{{enroll}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 16px; border-radius: 10px; min-height: 48px; cursor: pointer">Đăng ký học</button>
+</sc-if>
+<sc-if value="{{signedOut}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5565">Khoá học miễn phí. Đăng nhập bằng tài khoản Google để bắt đầu học và lưu tiến độ.</p>
+<button type="button" onClick="{{signIn}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 16px; border-radius: 10px; min-height: 48px; cursor: pointer">Đăng nhập để bắt đầu học</button>
 </sc-if>
 <button type="button" onClick="{{toggleSave}}" aria-pressed="{{saved}}" style="border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-weight: 600; font-size: 15px; border-radius: 10px; min-height: 44px; cursor: pointer">{{saveLabel}}</button>
 </div>
@@ -74,38 +96,92 @@ a{color:#2152C5}a:hover{color:#163B91}
 <main style="max-width: 1200px; margin: 0 auto; padding: 32px 24px 56px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
 <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 32px">
 
+<section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 700">Giới thiệu khoá học</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.7">Khoá học giúp giáo viên THCS chuẩn bị dạy chuyên đề Giáo dục AI 12 tiết/năm. Bạn đi lần lượt qua mục tiêu của chuyên đề, cách giải thích AI cho học sinh, hoạt động huấn luyện mô hình bằng Teachable Machine và cách thiết kế phiếu học tập.</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.7">Mỗi học phần có bài đọc ngắn, video lớp học mẫu, quiz kiểm tra nhanh và một câu hỏi phản tư để bạn gắn nội dung với lớp của mình. Cuối khoá, bạn có một bộ dạy thử cho một tiết.</p>
+</section>
+
 <section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
 <h2 style="margin: 0; font-size: 22px; font-weight: 700">Bạn sẽ học được gì</h2>
+<p style="margin: 0; font-size: 15px; color: #4B5565">Học xong khoá, bạn có thể:</p>
 <ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px 24px; font-size: 15px; line-height: 1.55">
-<li style="display: flex; gap: 10px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px; fill: none; stroke: #1D6E47; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M5 12l5 5L19 7"></path></svg>Nắm mục tiêu và cấu trúc 12 tiết của chuyên đề cho khối 6–9</li>
+<li style="display: flex; gap: 10px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px; fill: none; stroke: #1D6E47; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M5 12l5 5L19 7"></path></svg>Nêu mục tiêu và cấu trúc 12 tiết của chuyên đề cho khối 6–9</li>
 <li style="display: flex; gap: 10px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px; fill: none; stroke: #1D6E47; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M5 12l5 5L19 7"></path></svg>Giải thích AI cho học sinh mà không nhân hoá AI</li>
 <li style="display: flex; gap: 10px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px; fill: none; stroke: #1D6E47; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M5 12l5 5L19 7"></path></svg>Tổ chức hoạt động huấn luyện mô hình bằng Teachable Machine</li>
 <li style="display: flex; gap: 10px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 2px; fill: none; stroke: #1D6E47; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M5 12l5 5L19 7"></path></svg>Tự đánh giá kế hoạch bài dạy theo rubric 7 tiêu chí</li>
 </ul>
 </section>
 
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px">
+<section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Cần có trước khi học</h2>
+<ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.6; display: flex; flex-direction: column; gap: 6px">
+<li>Đã hoặc sắp dạy chuyên đề Giáo dục AI ở THCS</li>
+<li>Dùng được trình duyệt web và Google Docs</li>
+<li>Không cần biết lập trình</li>
+</ul>
+</section>
+<section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Cần chuẩn bị</h2>
+<ul style="margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.6; display: flex; flex-direction: column; gap: 6px">
+<li>Máy tính có kết nối mạng</li>
+<li>Webcam cho bước thực hành Teachable Machine</li>
+<li>Kế hoạch dạy học năm của trường (nếu có)</li>
+</ul>
+</section>
+</div>
+
 <section id="noi-dung" style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
 <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 4px">
 <h2 style="margin: 0; font-size: 22px; font-weight: 700">Nội dung khoá học</h2>
+<p style="margin: 0; font-size: 14px; color: #4B5565">{{moduleCount}} học phần · {{sectionCount}} phần · {{totalSteps}} bước · khoảng {{totalHours}}</p>
+</div>
 <button type="button" onClick="{{toggleAll}}" style="border: 0; background: transparent; color: {{accent}}; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; min-height: 44px">{{toggleAllLabel}}</button>
 </div>
-<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border: 1px solid #E3E6EB; border-radius: 10px; overflow: hidden">
+<ul aria-label="Chú thích loại bước" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: #4B5565">
+<sc-for list="{{legend}}" as="lg" hint-placeholder-count="5">
+<li style="display: flex; align-items: center; gap: 6px"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="{{lg.icon}}"></path></svg>{{lg.label}}</li>
+</sc-for>
+</ul>
+<sc-if value="{{locked}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; background: #F6F7F9; border: 1px solid #E3E6EB; border-radius: 10px; padding: 12px 14px; font-size: 14px; color: #4B5565; display: flex; gap: 10px; align-items: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M6 11h12v10H6zM8 11V8a4 4 0 0 1 8 0v3"></path></svg>Xem trước được tên các bước. Đăng ký học để mở nội dung từng bước.</p>
+</sc-if>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
 <sc-for list="{{modules}}" as="m" hint-placeholder-count="6">
-<li style="border-top: {{m.border}}">
-<button type="button" onClick="{{m.toggle}}" aria-expanded="{{m.open}}" style="width: 100%; border: 0; background: {{m.rowBg}}; font: inherit; color: #172033; text-align: left; display: flex; align-items: center; gap: 14px; padding: 16px 18px; min-height: 64px; cursor: pointer">
-<span style="width: 32px; height: 32px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: {{m.dotBg}}; color: {{m.dotInk}}">{{m.mark}}</span>
-<span style="flex: 1; display: flex; flex-direction: column; gap: 2px">
-<span style="font-size: 16px; font-weight: 600">{{m.title}}</span>
+<li style="border: 1px solid #E3E6EB; border-radius: 10px; overflow: hidden; background: #FFFFFF">
+<button type="button" onClick="{{m.toggle}}" aria-expanded="{{m.open}}" style="width: 100%; border: 0; background: {{m.rowBg}}; font: inherit; color: #172033; text-align: left; display: flex; align-items: center; gap: 14px; padding: 16px 18px; min-height: 72px; cursor: pointer">
+<span style="width: 36px; height: 36px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: {{m.dotBg}}; color: {{m.dotInk}}">{{m.mark}}</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; font-weight: 600; color: #4B5565">Học phần {{m.no}}</span>
+<span style="font-size: 17px; font-weight: 600">{{m.title}}</span>
 <span style="font-size: 13px; color: #4B5565">{{m.sub}}</span>
 </span>
 <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; transform: {{m.rotate}}; fill: none; stroke: #4B5565; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M6 9l6 6 6-6"></path></svg>
 </button>
 <sc-if value="{{m.open}}" hint-placeholder-val="{{ false }}">
-<ul style="list-style: none; margin: 0; padding: 4px 18px 16px 64px; display: flex; flex-direction: column; gap: 10px; font-size: 15px; background: {{m.rowBg}}">
-<sc-for list="{{m.lessons}}" as="l" hint-placeholder-count="3">
-<li style="display: flex; align-items: center; gap: 10px; color: #172033"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #9AA3B2; flex: none"></span>{{l}}</li>
+<div style="border-top: 1px solid #E3E6EB; padding: 8px 18px 16px 68px; display: flex; flex-direction: column; gap: 14px; background: {{m.rowBg}}">
+<sc-for list="{{m.sections}}" as="s" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h3 style="margin: 8px 0 2px; font-size: 15px; font-weight: 700">{{s.title}}</h3>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+<sc-for list="{{s.steps}}" as="st" hint-placeholder-count="3">
+<li>
+<a href="{{st.href}}" aria-label="{{st.aria}}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 4px 8px; margin: 0 -8px; border-radius: 8px; text-decoration: none; color: {{st.ink}}">
+<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="{{st.icon}}"></path></svg>
+<span style="flex: 1; min-width: 0; font-size: 15px">{{st.title}}</span>
+<span style="font-size: 13px; color: #4B5565; white-space: nowrap">{{st.mins}} phút</span>
+<span aria-hidden="true" style="width: 22px; height: 22px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: {{st.stateBg}}; border: {{st.stateBorder}}">
+<svg width="14" height="14" viewBox="0 0 24 24" style="fill: none; stroke: {{st.stateInk}}; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="{{st.stateIcon}}"></path></svg>
+</span>
+</a>
+</li>
 </sc-for>
 </ul>
+</div>
+</sc-for>
+</div>
 </sc-if>
 </li>
 </sc-for>
@@ -116,6 +192,16 @@ a{color:#2152C5}a:hover{color:#163B91}
 <h2 style="margin: 0; font-size: 22px; font-weight: 700">Dành cho ai</h2>
 <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5565">Giáo viên THCS dạy chuyên đề Giáo dục AI, kể cả giáo viên chưa từng dạy Tin học. Không cần biết lập trình; cần máy tính có trình duyệt và kết nối mạng.</p>
 </section>
+
+<sc-if value="{{signedOut}}" hint-placeholder-val="{{ false }}">
+<section style="background: #E8EEFB; border-radius: 12px; padding: 28px; display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 320px">
+<h2 style="margin: 0; font-size: 20px; font-weight: 700">Theo dõi việc học của bạn</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #172033">Đăng nhập để đăng ký khoá, đánh dấu bước đã học và xem lại các khoá ở mục Khoá học của tôi.</p>
+</div>
+<button type="button" onClick="{{signIn}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 15px; border-radius: 10px; min-height: 48px; padding: 0 22px; cursor: pointer">Đăng nhập bằng Google</button>
+</section>
+</sc-if>
 </div>
 
 <aside style="flex: 1 1 300px; max-width: 380px; display: flex; flex-direction: column; gap: 20px">
@@ -127,7 +213,15 @@ a{color:#2152C5}a:hover{color:#163B91}
 <dt style="color: #4B5565">Trình độ</dt><dd style="margin: 0">Cơ bản</dd>
 <dt style="color: #4B5565">Căn cứ</dt><dd style="margin: 0">QĐ 2422/QĐ-BGDĐT</dd>
 <dt style="color: #4B5565">Chứng nhận</dt><dd style="margin: 0">[Có / Không]</dd>
+<dt style="color: #4B5565">Cập nhật</dt><dd style="margin: 0">[dd/mm/yyyy]</dd>
 </dl>
+</section>
+<section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start">
+<div style="width: 48px; height: 48px; border-radius: 12px; background: {{doneBg}}; display: flex; align-items: center; justify-content: center">
+<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: {{doneInk}}; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"></path></svg>
+</div>
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Hoàn thành khoá học</h2>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #4B5565">Học xong mọi bước và đạt mọi quiz (đúng từ 80% số câu), khoá được đánh dấu “Đã hoàn thành” trong Khoá học của tôi. Còn {{remaining}} bước.</p>
 </section>
 <section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
 <h2 style="margin: 0; font-size: 18px; font-weight: 700">Khoá học liên quan</h2>
@@ -139,8 +233,11 @@ a{color:#2152C5}a:hover{color:#163B91}
 </main>
 
 <footer id="tro-giup" style="border-top: 1px solid #E3E6EB; background: #FFFFFF">
-<div style="max-width: 1200px; margin: 0 auto; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; font-size: 14px; color: #4B5565">
+<div style="max-width: 1200px; margin: 0 auto; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; align-items: center; font-size: 14px; color: #4B5565">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<img src="/_blob/5a7057da917c52dcc11c3308fc2265c0" alt="AI Edu – đối tác đào tạo giáo viên của Google for Education" style="height: 32px; width: auto; max-width: 100%">
 <span>AI Edu Training Hub</span>
+</div>
 <nav aria-label="Liên kết cuối trang" style="display: flex; gap: 20px; flex-wrap: wrap">
 <a href="#tro-giup" style="color: #4B5565">Trợ giúp</a>
 <a href="#tro-giup" style="color: #4B5565">Điều khoản</a>
@@ -150,65 +247,129 @@ a{color:#2152C5}a:hover{color:#163B91}
 </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2152C5","options":["#2152C5","#0F766E","#7C3AED","#B45309"]},"enrolled":{"editor":"boolean","default":true},"$preview":{"width":1280,"height":1640}}'>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2152C5","options":["#2152C5","#0F766E","#7C3AED","#B45309"]},"view":{"editor":"enum","default":"learning","options":["signedOut","notEnrolled","learning"]},"$preview":{"width":1280,"height":2500}}'>
+// Khoá chia 3 tầng: Học phần → Phần → Bước. Mỗi bước: [loại, tên, phút]. Loại: doc, video, quiz, reflect, end.
 var MODULES = [
-  { title: 'Tổng quan chương trình và QĐ 2422', lessons: ['Mục tiêu của chuyên đề', 'Cấu trúc 12 tiết theo khối', 'Cách dùng bộ học liệu'] },
-  { title: 'AI là gì: giúp học sinh hiểu đúng', lessons: ['AI theo luật và AI học từ dữ liệu', 'Nói về AI mà không nhân hoá', 'Hoạt động khởi động mẫu'] },
-  { title: 'Dữ liệu và học máy với Teachable Machine', lessons: ['Thu thập dữ liệu trong lớp', 'Huấn luyện và kiểm thử mô hình', 'Thảo luận về sai lệch dữ liệu'] },
-  { title: 'Thiết kế hoạt động và phiếu học tập', lessons: ['Chuỗi Khởi động – Khám phá – Luyện tập – Vận dụng', 'Phiếu học tập và exit ticket'] },
-  { title: 'An toàn và đạo đức khi dùng AI trong lớp', lessons: ['Quy tắc dùng AI với học sinh', 'Hướng dẫn học sinh kiểm chứng thông tin'] },
-  { title: 'Đánh giá theo rubric và dạy thử', lessons: ['Rubric 7 tiêu chí', 'Chuẩn bị bộ dạy thử', 'Gửi phản hồi sau tiết dạy'] }
+  { title: 'Tổng quan chương trình và QĐ 2422', sections: [
+    { title: 'Chào mừng bạn', steps: [['doc', 'Chào mừng đến với khoá học', 3], ['video', 'Vì sao dạy AI ở THCS', 5]] },
+    { title: 'Chuyên đề 12 tiết', steps: [['doc', 'Mục tiêu và yêu cầu cần đạt theo QĐ 2422', 8], ['doc', 'Cấu trúc 12 tiết theo khối 6–9', 6], ['video', 'Một tiết học mẫu', 6]] },
+    { title: 'Tổng kết học phần 1', steps: [['quiz', 'Quiz học phần 1', 5], ['reflect', 'Phản tư: lớp của bạn bắt đầu từ đâu?', 5], ['end', 'Kết thúc học phần 1', 1]] }
+  ] },
+  { title: 'AI là gì: giúp học sinh hiểu đúng', sections: [
+    { title: 'AI theo luật và AI học từ dữ liệu', steps: [['doc', 'Hai cách máy đưa ra kết quả', 7], ['video', 'Hoạt động phân loại lá cây', 6]] },
+    { title: 'Nói về AI mà không nhân hoá', steps: [['doc', 'Thuật ngữ nên dùng và nên tránh', 6], ['quiz', 'Chọn cách nói đúng', 4]] },
+    { title: 'Tổng kết học phần 2', steps: [['reflect', 'Phản tư: câu hỏi học sinh hay hỏi', 5], ['end', 'Kết thúc học phần 2', 1]] }
+  ] },
+  { title: 'Dữ liệu và học máy với Teachable Machine', sections: [
+    { title: 'Chuẩn bị', steps: [['doc', 'Teachable Machine là gì', 5], ['video', 'Thu thập dữ liệu trong lớp', 7]] },
+    { title: 'Thực hành', steps: [['doc', 'Huấn luyện và kiểm thử mô hình', 10], ['reflect', 'Nộp ảnh chụp mô hình của bạn', 10]] },
+    { title: 'Tổng kết học phần 3', steps: [['quiz', 'Quiz học phần 3', 5], ['end', 'Kết thúc học phần 3', 1]] }
+  ] },
+  { title: 'Thiết kế hoạt động và phiếu học tập', sections: [
+    { title: 'Chuỗi hoạt động', steps: [['doc', 'Khởi động – Khám phá – Luyện tập – Vận dụng', 8], ['video', 'Phân tích một KHBD mẫu', 8]] },
+    { title: 'Phiếu học tập', steps: [['doc', 'Phiếu học tập và exit ticket', 6], ['reflect', 'Phác thảo phiếu cho lớp bạn', 15], ['end', 'Kết thúc học phần 4', 1]] }
+  ] },
+  { title: 'An toàn và đạo đức khi dùng AI trong lớp', sections: [
+    { title: 'Quy tắc trong lớp', steps: [['doc', 'Quy tắc dùng AI với học sinh', 6], ['doc', 'Hướng dẫn học sinh kiểm chứng thông tin', 6]] },
+    { title: 'Tổng kết học phần 5', steps: [['quiz', 'Quiz học phần 5', 5], ['end', 'Kết thúc học phần 5', 1]] }
+  ] },
+  { title: 'Đánh giá theo rubric và dạy thử', sections: [
+    { title: 'Rubric 7 tiêu chí', steps: [['doc', 'Đọc rubric', 8], ['quiz', 'Chấm thử một KHBD', 10]] },
+    { title: 'Dạy thử', steps: [['reflect', 'Nộp bộ dạy thử của bạn', 20], ['reflect', 'Phản tư và góp ý cho khoá học', 5], ['end', 'Kết thúc khoá học', 1]] }
+  ] }
 ];
-var DONE = 2;
+var ICON = {
+  doc: 'M5 4a1 1 0 0 1 1-1h9l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1zM14 3v5h5M9 13h6M9 17h4',
+  video: 'M4 6h11v12H4zM15 10l5-3v10l-5-3',
+  quiz: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.4V14M12 17.5h.01',
+  reflect: 'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',
+  end: 'M5 21V4h11l-2 4 2 4H5'
+};
+var LABEL = { doc: 'Bài đọc', video: 'Video', quiz: 'Quiz', reflect: 'Phản tư / nộp sản phẩm', end: 'Tổng kết' };
+var DONE_STEPS = 8; // số bước đã xong ở trạng thái "Đang học"
 
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { open: [DONE], enrolledLocal: null, saved: false };
+    this.state = { open: null, view: null, saved: false };
   }
   renderVals() {
     var self = this;
     var s = this.state;
     var accent = this.props.accent ?? '#2152C5';
-    var enrolled = s.enrolledLocal !== null ? s.enrolledLocal : (this.props.enrolled ?? true);
-    var done = enrolled ? DONE : 0;
-    var lessonCount = MODULES.reduce(function (n, m) { return n + m.lessons.length; }, 0);
-    var allOpen = s.open.length === MODULES.length;
+    var view = s.view || this.props.view || 'learning';
+    var learning = view === 'learning';
+    var flat = [];
+    MODULES.forEach(function (m, mi) { m.sections.forEach(function (sec) { sec.steps.forEach(function (st) { flat.push({ mi: mi, st: st }); }); }); });
+    var done = learning ? DONE_STEPS : 0;
+    var totalMins = flat.reduce(function (n, x) { return n + x.st[2]; }, 0);
+    var current = learning ? flat[done].mi : -1;
+    var openList = s.open || [learning ? current : 0];
+    var allOpen = openList.length === MODULES.length;
+    var idx = 0;
     var modules = MODULES.map(function (m, i) {
-      var isOpen = s.open.indexOf(i) >= 0;
-      var isDone = i < done;
-      var isCurrent = enrolled && i === done;
+      var isOpen = openList.indexOf(i) >= 0;
+      var stepsIn = 0, doneIn = 0, mins = 0;
+      var sections = m.sections.map(function (sec) {
+        return { title: sec.title, steps: sec.steps.map(function (st) {
+          var k = idx++;
+          var isDone = k < done, isNext = learning && k === done;
+          stepsIn++; mins += st[2]; if (isDone) doneIn++;
+          var lockedStep = !learning;
+          return {
+            title: st[1], mins: st[2], icon: ICON[st[0]],
+            href: lockedStep ? '#noi-dung' : 'HocBuoc.dc.html',
+            aria: st[1] + ', ' + LABEL[st[0]] + ', ' + st[2] + ' phút' + (isDone ? ', đã xong' : (lockedStep ? ', cần đăng ký' : '')),
+            ink: isNext ? accent : '#172033',
+            stateBg: isDone ? '#1D6E47' : '#FFFFFF',
+            stateBorder: isDone ? '0' : '1.5px solid #CDD2DA',
+            stateInk: isDone ? '#FFFFFF' : '#9AA3B2',
+            stateIcon: isDone ? 'M5 12l5 5L19 7' : (lockedStep ? 'M8 11h8v8H8zM10 11V9a2 2 0 0 1 4 0v2' : '')
+          };
+        }) };
+      });
+      var mDone = learning && doneIn === stepsIn;
+      var isCurrent = learning && i === current;
       return {
-        title: 'Học phần ' + (i + 1) + '. ' + m.title,
-        sub: m.lessons.length + ' bài' + (isDone ? ' · Đã hoàn thành' : (isCurrent ? ' · Đang học' : '')),
-        lessons: m.lessons,
-        open: isOpen,
-        mark: isDone ? '✓' : String(i + 1),
-        dotBg: isDone ? '#1D6E47' : (isCurrent ? accent : '#E3E6EB'),
-        dotInk: isDone || isCurrent ? '#FFFFFF' : '#172033',
+        no: i + 1, title: m.title, sections: sections, open: isOpen,
+        sub: m.sections.length + ' phần · ' + stepsIn + ' bước · ' + mins + ' phút' + (mDone ? ' · Đã hoàn thành' : (isCurrent ? ' · Đang học (' + doneIn + '/' + stepsIn + ')' : '')),
+        mark: mDone ? '✓' : String(i + 1),
+        dotBg: mDone ? '#1D6E47' : (isCurrent ? accent : '#E3E6EB'),
+        dotInk: mDone || isCurrent ? '#FFFFFF' : '#172033',
         rowBg: isCurrent ? '#F3F6FD' : '#FFFFFF',
-        border: i === 0 ? '0' : '1px solid #E3E6EB',
         rotate: isOpen ? 'rotate(180deg)' : 'none',
         toggle: function () {
-          var next = isOpen ? s.open.filter(function (x) { return x !== i; }) : s.open.concat([i]);
-          self.setState({ open: next });
+          self.setState({ open: isOpen ? openList.filter(function (x) { return x !== i; }) : openList.concat([i]) });
         }
       };
     });
+    var sectionCount = MODULES.reduce(function (n, m) { return n + m.sections.length; }, 0);
+    var hours = (totalMins / 60);
     return {
       accent: accent,
-      enrolled: enrolled,
-      notEnrolled: !enrolled,
-      progress: Math.round(done / MODULES.length * 100),
-      currentTitle: 'Học phần ' + (done + 1) + '. ' + MODULES[Math.min(done, MODULES.length - 1)].title,
+      signedOut: view === 'signedOut',
+      signedIn: view !== 'signedOut',
+      notEnrolled: view === 'notEnrolled',
+      learning: learning,
+      locked: !learning,
+      progress: Math.round(done / flat.length * 100),
+      doneSteps: done,
+      totalSteps: flat.length,
+      remaining: flat.length - done,
+      nextTitle: learning ? flat[done].st[1] : '',
       moduleCount: MODULES.length,
-      lessonCount: lessonCount,
+      sectionCount: sectionCount,
+      totalHours: hours.toFixed(1).replace('.', ',') + ' giờ',
+      legend: ['doc', 'video', 'quiz', 'reflect', 'end'].map(function (k) { return { icon: ICON[k], label: LABEL[k] }; }),
       modules: modules,
+      doneBg: done === flat.length ? '#E2F3EA' : '#F6F7F9',
+      doneInk: done === flat.length ? '#1D6E47' : '#4B5565',
       saved: s.saved,
       saveLabel: s.saved ? 'Đã lưu vào danh sách' : 'Lưu để học sau',
       toggleAllLabel: allOpen ? 'Thu gọn tất cả' : 'Mở tất cả',
       toggleAll: function () { self.setState({ open: allOpen ? [] : MODULES.map(function (_, i) { return i; }) }); },
-      enroll: function () { self.setState({ enrolledLocal: true, open: [0] }); },
+      enroll: function () { self.setState({ view: 'learning', open: null }); },
+      signIn: function () { self.setState({ view: 'notEnrolled' }); },
       toggleSave: function () { self.setState({ saved: !s.saved }); }
     };
   }

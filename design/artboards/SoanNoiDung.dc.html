@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Nội bộ · Soạn nội dung khoá học</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#2152C5}a:hover{color:#163B91}
+</style>
+</helmet>
+<div style="font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #172033; background: #F6F7F9; min-height: 100vh; display: flex; flex-wrap: wrap">
+
+<aside style="flex: 1 1 220px; max-width: 256px; background: #FFFFFF; border-right: 1px solid #E3E6EB; padding: 20px 16px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box">
+<a href="TaoKHBD.dc.html" aria-label="AI Edu – khu nội bộ" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #172033; padding: 0 8px">
+<img src="/_blob/e48b7e068881affd450f30a4074a7921" alt="AI Edu" style="height: 34px; width: auto">
+<span style="background: #172033; color: #FFFFFF; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 600">Nội bộ</span>
+</a>
+<nav aria-label="Công cụ nội bộ" style="display: flex; flex-direction: column; gap: 4px">
+<a href="TaoKHBD.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg>Tạo KHBD</a>
+<a href="TienDo.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M3 12h4l3-7 4 14 3-7h4"></path></svg>Tiến độ</a>
+<a href="DanhSachKHBD.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round"><path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"></path></svg>Danh sách KHBD</a>
+<a href="DuyetBai.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; color: #172033; font-weight: 500; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path></svg>Duyệt bài</a>
+<a href="QuanLyKhoaHoc.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; padding: 0 12px; min-height: 44px; border-radius: 8px; background: #E8EEFB; color: {{accent}}; font-weight: 600; font-size: 15px; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: {{accent}}; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="M4 19V5a2 2 0 0 1 2-2h14v14H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h14M8 7h8"></path></svg>Quản lý khoá học</a>
+</nav>
+<div style="border-top: 1px solid #E3E6EB; padding-top: 16px">
+<a href="Main.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; font-size: 14px; color: #4B5565; text-decoration: none">Xem trang khoá học public</a>
+</div>
+<div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 0 8px">
+<span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 50%; background: #E3E6EB; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">NV</span>
+<span style="display: flex; flex-direction: column; font-size: 13px"><span style="font-weight: 600">[Tên nhân viên]</span><span style="color: #4B5565">Quản lý nội dung</span></span>
+</div>
+</aside>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+<nav aria-label="Đường dẫn" style="font-size: 14px; color: #4B5565; display: flex; gap: 8px; flex-wrap: wrap">
+<a href="QuanLyKhoaHoc.dc.html" style="color: #4B5565">Quản lý khoá học</a><span aria-hidden="true">›</span><span>Dạy chuyên đề Giáo dục AI 12 tiết – THCS</span>
+</nav>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 8px; flex: 1 1 420px">
+<div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap">
+<h1 style="margin: 0; font-size: 28px; font-weight: 700">Dạy chuyên đề Giáo dục AI 12 tiết – THCS</h1>
+<span style="border-radius: 999px; padding: 4px 12px; font-size: 13px; font-weight: 600; background: #EEF0F3; color: #172033">Nháp</span>
+</div>
+<p style="margin: 0; font-size: 14px; color: #4B5565">{{summaryLine}} · Lưu lần cuối [hh:mm dd/mm/yyyy] bởi [Tên nhân viên]</p>
+</div>
+<div style="display: flex; gap: 10px; flex-wrap: wrap">
+<a href="Detail.dc.html" style="border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 10px; padding: 0 16px; min-height: 44px; display: flex; align-items: center">Xem trước trang khoá</a>
+<button type="button" onClick="{{goCheck}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 15px; border-radius: 10px; padding: 0 18px; min-height: 44px; cursor: pointer">Kiểm tra để xuất bản</button>
+</div>
+</div>
+
+<div role="tablist" aria-label="Phần soạn" style="display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid #E3E6EB">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<button type="button" role="tab" aria-selected="{{t.active}}" onClick="{{t.pick}}" style="border: 0; border-bottom: 3px solid {{t.line}}; background: transparent; font: inherit; font-size: 15px; font-weight: {{t.weight}}; color: {{t.ink}}; padding: 0 16px; min-height: 48px; cursor: pointer; display: flex; align-items: center; gap: 8px">{{t.label}}<sc-if value="{{t.hasCount}}" hint-placeholder-val="{{ false }}"><span style="background: #FFF4DB; color: #7A4B00; border-radius: 999px; padding: 2px 8px; font-size: 12px; font-weight: 700">{{t.count}}</span></sc-if></button>
+</sc-for>
+</div>
+
+<sc-if value="{{tabInfo}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<form style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<p style="margin: 0; font-size: 14px; color: #4B5565">Các mục này hiện trên trang chi tiết khoá, theo thứ tự từ trên xuống.</p>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="kh-ten" style="font-size: 14px; font-weight: 600">Tên khoá học</label><input id="kh-ten" value="Dạy chuyên đề Giáo dục AI 12 tiết – THCS" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="kh-tom-tat" style="font-size: 14px; font-weight: 600">Tóm tắt (hiện trên thẻ khoá ở danh mục, tối đa 200 ký tự)</label><textarea id="kh-tom-tat" rows="2" style="font: inherit; font-size: 15px; line-height: 1.6; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; resize: vertical">Đi qua 12 tiết theo QĐ 2422 cho khối 6–9: mục tiêu từng tiết, hoạt động mẫu, phiếu học tập và cách đánh giá học sinh.</textarea></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="kh-gioi-thieu" style="font-size: 14px; font-weight: 600">Giới thiệu khoá học</label><textarea id="kh-gioi-thieu" rows="5" style="font: inherit; font-size: 15px; line-height: 1.6; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; resize: vertical">Khoá học giúp giáo viên THCS chuẩn bị dạy chuyên đề Giáo dục AI 12 tiết/năm…</textarea></div>
+<sc-for list="{{lists}}" as="ls" hint-placeholder-count="3">
+<fieldset style="margin: 0; border: 1px solid #E3E6EB; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+<legend style="padding: 0 6px; font-size: 14px; font-weight: 600">{{ls.label}}</legend>
+<span style="font-size: 13px; color: #4B5565">{{ls.hint}}</span>
+<sc-for list="{{ls.items}}" as="it" hint-placeholder-count="3">
+<div style="display: flex; gap: 8px; align-items: center">
+<label for="{{it.id}}" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{it.label}}</label>
+<input id="{{it.id}}" value="{{it.text}}" style="flex: 1; min-width: 0; font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px">
+<button type="button" aria-label="{{it.remove}}" style="width: 44px; height: 44px; flex: none; border: 1px solid #E3E6EB; background: #FFFFFF; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 2.4; stroke-linecap: round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+</sc-for>
+<button type="button" style="align-self: flex-start; border: 0; background: transparent; color: {{accent}}; font: inherit; font-size: 14px; font-weight: 600; min-height: 44px; cursor: pointer">+ Thêm ý</button>
+</fieldset>
+</sc-for>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="kh-danh-cho" style="font-size: 14px; font-weight: 600">Dành cho ai</label><textarea id="kh-danh-cho" rows="3" style="font: inherit; font-size: 15px; line-height: 1.6; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; resize: vertical">Giáo viên THCS dạy chuyên đề Giáo dục AI, kể cả giáo viên chưa từng dạy Tin học…</textarea></div>
+<div style="display: flex; gap: 10px; flex-wrap: wrap">
+<button type="button" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 18px; cursor: pointer">Lưu thông tin</button>
+</div>
+</form>
+<aside style="flex: 1 1 280px; max-width: 360px; display: flex; flex-direction: column; gap: 16px">
+<section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">Thông tin nhanh</h2>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="kh-chu-de" style="font-size: 13px; font-weight: 600">Chủ đề</label><select id="kh-chu-de" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 10px; background: #FFFFFF"><option>Dạy học với AI</option><option>Hiểu biết AI</option><option>An toàn &amp; đạo đức AI</option><option>Năng lực số</option></select></div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="kh-gio-tu" style="font-size: 13px; font-weight: 600">Từ (giờ)</label><input id="kh-gio-tu" value="4" inputmode="decimal" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 10px; min-width: 0"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="kh-gio-den" style="font-size: 13px; font-weight: 600">Đến (giờ)</label><input id="kh-gio-den" value="6" inputmode="decimal" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 10px; min-width: 0"></div>
+</div>
+<p style="margin: 0; font-size: 13px; color: #4B5565">Tổng thời lượng các bước hiện là {{stepHours}}.</p>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="kh-hinh-thuc" style="font-size: 13px; font-weight: 600">Hình thức</label><select id="kh-hinh-thuc" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 10px; background: #FFFFFF"><option>Có hướng dẫn</option><option>Tự học</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="kh-chung-nhan" style="font-size: 13px; font-weight: 600">Chứng nhận</label><select id="kh-chung-nhan" disabled="{{ true }}" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 10px; background: #F6F7F9"><option>[Có / Không]</option></select></div>
+</section>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{tabContent}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section aria-label="Cấu trúc khoá học" style="flex: 1 1 320px; max-width: 400px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; overflow: hidden">
+<div style="padding: 14px 16px; border-bottom: 1px solid #E3E6EB; display: flex; justify-content: space-between; align-items: center; gap: 8px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">Cấu trúc</h2>
+<span style="font-size: 13px; color: #4B5565">{{readyCount}} / {{totalSteps}} bước sẵn sàng</span>
+</div>
+<ol style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{tree}}" as="m" hint-placeholder-count="6">
+<li style="border-top: {{m.border}}">
+<div style="display: flex; align-items: center; gap: 4px; padding: 4px 8px 4px 0">
+<button type="button" onClick="{{m.toggle}}" aria-expanded="{{m.open}}" style="flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; color: #172033; text-align: left; display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 14px; min-height: 48px; cursor: pointer">
+<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; transform: {{m.rotate}}; fill: none; stroke: #4B5565; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M9 6l6 6-6 6"></path></svg>
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 12px; font-weight: 600; color: #4B5565">Học phần {{m.no}} · {{m.meta}}</span><span style="font-size: 14px; font-weight: 600; line-height: 1.35">{{m.title}}</span></span>
+</button>
+<button type="button" aria-label="{{m.upLabel}}" style="width: 36px; height: 36px; flex: none; border: 0; background: transparent; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M12 19V5M6 11l6-6 6 6"></path></svg></button>
+<button type="button" aria-label="{{m.downLabel}}" style="width: 36px; height: 36px; flex: none; border: 0; background: transparent; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M12 5v14M6 13l6 6 6-6"></path></svg></button>
+</div>
+<sc-if value="{{m.open}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 0 10px 10px 22px; display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{m.sections}}" as="s" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 2px; border-left: 2px solid #EEF0F3; padding-left: 10px">
+<span style="font-size: 12px; font-weight: 700; color: #4B5565; padding: 8px 4px 2px; text-transform: uppercase; letter-spacing: .02em">Phần: {{s.title}}</span>
+<sc-for list="{{s.steps}}" as="st" hint-placeholder-count="3">
+<button type="button" onClick="{{st.pick}}" aria-pressed="{{st.active}}" style="border: 0; background: {{st.bg}}; font: inherit; color: #172033; text-align: left; display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 4px 8px; border-radius: 8px; cursor: pointer">
+<svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round"><path d="{{st.icon}}"></path></svg>
+<span style="flex: 1; min-width: 0; font-size: 13px; line-height: 1.35; font-weight: {{st.weight}}">{{st.title}}</span>
+<span style="flex: none; border-radius: 999px; padding: 1px 8px; font-size: 11px; font-weight: 700; background: {{st.chipBg}}; color: {{st.chipInk}}">{{st.chip}}</span>
+</button>
+</sc-for>
+<button type="button" style="align-self: flex-start; border: 0; background: transparent; color: {{accent}}; font: inherit; font-size: 13px; font-weight: 600; min-height: 36px; padding: 0 8px; cursor: pointer">+ Thêm bước</button>
+</div>
+</sc-for>
+<button type="button" style="align-self: flex-start; border: 0; background: transparent; color: {{accent}}; font: inherit; font-size: 13px; font-weight: 600; min-height: 40px; padding: 0 8px; cursor: pointer">+ Thêm phần</button>
+</div>
+</sc-if>
+</li>
+</sc-for>
+</ol>
+<div style="padding: 10px 16px; border-top: 1px solid #E3E6EB">
+<button type="button" style="border: 1px dashed #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-size: 14px; font-weight: 600; border-radius: 8px; min-height: 44px; width: 100%; cursor: pointer">+ Thêm học phần</button>
+</div>
+</section>
+
+<section aria-label="Soạn bước" style="flex: 999 1 480px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: #4B5565">Học phần {{sel.moduleNo}} › {{sel.section}}</span>
+<h2 style="margin: 0; font-size: 20px; font-weight: 700">{{sel.title}}</h2>
+</div>
+<span style="border-radius: 999px; padding: 4px 12px; font-size: 13px; font-weight: 600; background: {{sel.chipBg}}; color: {{sel.chipInk}}">{{sel.chip}}</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="b-loai" style="font-size: 14px; font-weight: 600">Loại bước</label>
+<select id="b-loai" value="{{type}}" onChange="{{onType}}" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 10px; background: #FFFFFF"><option value="doc">Bài đọc</option><option value="video">Video</option><option value="quiz">Quiz</option><option value="reflect">Phản tư / nộp sản phẩm</option><option value="end">Tổng kết học phần</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="b-phut" style="font-size: 14px; font-weight: 600">Thời lượng (phút)</label><input id="b-phut" value="{{sel.mins}}" inputmode="numeric" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px"></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="b-ten" style="font-size: 14px; font-weight: 600">Tên bước</label><input id="b-ten" value="{{sel.title}}" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px"></div>
+
+<sc-if value="{{isDoc}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="b-noi-dung" style="font-size: 14px; font-weight: 600">Nội dung bài đọc</label>
+<div role="toolbar" aria-label="Định dạng" style="display: flex; flex-wrap: wrap; gap: 4px; border: 1px solid #CDD2DA; border-bottom: 0; border-radius: 8px 8px 0 0; padding: 6px; background: #F6F7F9">
+<sc-for list="{{toolbar}}" as="tb" hint-placeholder-count="8">
+<button type="button" aria-label="{{tb.aria}}" style="min-width: 40px; height: 36px; border: 1px solid transparent; background: transparent; border-radius: 6px; font: inherit; font-size: 13px; font-weight: 700; color: #172033; cursor: pointer; padding: 0 8px">{{tb.label}}</button>
+</sc-for>
+</div>
+<textarea id="b-noi-dung" rows="10" style="font: inherit; font-size: 15px; line-height: 1.7; border: 1px solid #CDD2DA; border-radius: 0 0 8px 8px; padding: 12px; resize: vertical; margin-top: -6px">Đoạn mở đầu, 2–3 câu: bước này giúp giáo viên làm được gì.
+
+## Tiêu đề ý thứ nhất
+Nội dung…
+
+[Gợi ý khi dạy] Một lưu ý giáo viên dùng được ngay trên lớp.</textarea>
+<span style="font-size: 13px; color: #4B5565">Hộp “Gợi ý khi dạy”, “Tránh”, “Thử ngay” và “Tóm tắt” chèn bằng thanh công cụ; giáo viên thấy như ở màn Học một bước.</span>
+</div>
+</sc-if>
+
+<sc-if value="{{isVideo}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="v-link" style="font-size: 14px; font-weight: 600">Link video (YouTube hoặc Google Drive)</label><input id="v-link" type="url" placeholder="https://youtu.be/..." style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="v-gioi-thieu" style="font-size: 14px; font-weight: 600">Lời giới thiệu</label><textarea id="v-gioi-thieu" rows="2" style="font: inherit; font-size: 15px; line-height: 1.6; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; resize: vertical"></textarea></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="v-de-y" style="font-size: 14px; font-weight: 600">Khi xem, để ý (mỗi dòng một ý)</label><textarea id="v-de-y" rows="3" style="font: inherit; font-size: 15px; line-height: 1.6; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; resize: vertical"></textarea></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="v-ban-ghi" style="font-size: 14px; font-weight: 600">Bản ghi lời video (bắt buộc trước khi xuất bản)</label><textarea id="v-ban-ghi" rows="5" style="font: inherit; font-size: 15px; line-height: 1.6; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; resize: vertical"></textarea></div>
+<label for="v-phu-de" style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer"><input id="v-phu-de" type="checkbox" style="width: 18px; height: 18px; margin: 0">Video có phụ đề tiếng Việt</label>
+</div>
+</sc-if>
+
+<sc-if value="{{isQuiz}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #4B5565; background: #F6F7F9; border-radius: 8px; padding: 12px 14px">Giáo viên đạt khi đúng ít nhất 80% số câu ({{passLine}}). Làm lại không giới hạn.</p>
+<sc-for list="{{quiz}}" as="q" hint-placeholder-count="2">
+<fieldset style="margin: 0; border: 1px solid #E3E6EB; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+<legend style="padding: 0 6px; font-size: 14px; font-weight: 600">Câu {{q.no}}</legend>
+<label for="{{q.id}}" style="font-size: 13px; font-weight: 600">Câu hỏi</label>
+<input id="{{q.id}}" value="{{q.text}}" style="font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px">
+<span style="font-size: 13px; font-weight: 600">Lựa chọn (chọn nút tròn ở đáp án đúng)</span>
+<sc-for list="{{q.options}}" as="o" hint-placeholder-count="3">
+<div style="display: flex; gap: 8px; align-items: center">
+<input type="radio" id="{{o.rid}}" name="{{q.name}}" checked="{{o.right}}" aria-label="{{o.rightLabel}}" style="width: 18px; height: 18px; margin: 0 6px; flex: none">
+<label for="{{o.id}}" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{o.label}}</label>
+<input id="{{o.id}}" value="{{o.text}}" style="flex: 1; min-width: 0; font: inherit; font-size: 15px; height: 44px; border: 1px solid #CDD2DA; border-radius: 8px; padding: 0 12px">
+</div>
+</sc-for>
+<label for="{{q.eid}}" style="font-size: 13px; font-weight: 600">Giải thích (hiện sau khi nộp)</label>
+<textarea id="{{q.eid}}" rows="2" style="font: inherit; font-size: 15px; line-height: 1.6; border: 1px solid {{q.explainBorder}}; border-radius: 8px; padding: 10px 12px; resize: vertical">{{q.explain}}</textarea>
+<sc-if value="{{q.missing}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #8A3A0C; font-weight: 600">Thiếu giải thích: giáo viên trả lời sai sẽ không biết vì sao.</span></sc-if>
+</fieldset>
+</sc-for>
+<button type="button" style="align-self: flex-start; border: 1px dashed #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-size: 14px; font-weight: 600; border-radius: 8px; min-height: 44px; padding: 0 16px; cursor: pointer">+ Thêm câu hỏi</button>
+</div>
+</sc-if>
+
+<sc-if value="{{isReflect}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="r-cau-hoi" style="font-size: 14px; font-weight: 600">Câu hỏi phản tư</label><textarea id="r-cau-hoi" rows="3" style="font: inherit; font-size: 15px; line-height: 1.6; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; resize: vertical"></textarea></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="r-goi-y" style="font-size: 14px; font-weight: 600">Gợi ý trả lời (mỗi dòng một ý)</label><textarea id="r-goi-y" rows="3" style="font: inherit; font-size: 15px; line-height: 1.6; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; resize: vertical"></textarea></div>
+<label for="r-link" style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer"><input id="r-link" type="checkbox" checked="{{ true }}" style="width: 18px; height: 18px; margin: 0">Cho dán link sản phẩm (Google Doc, Drive)</label>
+<label for="r-bat-buoc" style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer"><input id="r-bat-buoc" type="checkbox" checked="{{ true }}" style="width: 18px; height: 18px; margin: 0">Phải lưu câu trả lời mới tính hoàn thành bước</label>
+<p style="margin: 0; font-size: 13px; color: #4B5565">Người phụ trách khoá xem được câu trả lời của giáo viên.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{isEnd}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #4B5565; background: #F6F7F9; border-radius: 8px; padding: 12px 14px">Bước tổng kết tự liệt kê các phần của học phần, số bước đã xong và nút sang học phần tiếp theo.</p>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="e-loi-nhan" style="font-size: 14px; font-weight: 600">Lời nhắn cuối học phần (không bắt buộc)</label><textarea id="e-loi-nhan" rows="3" style="font: inherit; font-size: 15px; line-height: 1.6; border: 1px solid #CDD2DA; border-radius: 8px; padding: 10px 12px; resize: vertical"></textarea></div>
+</div>
+</sc-if>
+
+<div style="border: 1px solid #E3E6EB; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+<strong style="font-size: 14px">Học liệu kèm bước</strong>
+<span style="font-size: 13px; color: #4B5565">Chỉ gắn được KHBD/PBT đã duyệt; giáo viên thấy học liệu sau khi đăng ký khoá.</span>
+<button type="button" style="align-self: flex-start; border: 0; background: transparent; color: {{accent}}; font: inherit; font-size: 14px; font-weight: 600; min-height: 40px; cursor: pointer">+ Gắn KHBD/PBT đã duyệt</button>
+</div>
+
+<div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-top: 1px solid #E3E6EB; padding-top: 16px">
+<button type="button" style="border: 1px solid #CDD2DA; background: #FFFFFF; color: #172033; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 16px; cursor: pointer">Lưu nháp</button>
+<button type="button" onClick="{{toggleReady}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; padding: 0 16px; cursor: pointer">{{readyLabel}}</button>
+<a href="HocBuoc.dc.html" style="margin-left: auto; font-size: 14px; font-weight: 600; min-height: 44px; display: flex; align-items: center">Xem trước như giáo viên</a>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{tabCheck}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section aria-label="Danh sách kiểm tra" style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Kiểm tra trước khi xuất bản</h2>
+<p style="margin: 0; font-size: 14px; color: #4B5565">Hệ thống tự kiểm các mục dưới đây mỗi lần lưu. Xuất bản được khi không còn mục đỏ; mục vàng là nhắc nhở.</p>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border: 1px solid #E3E6EB; border-radius: 10px; overflow: hidden">
+<sc-for list="{{checks}}" as="c" hint-placeholder-count="9">
+<li style="border-top: {{c.border}}; padding: 12px 16px; display: flex; gap: 12px; align-items: flex-start">
+<span aria-hidden="true" style="width: 24px; height: 24px; flex: none; border-radius: 50%; background: {{c.bg}}; display: flex; align-items: center; justify-content: center; margin-top: 1px">
+<svg width="14" height="14" viewBox="0 0 24 24" style="fill: none; stroke: {{c.ink}}; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round"><path d="{{c.icon}}"></path></svg>
+</span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 15px; font-weight: 600">{{c.title}}<span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)"> – {{c.stateLabel}}</span></span>
+<span style="font-size: 13px; color: #4B5565">{{c.detail}}</span>
+</span>
+<sc-if value="{{c.fixable}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{c.fix}}" style="border: 0; background: transparent; color: {{accent}}; font: inherit; font-size: 14px; font-weight: 600; min-height: 40px; cursor: pointer; flex: none">Sửa</button>
+</sc-if>
+</li>
+</sc-for>
+</ul>
+</section>
+<aside style="flex: 1 1 280px; max-width: 360px; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">Xuất bản</h2>
+<p style="margin: 0; font-size: 14px; line-height: 1.6">{{publishHint}}</p>
+<button type="button" disabled="{{blocked}}" style="border: 0; background: {{accent}}; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 15px; border-radius: 8px; min-height: 44px; cursor: pointer; opacity: {{publishOpacity}}">Xuất bản</button>
+<a href="Detail.dc.html" style="font-size: 14px; font-weight: 600; min-height: 44px; display: flex; align-items: center">Xem trước trang khoá</a>
+<p style="margin: 0; font-size: 13px; color: #4B5565">Chỉ Academic lead (Quản lý nội dung) xuất bản được.</p>
+</aside>
+</div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2152C5","options":["#2152C5","#0F766E","#7C3AED","#B45309"]},"tab":{"editor":"enum","default":"content","options":["info","content","check"]},"$preview":{"width":1280,"height":1700}}'>
+// Cùng khung khoá với Detail.dc.html. Mỗi bước: [loại, tên, phút, sẵn sàng?].
+var MODULES = [
+  { title: 'Tổng quan chương trình và QĐ 2422', sections: [
+    { title: 'Chào mừng bạn', steps: [['doc', 'Chào mừng đến với khoá học', 3, 1], ['video', 'Vì sao dạy AI ở THCS', 5, 1]] },
+    { title: 'Chuyên đề 12 tiết', steps: [['doc', 'Mục tiêu và yêu cầu cần đạt theo QĐ 2422', 8, 1], ['doc', 'Cấu trúc 12 tiết theo khối 6–9', 6, 1], ['video', 'Một tiết học mẫu', 6, 0]] },
+    { title: 'Tổng kết học phần 1', steps: [['quiz', 'Quiz học phần 1', 5, 1], ['reflect', 'Phản tư: lớp của bạn bắt đầu từ đâu?', 5, 1], ['end', 'Kết thúc học phần 1', 1, 1]] }
+  ] },
+  { title: 'AI là gì: giúp học sinh hiểu đúng', sections: [
+    { title: 'AI theo luật và AI học từ dữ liệu', steps: [['doc', 'Hai cách máy đưa ra kết quả', 7, 1], ['video', 'Hoạt động phân loại lá cây', 6, 0]] },
+    { title: 'Nói về AI mà không nhân hoá', steps: [['doc', 'Thuật ngữ nên dùng và nên tránh', 6, 1], ['quiz', 'Chọn cách nói đúng', 4, 0]] },
+    { title: 'Tổng kết học phần 2', steps: [['reflect', 'Phản tư: câu hỏi học sinh hay hỏi', 5, 1], ['end', 'Kết thúc học phần 2', 1, 1]] }
+  ] },
+  { title: 'Dữ liệu và học máy với Teachable Machine', sections: [
+    { title: 'Chuẩn bị', steps: [['doc', 'Teachable Machine là gì', 5, 1], ['video', 'Thu thập dữ liệu trong lớp', 7, 1]] },
+    { title: 'Thực hành', steps: [['doc', 'Huấn luyện và kiểm thử mô hình', 10, 0], ['reflect', 'Nộp ảnh chụp mô hình của bạn', 10, 1]] },
+    { title: 'Tổng kết học phần 3', steps: [['quiz', 'Quiz học phần 3', 5, 1], ['end', 'Kết thúc học phần 3', 1, 1]] }
+  ] },
+  { title: 'Thiết kế hoạt động và phiếu học tập', sections: [
+    { title: 'Chuỗi hoạt động', steps: [['doc', 'Khởi động – Khám phá – Luyện tập – Vận dụng', 8, 1], ['video', 'Phân tích một KHBD mẫu', 8, 1]] },
+    { title: 'Phiếu học tập', steps: [['doc', 'Phiếu học tập và exit ticket', 6, 1], ['reflect', 'Phác thảo phiếu cho lớp bạn', 15, 1], ['end', 'Kết thúc học phần 4', 1, 1]] }
+  ] },
+  { title: 'An toàn và đạo đức khi dùng AI trong lớp', sections: [
+    { title: 'Quy tắc trong lớp', steps: [['doc', 'Quy tắc dùng AI với học sinh', 6, 1], ['doc', 'Hướng dẫn học sinh kiểm chứng thông tin', 6, 1]] },
+    { title: 'Tổng kết học phần 5', steps: [['quiz', 'Quiz học phần 5', 5, 1], ['end', 'Kết thúc học phần 5', 1, 1]] }
+  ] },
+  { title: 'Đánh giá theo rubric và dạy thử', sections: [
+    { title: 'Rubric 7 tiêu chí', steps: [['doc', 'Đọc rubric', 8, 1], ['quiz', 'Chấm thử một KHBD', 10, 1]] },
+    { title: 'Dạy thử', steps: [['reflect', 'Nộp bộ dạy thử của bạn', 20, 1], ['reflect', 'Phản tư và góp ý cho khoá học', 5, 1], ['end', 'Kết thúc khoá học', 1, 1]] }
+  ] }
+];
+var ICON = {
+  doc: 'M5 4a1 1 0 0 1 1-1h9l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1zM14 3v5h5M9 13h6M9 17h4',
+  video: 'M4 6h11v12H4zM15 10l5-3v10l-5-3',
+  quiz: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.4V14M12 17.5h.01',
+  reflect: 'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',
+  end: 'M5 21V4h11l-2 4 2 4H5'
+};
+var QUIZ = [
+  { text: 'Câu nào mô tả mô hình nhận dạng ảnh mà không nhân hoá AI?', options: ['Mô hình hiểu trong ảnh có con mèo', 'Mô hình dự đoán nhãn “mèo” dựa trên các mẫu trong dữ liệu huấn luyện', 'Mô hình nghĩ đây là con mèo'], answer: 1, explain: 'Mô hình tính ra nhãn có khả năng cao nhất từ dữ liệu đã học; nó không “hiểu” hay “nghĩ”.' },
+  { text: 'Trong Teachable Machine, mô hình học từ đâu?', options: ['Từ các ví dụ có gắn nhãn mà người dùng đưa vào', 'Từ toàn bộ Internet', 'Từ câu lệnh người dùng gõ'], answer: 0, explain: '' }
+];
+var LISTS = [
+  { label: 'Bạn sẽ học được gì (3–6 ý, mỗi ý bắt đầu bằng động từ)', hint: 'Hiện thành danh sách có dấu tích trên trang khoá.', items: ['Nêu mục tiêu và cấu trúc 12 tiết của chuyên đề cho khối 6–9', 'Giải thích AI cho học sinh mà không nhân hoá AI', 'Tổ chức hoạt động huấn luyện mô hình bằng Teachable Machine', 'Tự đánh giá kế hoạch bài dạy theo rubric 7 tiêu chí'] },
+  { label: 'Cần có trước khi học', hint: 'Kiến thức, kỹ năng giáo viên nên có. Để trống nếu không cần gì.', items: ['Đã hoặc sắp dạy chuyên đề Giáo dục AI ở THCS', 'Dùng được trình duyệt web và Google Docs', 'Không cần biết lập trình'] },
+  { label: 'Cần chuẩn bị', hint: 'Thiết bị, tài khoản, tài liệu cần có khi học.', items: ['Máy tính có kết nối mạng', 'Webcam cho bước thực hành Teachable Machine', 'Kế hoạch dạy học năm của trường (nếu có)'] }
+];
+var TOOLBAR = [['Đ', 'Chữ đậm'], ['N', 'Chữ nghiêng'], ['H2', 'Tiêu đề mục'], ['• Danh sách', 'Danh sách'], ['Link', 'Chèn liên kết'], ['Hình', 'Chèn hình'], ['Gợi ý khi dạy', 'Chèn hộp Gợi ý khi dạy'], ['Tránh', 'Chèn hộp Tránh'], ['Thử ngay', 'Chèn mục Thử ngay'], ['Tóm tắt', 'Chèn mục Tóm tắt']];
+var CHIP = { 1: ['Sẵn sàng', '#E2F3EA', '#1D6E47'], 0: ['Nháp', '#EEF0F3', '#172033'] };
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: null, sel: null, openMods: [1], typeOverride: {}, readyOverride: {} };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var accent = this.props.accent ?? '#2152C5';
+    var tab = s.tab || this.props.tab || 'content';
+    var flat = [];
+    MODULES.forEach(function (m, mi) { m.sections.forEach(function (sec) { sec.steps.forEach(function (st) {
+      var k = flat.length;
+      var ready = s.readyOverride[k] !== undefined ? s.readyOverride[k] : st[3];
+      flat.push({ k: k, mi: mi, sec: sec.title, type: s.typeOverride[k] || st[0], title: st[1], mins: st[2], ready: ready });
+    }); }); });
+    var selK = s.sel !== null ? s.sel : 11; // "Chọn cách nói đúng" (quiz, nháp)
+    var sel = flat[selK];
+    var type = sel.type;
+    var openMods = s.openMods.indexOf(sel.mi) >= 0 ? s.openMods : s.openMods.concat([sel.mi]);
+
+    var tree = MODULES.map(function (m, i) {
+      var open = openMods.indexOf(i) >= 0;
+      var inMod = flat.filter(function (x) { return x.mi === i; });
+      var mins = inMod.reduce(function (n, x) { return n + x.mins; }, 0);
+      var drafts = inMod.filter(function (x) { return !x.ready; }).length;
+      return {
+        no: i + 1, title: m.title, open: open,
+        meta: inMod.length + ' bước · ' + mins + ' phút' + (drafts ? ' · ' + drafts + ' nháp' : ''),
+        border: i === 0 ? '0' : '1px solid #E3E6EB',
+        rotate: open ? 'rotate(90deg)' : 'none',
+        upLabel: 'Chuyển học phần ' + (i + 1) + ' lên', downLabel: 'Chuyển học phần ' + (i + 1) + ' xuống',
+        toggle: function () { self.setState({ openMods: open ? openMods.filter(function (x) { return x !== i; }) : openMods.concat([i]) }); },
+        sections: m.sections.map(function (sec) {
+          return { title: sec.title, steps: inMod.filter(function (x) { return x.sec === sec.title; }).map(function (x) {
+            var c = CHIP[x.ready];
+            var active = x.k === selK;
+            return { title: x.title, icon: ICON[x.type], active: active, bg: active ? '#E8EEFB' : 'transparent', weight: active ? 600 : 400, chip: c[0], chipBg: c[1], chipInk: c[2], pick: function () { self.setState({ sel: x.k }); } };
+          }) };
+        })
+      };
+    });
+
+    var totalMins = flat.reduce(function (n, x) { return n + x.mins; }, 0);
+    var readyCount = flat.filter(function (x) { return x.ready; }).length;
+    var drafts = flat.filter(function (x) { return !x.ready; });
+    var videos = flat.filter(function (x) { return x.type === 'video'; });
+    var hours = (totalMins / 60).toFixed(1).replace('.', ',') + ' giờ';
+    var OK = ['M5 12l5 5L19 7', '#E2F3EA', '#1D6E47', 'Đạt'];
+    var BAD = ['M6 6l12 12M18 6L6 18', '#FCECE3', '#8A3A0C', 'Cần sửa'];
+    var WARN = ['M12 7v6M12 17h.01', '#FFF4DB', '#7A4B00', 'Nhắc nhở'];
+    var raw = [
+      [OK, 'Có tên, tóm tắt, giới thiệu và “Dành cho ai”', 'Tóm tắt 112/200 ký tự.', null],
+      [OK, '“Bạn sẽ học được gì” có 3–6 ý', '4 ý.', null],
+      [OK, 'Mỗi học phần có ít nhất một phần và một bước', MODULES.length + ' học phần, ' + flat.length + ' bước.', null],
+      [drafts.length ? BAD : OK, 'Mọi bước đã “Sẵn sàng”', drafts.length ? drafts.length + ' bước còn nháp: ' + drafts.map(function (x) { return x.title; }).join('; ') + '.' : 'Tất cả sẵn sàng.', drafts.length ? drafts[0].k : null],
+      [OK, 'Mỗi học phần kết thúc bằng bước tổng kết', 'Học phần nào cũng có bước “Kết thúc học phần”.', null],
+      [BAD, 'Mỗi câu quiz có đáp án đúng và giải thích', 'Chọn cách nói đúng: câu 2 chưa có giải thích.', 11],
+      [BAD, 'Mỗi video có link và bản ghi lời', '2 / ' + videos.length + ' video chưa có bản ghi lời: Một tiết học mẫu; Hoạt động phân loại lá cây.', 4],
+      [OK, 'Tổng thời lượng các bước khớp thời lượng ghi trên trang', 'Các bước cộng lại ' + hours + ', trang khoá ghi 4–6 giờ.', null],
+      [WARN, 'Học liệu gắn kèm là bản đã duyệt mới nhất', '1 học liệu có bản mới hơn đã duyệt: [Tên KHBD] có v3.', null]
+    ];
+    var checks = raw.map(function (r, i) {
+      return { icon: r[0][0], bg: r[0][1], ink: r[0][2], stateLabel: r[0][3], title: r[1], detail: r[2], border: i === 0 ? '0' : '1px solid #E3E6EB', fixable: r[3] !== null, fix: function () { self.setState({ tab: 'content', sel: r[3] }); } };
+    });
+    var bad = raw.filter(function (r) { return r[0] === BAD; }).length;
+
+    var c = CHIP[sel.ready];
+    return {
+      accent: accent,
+      summaryLine: MODULES.length + ' học phần · ' + flat.length + ' bước · ' + hours,
+      tabs: [['info', 'Thông tin trang khoá', 0], ['content', 'Nội dung', drafts.length], ['check', 'Kiểm tra trước khi xuất bản', bad]].map(function (t) {
+        var active = t[0] === tab;
+        return { label: t[1], count: t[2], hasCount: t[2] > 0, active: active, line: active ? accent : 'transparent', ink: active ? '#172033' : '#4B5565', weight: active ? 700 : 500, pick: function () { self.setState({ tab: t[0] }); } };
+      }),
+      tabInfo: tab === 'info', tabContent: tab === 'content', tabCheck: tab === 'check',
+      goCheck: function () { self.setState({ tab: 'check' }); },
+      lists: LISTS.map(function (l, li) { return { label: l.label, hint: l.hint, items: l.items.map(function (t, ii) { return { id: 'ds-' + li + '-' + ii, text: t, label: l.label + ', ý ' + (ii + 1), remove: 'Xoá ý ' + (ii + 1) }; }) }; }),
+      stepHours: hours,
+      tree: tree, readyCount: readyCount, totalSteps: flat.length,
+      sel: { moduleNo: sel.mi + 1, section: sel.sec, title: sel.title, mins: sel.mins, chip: c[0], chipBg: c[1], chipInk: c[2] },
+      type: type,
+      onType: function (e) { var t = Object.assign({}, s.typeOverride); t[selK] = e.target.value; self.setState({ typeOverride: t }); },
+      isDoc: type === 'doc', isVideo: type === 'video', isQuiz: type === 'quiz', isReflect: type === 'reflect', isEnd: type === 'end',
+      toolbar: TOOLBAR.map(function (t) { return { label: t[0], aria: t[1] }; }),
+      quiz: QUIZ.map(function (q, qi) {
+        return { no: qi + 1, id: 'cau-' + qi, eid: 'giai-thich-' + qi, name: 'dung-' + qi, text: q.text, explain: q.explain, missing: !q.explain, explainBorder: q.explain ? '#CDD2DA' : '#8A3A0C',
+          options: q.options.map(function (o, oi) { return { id: 'lc-' + qi + '-' + oi, rid: 'dung-' + qi + '-' + oi, text: o, right: oi === q.answer, label: 'Câu ' + (qi + 1) + ', lựa chọn ' + (oi + 1), rightLabel: 'Lựa chọn ' + (oi + 1) + ' là đáp án đúng' }; }) };
+      }),
+      passLine: Math.ceil(QUIZ.length * 0.8) + ' / ' + QUIZ.length + ' câu với quiz này',
+      readyLabel: sel.ready ? 'Chuyển về nháp' : 'Đánh dấu sẵn sàng',
+      toggleReady: function () { var r = Object.assign({}, s.readyOverride); r[selK] = sel.ready ? 0 : 1; self.setState({ readyOverride: r }); },
+      checks: checks,
+      blocked: bad > 0,
+      publishOpacity: bad > 0 ? 0.5 : 1,
+      publishHint: bad > 0 ? 'Còn ' + bad + ' mục cần sửa trước khi xuất bản. Bấm “Sửa” để tới đúng chỗ.' : 'Khoá đã sẵn sàng. Xuất bản thì giáo viên thấy khoá ở danh mục ngay.'
+    };
+  }
+}
+</script>
+</body>
+</html>

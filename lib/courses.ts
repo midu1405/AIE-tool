@@ -2,6 +2,7 @@ import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { CatalogCourse } from "@/lib/catalog";
+import { buildOutline, OUTLINE_SELECT, type OModule, type RawModule } from "@/lib/learning";
 
 type CourseRow = {
   id: string;
@@ -54,9 +55,11 @@ export async function getPublishedCourses(): Promise<CatalogCourse[]> {
 export type CourseDetail = CatalogCourse & {
   description: string;
   outcomes: string[];
+  prerequisites: string[];
+  materialsNeeded: string[];
   audienceNote: string;
   legalBasis: string;
-  modules: { id: string; title: string; lessons: { id: string; title: string; durationMinutes: number | null }[] }[];
+  modules: OModule[];
 };
 
 export async function getPublishedCourse(slug: string): Promise<CourseDetail | null> {
@@ -65,29 +68,21 @@ export async function getPublishedCourse(slug: string): Promise<CourseDetail | n
   cacheLife("minutes");
   const { data, error } = await createPublicClient()
     .from("courses")
-    .select(`${COLS}, course_modules(id, title, position, course_lessons(id, title, position, duration_minutes))`)
+    .select(`${COLS}, prerequisites, materials_needed, ${OUTLINE_SELECT}`)
     .eq("slug", slug)
     .eq("status", "published")
     .maybeSingle();
   if (error) throw new Error(`Không tải được khoá học: ${error.message}`);
   if (!data) return null;
-  const row = data as CourseRow & {
-    course_modules: { id: string; title: string; position: number; course_lessons: { id: string; title: string; position: number; duration_minutes: number | null }[] }[];
-  };
+  const row = data as unknown as CourseRow & { prerequisites: string[]; materials_needed: string[]; course_modules: RawModule[] };
   return {
     ...toCatalog(row),
     description: row.description,
     outcomes: row.outcomes,
+    prerequisites: row.prerequisites ?? [],
+    materialsNeeded: row.materials_needed ?? [],
     audienceNote: row.audience_note,
     legalBasis: row.legal_basis,
-    modules: [...row.course_modules]
-      .sort((a, b) => a.position - b.position)
-      .map((m) => ({
-        id: m.id,
-        title: m.title,
-        lessons: [...m.course_lessons]
-          .sort((a, b) => a.position - b.position)
-          .map((l) => ({ id: l.id, title: l.title, durationMinutes: l.duration_minutes })),
-      })),
+    modules: buildOutline(row.course_modules),
   };
 }
