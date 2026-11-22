@@ -95,6 +95,7 @@ Thử trọn luồng KHBD và khoá học trên máy không cần Supabase thậ
 - Bước Lưu Google Doc tạo `document_versions` trạng thái `in_review`, `web_view_link` rỗng (chưa có Doc thật), `content.mock = true` (giao diện hiện nhãn "Bản giả lập").
 - Ghi chú có `#loi` thì lần chạy đầu lỗi ở bước Lưu Google Doc, để thử nút "Chạy lại từ bước lỗi".
 - Khi chốt executor thật: worker nhận job `queued`, ghi `job_steps` theo đúng 6 bước và tạo `document_versions` như bản giả lập; đổi `executor` mặc định trong `create_khbd_jobs` và bỏ vòng gọi `advance_mock_jobs` ở `JobProgress`.
+- Đọc file nguồn (DOCX, PPTX, PDF) sang Markdown cho bước 1: dùng `markitdown` (đã chạy thử với KHBD tiếng Việt có bảng). Các repo tham khảo khác và lý do chọn/loại: `docs/tham-khao-repo.md`.
 
 ## Lưu ý Next.js 16
 
@@ -171,6 +172,6 @@ lib/                 supabase client, executor, drive
 worker/              đồng bộ Drive, chạy job
 supabase/migrations/ schema
 supabase/tests/      thử migration và quyền trên Postgres trống
-docs/                quy trình làm việc, tài liệu lịch sử
+docs/                quy trình làm việc, repo tham khảo, tài liệu lịch sử
 design/              bản sao canvas (10 màn .dc.html + canvas.json) và prototype.html
 ```
