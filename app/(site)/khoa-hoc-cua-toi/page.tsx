@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 export const metadata = { title: "Khoá học của tôi" };
 
 // Theo design/artboards/MyCourses.dc.html: ba tab Đang học / Đã hoàn thành / Đã lưu.
-// Chưa cấp chứng nhận (quyết định đã chốt 1) nên khoá đã xong chỉ có "Xem lại khoá học".
+// Khoá đã xong có thêm nút giấy chứng nhận (nhận giấy hoặc xem giấy đã cấp).
 export default function MyCoursesPage() {
   return (
     <Suspense fallback={<MyCoursesHeader />}>
@@ -44,11 +44,13 @@ async function Body() {
   const user = await getCurrentUser();
   if (!user) redirect("/dang-nhap?next=/khoa-hoc-cua-toi");
   const supabase = await createClient();
-  const [en, sv, lp] = await Promise.all([
+  const [en, sv, lp, ce] = await Promise.all([
     supabase.from("enrollments").select(`course_id, enrolled_at, completed_at, courses(${COURSE_COLS})`).order("enrolled_at", { ascending: false }),
     supabase.from("saved_courses").select(`course_id, saved_at, courses(${COURSE_COLS})`).order("saved_at", { ascending: false }),
     supabase.from("lesson_progress").select("lesson_id"),
+    supabase.from("certificates").select("course_id").eq("user_id", user.id).is("revoked_at", null),
   ]);
+  const certified = new Set(((ce.data ?? []) as { course_id: string }[]).map((r) => r.course_id));
   const error = en.error ?? sv.error ?? lp.error;
   const done = new Set(((lp.data ?? []) as { lesson_id: string }[]).map((r) => r.lesson_id));
   const enrolledIds = new Set<string>();
@@ -81,6 +83,8 @@ async function Body() {
       note: group === "done" ? `Hoàn thành ngày ${dateVN(e.completed_at!)}` : nextLabel(modules, done),
       progress: group === "done" ? 100 : p.percent,
       href: `/khoa-hoc/${c.slug}`,
+      certHref: group === "done" ? `/khoa-hoc/${c.slug}/chung-nhan` : undefined,
+      certIssued: certified.has(c.id),
     });
   }
   for (const s of (sv.data ?? []) as unknown as { course_id: string; courses: CourseRow | null }[]) {

@@ -9,7 +9,7 @@ Web giáo dục của AI Edu, gồm hai khu dùng chung một codebase và một
 
 ## Thiết kế giao diện
 
-Bản mẫu bấm thử được (canvas, 10 màn): https://claude.ai/artifact/VgnCQGvYs9rCRsU1BBCwx1 (riêng tư, nhờ Midu chia sẻ nếu cần). Bản sao mã nguồn từng màn nằm ở `design/artboards/*.dc.html` (đọc được bằng trình soạn thảo: HTML + dữ liệu mẫu + logic lọc/tìm). Canvas là nguồn chuẩn; khi canvas đổi, bên thiết kế cập nhật lại thư mục `design/`. `design/prototype.html` là bản mẫu bấm thử nối các màn với nhau (có thanh chuyển Trang giáo viên/Khu nội bộ và công tắc vai trò); dùng nó để hiểu luồng đi giữa các màn, chỗ nào khác canvas thì theo canvas.
+Bản mẫu bấm thử được (canvas, 14 màn): https://claude.ai/artifact/VgnCQGvYs9rCRsU1BBCwx1 (riêng tư, nhờ Midu chia sẻ nếu cần). Bản sao mã nguồn từng màn nằm ở `design/artboards/*.dc.html` (đọc được bằng trình soạn thảo: HTML + dữ liệu mẫu + logic lọc/tìm). Canvas là nguồn chuẩn; khi canvas đổi, bên thiết kế cập nhật lại thư mục `design/`. `design/prototype.html` là bản mẫu bấm thử nối các màn với nhau (có thanh chuyển Trang giáo viên/Khu nội bộ và công tắc vai trò); dùng nó để hiểu luồng đi giữa các màn, chỗ nào khác canvas thì theo canvas.
 
 | Màn trong bản mẫu | Route |
 |---|---|
@@ -23,6 +23,10 @@ Bản mẫu bấm thử được (canvas, 10 màn): https://claude.ai/artifact/V
 | Duyệt bài | `/noi-bo/duyet-bai` (hàng chờ) và `/noi-bo/khbd/[id]` (một bài) |
 | Quản lý khoá học | `/noi-bo/khoa-hoc` (danh sách, tạo khoá) |
 | Soạn nội dung khoá học | `/noi-bo/khoa-hoc/[id]` (3 tab: Thông tin trang khoá, Nội dung, Kiểm tra trước khi xuất bản) |
+| Giấy chứng nhận (PDF, A4 ngang) | `/chung-nhan/[code]/pdf` (route handler, `lib/certificate-pdf.ts` vẽ bằng pdf-lib; font và logo ở `assets/certificate/`) |
+| Nhận giấy chứng nhận | `/khoa-hoc/[slug]/chung-nhan` (cần đăng nhập và đã hoàn thành khoá; xác nhận họ tên rồi cấp) |
+| Xác minh giấy chứng nhận | `/chung-nhan/[code]` (công khai; `/chung-nhan?ma=` nhận mã gõ tay) |
+| Email gửi giấy chứng nhận | chưa làm (chờ dịch vụ gửi mail, xem "Chưa chốt") |
 | (không có trong bản mẫu) Trợ giúp, Quyền riêng tư, Điều khoản | `/tro-giup`, `/quyen-rieng-tu`, `/dieu-khoan` (hai trang sau là bản nháp, chờ pháp chế và người phụ trách dữ liệu duyệt; đổi cách lưu dữ liệu thì sửa trang Quyền riêng tư) |
 | (không có trong bản mẫu) Đăng nhập | `/dang-nhap` (Google, và tạm thời email + mật khẩu cho nhân viên), `/auth/callback`, `/auth/dang-xuat` (POST) |
 
@@ -66,15 +70,16 @@ Một người giữ được nhiều vai trò. Chỉ tài khoản `@aiedu.com.v
 - `20261120072649_course_admin.sql`: giai đoạn 3. Hàm `move_course_item(kind, id, dir)` đổi chỗ học phần/bài với dòng kề (security invoker, RLS quyết định ai được đổi). View `course_admin_list` (khoá + số học phần, bài, học liệu, học liệu có bản mới, người học) cho màn Quản lý khoá học.
 - `20261120081713_course_steps.sql`: khung 3 tầng. Bảng `course_sections` (Phần); `course_lessons` là Bước: thêm `section_id` (module_id do trigger điền theo phần; thêm bước chỉ có module_id thì vào phần đầu, chưa có thì tạo phần "Nội dung"), `ready`, `kind` đổi sang `doc|video|quiz|reflect|end` (cột `body` cũ bỏ không dùng). Bảng `lesson_contents` (nội dung bước, chỉ người đã đăng ký khoá đang xuất bản và nhân viên đọc), `quiz_keys` (đáp án, chỉ nhân viên đọc), `quiz_attempts`, `reflections` (giáo viên và người phụ trách khoá xem). Hàm `submit_quiz(lesson, answers)` chấm ở database, đạt ≥ 80% thì ghi `lesson_progress`; policy mới: bước quiz chỉ tính xong qua `submit_quiz`, bước phản tư chỉ tính xong khi đã lưu câu trả lời. `courses.prerequisites`, `courses.materials_needed`. `move_course_item` thêm loại `section`.
 - `20261123040747_khbd_equipment.sql`: bản giả lập ghi thêm `content.equipment` (mục "II. Thiết bị dạy học và học liệu"). Thứ tự mục KHBD ở màn Duyệt bài lấy từ `KHBD_SECTIONS` trong `lib/khbd.ts`.
+- `20261123090017_certificates.sql`: bảng `certificates` (chụp họ tên, tên khoá, thời lượng, số học phần lúc cấp; mã `AIE-<năm>-XXXXXX`). Không ai ghi thẳng bảng: `issue_certificate(course, full_name)` (đã hoàn thành khoá, họ tên ≥ 2 chữ; gọi lại trả giấy còn hiệu lực, họ tên không đổi; giấy đã thu hồi thì cấp lại được với mã mới), `revoke_certificate(code, reason)` (Academic lead, quản trị), `verify_certificate(code)` (anon gọi được, không trả email/user_id). Người học đọc giấy của mình, Academic lead đọc mọi giấy.
 - Tên file khớp với version đã chạy trên project Supabase `aie-training-hub` (ref `uqgdxncnlcenhjtrszqr`, vùng Singapore). Tên file nhắc trong chú thích bên trong migration là tên cũ, giữ nguyên vì file đã chạy.
 - Thứ tự học phần và bài dùng cột `position` với unique deferrable; đổi chỗ hai dòng thì làm trong một transaction.
 - Giáo viên **không** đọc trực tiếp `document_versions`; lấy link học liệu qua `course_material_links()`.
-- Thử trên Postgres trống, không cần Supabase: `supabase/tests/run.sh <ten_db>`. Chạy mọi file `tests/[1-9]*.sql`; đạt khi số lỗi thực tế bằng số mục "PHẢI LỖI" (hiện là 24).
+- Thử trên Postgres trống, không cần Supabase: `supabase/tests/run.sh <ten_db>`. Chạy mọi file `tests/[1-9]*.sql`; đạt khi số lỗi thực tế bằng số mục "PHẢI LỖI" (hiện là 30).
 
 ## Bản chạy thật
 
 - Web: https://aie-tool-tici.vercel.app (Vercel, project `aie-tool` của tài khoản midu1405, gói Hobby). Mỗi lần đẩy lên `main` Vercel tự deploy; mỗi nhánh có link xem trước.
-- Biến môi trường trên Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; thêm `NEXT_PUBLIC_SUPPORT_EMAIL` (email hỗ trợ ở trang Trợ giúp, Quyền riêng tư) khi đã chốt hộp thư.
+- Biến môi trường trên Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; thêm `NEXT_PUBLIC_SUPPORT_EMAIL` (email hỗ trợ ở trang Trợ giúp, Quyền riêng tư) khi đã chốt hộp thư; `CERTIFICATE_SIGNER_NAME`, `CERTIFICATE_SIGNER_TITLE` (người ký trên giấy chứng nhận; bỏ trống thì in "AI Edu" / "Đơn vị đào tạo") khi đã chốt người ký.
 - Gói Hobby chỉ dành cho dùng thử không thương mại; trước khi mở cho giáo viên cần chuyển Pro hoặc tài khoản Vercel của công ty.
 
 ## Chạy và kiểm tra
@@ -116,7 +121,7 @@ Thử trọn luồng KHBD và khoá học trên máy không cần Supabase thậ
 
 ## Quyết định đã chốt
 
-1. **Chứng nhận:** bản đầu chưa cấp. Học xong mọi bài thì khoá tự được đánh dấu "Đã hoàn thành" (`enrollments.completed_at`); ô "Chứng nhận" ở trang chi tiết giữ chữ `[Có / Không]`. Nếu cấp sau này: PDF có mã/QR xác minh trên web. Chưa tạo bảng `certificates`.
+1. **Chứng nhận (đổi 23/11/2026):** xong mọi bước (`enrollments.completed_at`) thì giáo viên nhận giấy chứng nhận. Trước khi cấp, giáo viên xác nhận họ tên in trên giấy (lấy sẵn từ tài khoản Google, sửa được); sau khi cấp họ tên không đổi, cần sửa thì AI Edu thu hồi và cấp lại. Giấy là PDF A4 ngang có logo AI Edu × Google for Education, mã và QR dẫn tới trang xác minh công khai (hiện đầy đủ họ tên, khoá, thời lượng, ngày; không hiện email). Ô "Chứng nhận" ở trang chi tiết khoá ghi "Có".
 2. **Quản lý khoá học:** có màn riêng trong khu nội bộ. Chỉ `content_manager` (Academic lead) và `admin` được xuất bản, ẩn và sửa khoá đang xuất bản; `khbd_editor` chỉ tạo và sửa khoá nháp. Quyền nằm ở database (RLS và trigger `courses_guard`); giao diện chỉ ẩn nút, không thay kiểm tra ở database.
 3. **KHBD và khoá học:** không tự biến KHBD thành bài học. KHBD/PBT **đã duyệt** được gắn tay làm *học liệu* của một bài (`lesson_materials`), ghim đúng một phiên bản; một bài không gắn hai phiên bản của cùng tài liệu. Bản chưa duyệt không gắn được (trigger `lesson_materials_check_version`). Khi có bản mới hơn đã duyệt, view `lesson_material_updates` báo và màn Quản lý khoá học hiện "Có vN đã duyệt" để người quản lý tự chọn cập nhật.
 4. **Khoá học vs KHBD:** khoá học dạy giáo viên *cách dạy*; KHBD là tài liệu giáo viên dùng *dạy học sinh*.
@@ -141,6 +146,7 @@ Thử trọn luồng KHBD và khoá học trên máy không cần Supabase thậ
 - Tiêu chí lọc khoá học (đối tượng, chủ đề, thời lượng, hình thức) đã khớp với cách Academic phân loại chưa.
 - **Đăng nhập Google:** code đã xong nhưng chưa bật provider. Chờ bạn kỹ thuật cloud tạo OAuth Client (Google Auth Platform, loại Web application, redirect URI `https://uqgdxncnlcenhjtrszqr.supabase.co/auth/v1/callback`, Audience External và Publish) rồi dán vào Supabase › Authentication › Providers › Google; thêm Site URL và Redirect URLs (`<địa chỉ web>/**`) ở URL Configuration. Trong lúc chờ, nhân viên đăng nhập bằng email + mật khẩu do quản trị tạo ở Authentication › Users (tích Auto Confirm User); web không có nút tự đăng ký. Giáo viên chưa đăng nhập được cho tới khi bật Google.
 - **Trang Quyền riêng tư, Điều khoản:** bản nháp đã có, cần pháp chế/người phụ trách dữ liệu duyệt, chốt email hỗ trợ và thời hạn lưu dữ liệu, rồi bỏ khung "Bản nháp" (prop `draft` của `InfoPage`) trước khi bật Google.
+- **Giấy chứng nhận:** tên, chức danh người ký và ảnh chữ ký/con dấu (đang in "AI Edu / Đơn vị đào tạo", chừa chỗ ký). Gửi email kèm PDF khi cấp: chọn dịch vụ gửi mail (Resend hoặc Gmail của Workspace) và nhờ bạn kỹ thuật cloud thêm bản ghi DNS cho `aiedu.com.vn`; giao diện email ở artboard `EmailChungNhan`. Thu hồi hiện chỉ gọi `revoke_certificate` bằng SQL, chưa có màn trong khu nội bộ. Logo Google for Education trên giấy: hỏi lại điều khoản đối tác trước khi cấp rộng.
 - Link học liệu cho giáo viên: Doc trong `AI Agent` là thư mục nội bộ, giáo viên ngoài công ty không mở được. Cần chốt bản đã duyệt được chép/chia sẻ ra đâu (bước public B9–B10) trước khi giáo viên dùng link.
 
 ## Các giai đoạn dựng
@@ -148,7 +154,8 @@ Thử trọn luồng KHBD và khoá học trên máy không cần Supabase thậ
 1. **Nền (đã xong):** Next.js (`@supabase/ssr`), Supabase (project + 3 migration + seed), đăng nhập Google (chờ bật provider) và email + mật khẩu tạm cho nhân viên, chặn khu nội bộ theo vai trò, layout hai khu, danh mục khoá học đọc từ DB, trang chi tiết bản đầu, các màn nội bộ để chỗ.
 2. **Khu nội bộ – KHBD (đã xong, trừ đồng bộ Drive):** Tạo KHBD (soạn lại từ kho, bài mới), Tiến độ (Realtime + bản giả lập, chạy lại, huỷ), Danh sách KHBD, hàng chờ Duyệt bài, màn duyệt một bài (xem trước, checklist, rubric 7 tiêu chí, góp ý theo phần, duyệt/trả về soạn bản mới, hoàn tác duyệt, xem bản cũ). **Còn lại:** đồng bộ cây kho từ Drive (cần service account Google, chờ bạn kỹ thuật cloud); làm PBT sau khi duyệt (giai đoạn 2 của skill).
 3. **Khoá học (đã xong):** khung 3 tầng Học phần → Phần → Bước (quyết định đã chốt 5). Soạn nội dung khoá (thông tin trang khoá; cây cấu trúc thêm, đổi tên, xoá, đổi thứ tự; ô soạn theo loại bước, bài đọc dùng Markdown rút gọn ở `lib/steps.ts`; gắn KHBD/PBT đã duyệt vào bước, "Gắn vN" khi có bản mới; xem câu trả lời phản tư; danh sách tự kiểm `readinessChecks` chặn nút Xuất bản khi còn mục đỏ; xuất bản, ẩn, xoá khoá chưa có người học); chi tiết khoá (thẻ thông tin nhanh, cần có, cần chuẩn bị, nội dung 3 tầng, đăng ký, lưu, tiến độ); học một bước (mục lục, bài đọc, video nhúng YouTube/Drive, quiz, phản tư, tổng kết, bước trước/sau); Khoá học của tôi (Đang học / Đã hoàn thành / Đã lưu); menu khu nội bộ gọn lại thành nút "Menu" dưới 768 px. Xuất bản hoặc ẩn khoá thì gọi `refreshCatalog()` (server action, `updateTag("courses")`).
-4. **Executor thật** khi đã chốt.
+4. **Giấy chứng nhận (đã xong, trừ gửi email):** xác nhận họ tên và cấp giấy (`/khoa-hoc/[slug]/chung-nhan`), PDF (`/chung-nhan/[code]/pdf`), trang xác minh công khai, nút ở thẻ hoàn thành khoá và tab Đã hoàn thành. **Còn lại:** gửi email kèm PDF, màn thu hồi trong khu nội bộ.
+5. **Executor thật** khi đã chốt.
 
 ## Quy tắc khi code
 
@@ -177,5 +184,6 @@ worker/              đồng bộ Drive, chạy job
 supabase/migrations/ schema
 supabase/tests/      thử migration và quyền trên Postgres trống
 docs/                quy trình làm việc, repo tham khảo, tài liệu lịch sử
-design/              bản sao canvas (10 màn .dc.html + canvas.json) và prototype.html
+design/              bản sao canvas (14 màn .dc.html + canvas.json) và prototype.html
+assets/certificate/  font Be Vietnam Pro (OFL) và logo để vẽ PDF giấy chứng nhận
 ```

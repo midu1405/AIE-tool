@@ -38,7 +38,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: "Học xong khoá có chứng nhận không?",
-    a: "Bản đầu của web chưa cấp chứng nhận. Học xong mọi bước, khoá được đánh dấu “Đã hoàn thành” trong Khoá học của tôi.",
+    a: "Có. Học xong mọi bước, bạn xác nhận họ tên rồi nhận giấy chứng nhận (tải PDF). Trên giấy có mã và mã QR để nhà trường kiểm tra tại trang Xác minh giấy chứng nhận. Họ tên in trên giấy không đổi được sau khi cấp, nên hãy kiểm tra dấu trước khi bấm “Cấp giấy chứng nhận”.",
   },
   {
     q: "Tôi không mở được học liệu (KHBD, phiếu bài tập) gắn trong bước học.",

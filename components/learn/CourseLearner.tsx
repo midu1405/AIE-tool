@@ -7,7 +7,7 @@ import { Notice } from "@/components/khbd/StatusChip";
 import { courseProgress, type OModule } from "@/lib/learning";
 import { STEP_ICON, STEP_KINDS, STEP_LABEL, hoursOf } from "@/lib/steps";
 import { getBrowserClient } from "@/lib/supabase/client";
-import { btnPrimaryLg, btnSecondary } from "@/lib/ui";
+import { btnPrimary, btnPrimaryLg, btnSecondary } from "@/lib/ui";
 
 type State = { ready: boolean; signedIn: boolean; enrolled: boolean; completedAt: string | null; saved: boolean; done: Set<string> };
 
@@ -287,7 +287,7 @@ export function CourseContents() {
 
 /** Ô "Hoàn thành khoá học" ở cột phải. */
 export function CompletionCard() {
-  const { state, modules } = useLearner();
+  const { state, modules, slug } = useLearner();
   const p = courseProgress(modules, state.done);
   const finished = !!state.completedAt;
   return (
@@ -297,9 +297,14 @@ export function CompletionCard() {
       </span>
       <h2 className="text-lg font-bold">Hoàn thành khoá học</h2>
       <p className="text-sm leading-relaxed text-muted">
-        Học xong mọi bước và đạt mọi quiz (đúng từ 80% số câu), khoá được đánh dấu “Đã hoàn thành” trong Khoá học của tôi.
+        Học xong mọi bước và đạt mọi quiz (đúng từ 80% số câu) để nhận giấy chứng nhận hoàn thành khoá, có mã QR để nhà trường xác minh.
         {state.enrolled && !finished ? ` Còn ${p.total - p.doneCount} bước.` : ""}
       </p>
+      {finished && (
+        <Link href={`/khoa-hoc/${slug}/chung-nhan`} className={btnPrimary}>
+          Nhận giấy chứng nhận
+        </Link>
+      )}
     </section>
   );
 }
