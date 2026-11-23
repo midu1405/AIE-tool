@@ -186,10 +186,14 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
 
 function CourseCard({ c, badge }: { c: CatalogCourse; badge: string }) {
   const t = TOPICS[c.topic];
+  // Cả thẻ bấm được (link phủ toàn thẻ qua ::after). Rê chuột hoặc Tab tới: thẻ nhích lên, đổ bóng, viền xanh,
+  // biểu tượng phóng nhẹ, mũi tên "Xem khoá học" trượt sang phải. Người bật "giảm chuyển động" chỉ thấy đổi màu, bóng.
   return (
-    <article className="flex flex-col overflow-hidden rounded-xl border border-line bg-surface">
-      <div className="relative flex h-32 items-center justify-center" style={{ background: t.tint }}>
-        <Icon d={t.icon} size={48} stroke={t.ink} width={1.5} />
+    <article className="group relative flex flex-col overflow-hidden rounded-xl border border-line bg-surface transition-[translate,box-shadow,border-color] duration-200 ease-out hover:border-accent-edge hover:shadow-[0_14px_32px_-14px_rgba(23,32,51,0.30)] has-[a:focus-visible]:border-accent has-[a:focus-visible]:shadow-[0_14px_32px_-14px_rgba(23,32,51,0.30)] has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-accent motion-safe:hover:-translate-y-1 motion-safe:has-[a:focus-visible]:-translate-y-1">
+      <div className="relative flex h-32 items-center justify-center overflow-hidden" style={{ background: t.tint }}>
+        <span className="flex transition-transform duration-300 ease-out motion-safe:group-hover:scale-110 motion-safe:group-hover:-rotate-3 motion-safe:group-has-[a:focus-visible]:scale-110">
+          <Icon d={t.icon} size={48} stroke={t.ink} width={1.5} />
+        </span>
         {badge && <span className="absolute top-3 left-3 rounded-full bg-surface px-2.5 py-1 text-xs font-semibold text-ink">{badge}</span>}
       </div>
       <div className="flex flex-1 flex-col gap-2.5 p-5">
@@ -197,7 +201,10 @@ function CourseCard({ c, badge }: { c: CatalogCourse; badge: string }) {
           {t.label}
         </span>
         <h3 className="text-lg leading-[1.35] font-bold">
-          <Link href={`/khoa-hoc/${c.slug}`} className="text-ink no-underline hover:text-accent">
+          <Link
+            href={`/khoa-hoc/${c.slug}`}
+            className="text-ink no-underline transition-colors duration-200 group-hover:text-accent focus-visible:outline-none after:absolute after:inset-0 after:rounded-xl after:content-['']"
+          >
             {c.title}
           </Link>
         </h3>
@@ -210,7 +217,15 @@ function CourseCard({ c, badge }: { c: CatalogCourse; badge: string }) {
           <span>{FORMATS[c.format]}</span>
           <span>{LEVELS[c.level]}</span>
         </div>
-        <p className="text-[13px] text-muted">Đối tượng: {audienceText(c.audiences)}</p>
+        <div className="flex items-end justify-between gap-3">
+          <p className="text-[13px] text-muted">Đối tượng: {audienceText(c.audiences)}</p>
+          <span aria-hidden="true" className="flex flex-none items-center gap-1 text-sm font-semibold text-accent">
+            Xem khoá học
+            <span className="transition-transform duration-200 ease-out motion-safe:group-hover:translate-x-1 motion-safe:group-has-[a:focus-visible]:translate-x-1">
+              <Icon d="M5 12h14M13 6l6 6-6 6" size={16} stroke="currentColor" width={2} />
+            </span>
+          </span>
+        </div>
       </div>
     </article>
   );

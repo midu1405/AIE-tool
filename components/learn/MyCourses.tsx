@@ -112,7 +112,7 @@ function Item({ c }: { c: MyItem }) {
   const primary = c.group === "learning" ? "Tiếp tục học" : c.group === "done" ? "Xem lại khoá học" : c.enrolled ? "Vào khoá học" : "Bắt đầu học";
   const cert = c.group === "done" && c.certHref;
   return (
-    <article className="flex flex-wrap items-center gap-5 rounded-xl border border-line bg-surface p-5">
+    <article className="flex flex-wrap items-center gap-5 rounded-xl border border-line bg-surface p-5 transition-[box-shadow,border-color] duration-200 ease-out hover:border-accent-edge hover:shadow-[0_10px_26px_-14px_rgba(23,32,51,0.28)]">
       <div className="flex h-24 w-24 flex-none items-center justify-center rounded-[10px]" style={{ background: t?.tint ?? "#EEF0F3" }}>
         {t && <Icon d={t.icon} size={40} stroke={t.ink} width={1.6} />}
       </div>

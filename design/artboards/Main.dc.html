@@ -13,6 +13,19 @@
 <style>
 body{margin:0;background:#F6F7F9}
 a{color:#2152C5}a:hover{color:#163B91}
+.the-khoa{position:relative;transition:translate .2s ease-out,box-shadow .2s ease-out,border-color .2s ease-out}
+.the-khoa:hover,.the-khoa:has(a:focus-visible){border-color:#C9D6F5 !important;box-shadow:0 14px 32px -14px rgba(23,32,51,.3)}
+.the-khoa:has(a:focus-visible){outline:2px solid #2152C5;outline-offset:2px}
+.the-ten{transition:color .2s ease-out}
+.the-ten::after{content:"";position:absolute;inset:0;border-radius:12px}
+.the-ten:focus-visible{outline:none}
+.the-khoa:hover .the-ten{color:#2152C5 !important}
+.the-icon,.the-mui{display:flex;transition:transform .25s ease-out}
+@media (prefers-reduced-motion:no-preference){
+.the-khoa:hover,.the-khoa:has(a:focus-visible){translate:0 -4px}
+.the-khoa:hover .the-icon{transform:scale(1.1) rotate(-3deg)}
+.the-khoa:hover .the-mui{transform:translateX(4px)}
+}
 </style>
 </helmet>
 <div style="font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #172033; background: #F6F7F9; min-height: 100vh">
@@ -103,23 +116,26 @@ a{color:#2152C5}a:hover{color:#163B91}
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px">
 <sc-for list="{{courses}}" as="c" hint-placeholder-count="6">
-<article style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column">
+<article class="the-khoa" style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column">
 <div style="height: 128px; background: {{c.tint}}; display: flex; align-items: center; justify-content: center; position: relative">
-<svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: {{c.ink}}; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round"><path d="{{c.icon}}"></path></svg>
+<span class="the-icon"><svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: {{c.ink}}; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round"><path d="{{c.icon}}"></path></svg></span>
 <sc-if value="{{c.hasBadge}}" hint-placeholder-val="{{ false }}">
 <span style="position: absolute; top: 12px; left: 12px; background: #FFFFFF; color: #172033; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600">{{c.badge}}</span>
 </sc-if>
 </div>
 <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1">
 <span style="align-self: flex-start; background: {{c.tint}}; color: {{c.ink}}; border-radius: 6px; padding: 3px 8px; font-size: 12px; font-weight: 600">{{c.topicLabel}}</span>
-<h3 style="margin: 0; font-size: 18px; line-height: 1.35; font-weight: 700"><a href="Detail.dc.html" style="color: #172033; text-decoration: none">{{c.title}}</a></h3>
+<h3 style="margin: 0; font-size: 18px; line-height: 1.35; font-weight: 700"><a href="Detail.dc.html" class="the-ten" style="color: #172033; text-decoration: none">{{c.title}}</a></h3>
 <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #4B5565; flex: 1">{{c.desc}}</p>
 <div style="display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: #4B5565; padding-top: 12px; border-top: 1px solid #EEF0F3">
 <span style="display: flex; align-items: center; gap: 6px"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #4B5565; stroke-width: 1.8; stroke-linecap: round"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2"></path></svg>{{c.durText}}</span>
 <span>{{c.fmtLabel}}</span>
 <span>{{c.level}}</span>
 </div>
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px">
 <p style="margin: 0; font-size: 13px; color: #4B5565">Đối tượng: {{c.audText}}</p>
+<span aria-hidden="true" style="flex: none; display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 600; color: #2152C5">Xem khoá học<span class="the-mui"><svg width="16" height="16" viewBox="0 0 24 24" style="fill: none; stroke: #2152C5; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></span>
+</div>
 </div>
 </article>
 </sc-for>
