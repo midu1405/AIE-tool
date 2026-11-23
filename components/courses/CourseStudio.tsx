@@ -204,6 +204,17 @@ export function CourseStudio(p: {
             : "Khoá đã xuất bản hoặc đã ẩn: chỉ Academic lead (Quản lý nội dung) sửa được. Bạn đang xem ở chế độ chỉ đọc."}
         </Notice>
       )}
+      {course.status === "published" && bad > 0 && (
+        <Notice tone="warn">
+          Khoá đang hiện với giáo viên nhưng còn {bad} mục cần sửa.{" "}
+          {p.canPublish ? "Sửa các mục đỏ ở tab “Kiểm tra trước khi xuất bản”, hoặc ẩn khoá cho tới khi xong." : "Báo Academic lead sửa hoặc ẩn khoá."}{" "}
+          {tab !== "check" && (
+            <button type="button" onClick={() => setTab("check")} className="font-semibold underline">
+              Xem các mục cần sửa
+            </button>
+          )}
+        </Notice>
+      )}
       {error && <Notice tone="err">{error}</Notice>}
 
       <div role="tablist" aria-label="Phần soạn" className="flex flex-wrap gap-1 border-b border-line">

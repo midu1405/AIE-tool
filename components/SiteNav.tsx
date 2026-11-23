@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { href: "/", label: "Khoá học", match: (p: string) => p === "/" || p.startsWith("/khoa-hoc/") },
   { href: "/khoa-hoc-cua-toi", label: "Khoá học của tôi", match: (p: string) => p.startsWith("/khoa-hoc-cua-toi") },
-  { href: "#tro-giup", label: "Trợ giúp", match: () => false },
+  { href: "/tro-giup", label: "Trợ giúp", match: (p: string) => p.startsWith("/tro-giup") },
 ];
 
 export function SiteNav() {

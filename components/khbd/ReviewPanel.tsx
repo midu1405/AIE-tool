@@ -7,7 +7,9 @@ import {
   CHECK_TAGS,
   CRITERIA,
   FORMATS,
+  KHBD_SECTIONS,
   LIST_STATUS,
+  ROMAN,
   formatDate,
   formatTime,
   rpcErrorText,
@@ -190,57 +192,76 @@ export function ReviewPanel({
             </span>
           </div>
           <h2 className="text-[22px] font-bold text-[#A92145]">{doc.title}</h2>
-          <section className="flex flex-col gap-1.5">
-            <h3 className="text-[15px] font-bold">I. Mục tiêu</h3>
-            <p className="font-semibold">1. Năng lực trí tuệ nhân tạo</p>
-            <p className="text-muted">
-              {c.codes?.length ? `Theo mã QĐ 2422: ${c.codes.join(", ")}` : `Yêu cầu cần đạt lấy theo mã QĐ 2422 lớp ${doc.grade} (Claude tự chọn).`}
-            </p>
-            <p className="font-semibold">2. Mục tiêu bài học</p>
-            <ul className="list-disc pl-5">
-              {(c.objectives ?? []).map((o) => (
-                <li key={o}>{o}</li>
-              ))}
-            </ul>
-          </section>
-          <section className="flex flex-col gap-2">
-            <h3 className="text-[15px] font-bold">II. Tiến trình dạy học</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[520px] border-collapse text-[13px]">
-                <thead>
-                  <tr className="bg-[#F6E8EC] text-left">
-                    <th scope="col" className="w-[26%] border border-[#E3C7CF] px-2.5 py-2">
-                      Hoạt động
-                    </th>
-                    <th scope="col" className="border border-[#E3C7CF] px-2.5 py-2">
-                      Mô tả
-                    </th>
-                    <th scope="col" className="w-[24%] border border-[#E3C7CF] px-2.5 py-2">
-                      Sản phẩm / Minh chứng
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(c.activities ?? []).map((a, i) => (
-                    <tr key={a.name}>
-                      <td className="border border-line px-2.5 py-2 align-top">
-                        <strong>
-                          {i + 1}. {a.name}
-                        </strong>
-                        <br />
-                        {a.minutes} phút
-                      </td>
-                      <td className="border border-line px-2.5 py-2">{a.desc}</td>
-                      <td className="border border-line px-2.5 py-2">{a.product}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="text-xs text-muted">
-              Tổng thời gian: {(c.activities ?? []).reduce((s, a) => s + Number(a.minutes), 0)} / {45 * doc.periods} phút (45 phút × {doc.periods} tiết).
-            </p>
-          </section>
+          {KHBD_SECTIONS.map((sec, si) => (
+            <section key={sec.key} className="flex flex-col gap-1.5">
+              <h3 className="text-[15px] font-bold">
+                {ROMAN[si]}. {sec.title}
+              </h3>
+              {sec.key === "objectives" && (
+                <>
+                  <p className="font-semibold">1. Năng lực trí tuệ nhân tạo</p>
+                  <p className="text-muted">
+                    {c.codes?.length ? `Theo mã QĐ 2422: ${c.codes.join(", ")}` : `Yêu cầu cần đạt lấy theo mã QĐ 2422 lớp ${doc.grade} (Claude tự chọn).`}
+                  </p>
+                  <p className="font-semibold">2. Mục tiêu bài học</p>
+                  <ul className="list-disc pl-5">
+                    {(c.objectives ?? []).map((o) => (
+                      <li key={o}>{o}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {sec.key === "equipment" &&
+                (c.equipment?.length ? (
+                  <ul className="list-disc pl-5">
+                    {c.equipment.map((x) => (
+                      <li key={x}>{x}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted italic">Bản này chưa có mục thiết bị dạy học và học liệu.</p>
+                ))}
+              {sec.key === "process" && (
+                <>
+                  <div className="overflow-x-auto">
+                    <table className="w-full min-w-[520px] border-collapse text-[13px]">
+                      <thead>
+                        <tr className="bg-[#F6E8EC] text-left">
+                          <th scope="col" className="w-[26%] border border-[#E3C7CF] px-2.5 py-2">
+                            Hoạt động
+                          </th>
+                          <th scope="col" className="border border-[#E3C7CF] px-2.5 py-2">
+                            Mô tả
+                          </th>
+                          <th scope="col" className="w-[24%] border border-[#E3C7CF] px-2.5 py-2">
+                            Sản phẩm / Minh chứng
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(c.activities ?? []).map((a, i) => (
+                          <tr key={a.name}>
+                            <td className="border border-line px-2.5 py-2 align-top">
+                              <strong>
+                                {i + 1}. {a.name}
+                              </strong>
+                              <br />
+                              {a.minutes} phút
+                            </td>
+                            <td className="border border-line px-2.5 py-2">{a.desc}</td>
+                            <td className="border border-line px-2.5 py-2">{a.product}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="text-xs text-muted">
+                    Tổng thời gian: {(c.activities ?? []).reduce((s, a) => s + Number(a.minutes), 0)} / {45 * doc.periods} phút (45 phút × {doc.periods} tiết).
+                  </p>
+                </>
+              )}
+            </section>
+          ))}
         </article>
 
         <section aria-label="Công cụ duyệt" className="flex flex-[1_1_340px] flex-col gap-4 md:max-w-[420px]">
@@ -358,6 +379,7 @@ export function ReviewPanel({
                   <select id="cho-gop-y" value={anchor} onChange={(e) => setAnchor(e.target.value)} className={field}>
                     <option value="">Cả bài</option>
                     <option value="Mục tiêu">Mục tiêu</option>
+                    <option value="Thiết bị dạy học và học liệu">Thiết bị dạy học và học liệu</option>
                     {(c.activities ?? []).map((a, i) => (
                       <option key={a.name} value={`Hoạt động ${i + 1}`}>
                         Hoạt động {i + 1}. {a.name}

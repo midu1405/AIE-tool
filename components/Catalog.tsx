@@ -26,6 +26,8 @@ import { getBrowserClient } from "@/lib/supabase/client";
 export function Catalog({ courses }: { courses: CatalogCourse[] }) {
   const [f, setF] = useState<Filters>(EMPTY_FILTERS);
   const [sort, setSort] = useState<Sort>("default");
+  // Trên điện thoại (dưới 768 px) bộ lọc gọn thành nút "Bộ lọc (n)" để danh sách khoá lên trước.
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const progress = useMyProgress();
 
   const groups = useMemo(() => filterGroups(courses, f), [courses, f]);
@@ -65,40 +67,52 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
         </div>
       </section>
 
-      <main className="mx-auto flex max-w-[1200px] flex-wrap items-start gap-8 px-6 pt-8 pb-12">
+      <main className="mx-auto flex max-w-[1200px] flex-wrap items-start gap-5 px-6 pt-6 pb-12 md:gap-8 md:pt-8">
         <aside
           aria-label="Bộ lọc khoá học"
-          className="flex flex-[1_1_240px] flex-col gap-5 rounded-xl border border-line bg-surface p-5 md:max-w-[280px]"
+          className="flex flex-[1_1_240px] flex-col gap-5 rounded-xl border border-line bg-surface p-3 md:max-w-[280px] md:p-5"
         >
-          <div className="flex items-center justify-between">
-            <h2 className="text-[17px] font-bold">Bộ lọc</h2>
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="hidden text-[17px] font-bold md:block">Bộ lọc</h2>
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((v) => !v)}
+              aria-expanded={filtersOpen}
+              aria-controls="nhom-loc"
+              className="flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-edge px-3.5 text-[15px] font-semibold md:hidden"
+            >
+              <Icon d="M4 6h16M7 12h10M10 18h4" size={18} stroke="#172033" width={2} />
+              Bộ lọc{chips.filter((c) => c.key !== "q").length ? ` (${chips.filter((c) => c.key !== "q").length})` : ""}
+            </button>
             {hasFilters && (
               <button type="button" onClick={clearAll} className="min-h-11 cursor-pointer px-1 text-sm font-semibold text-accent">
                 Xoá tất cả
               </button>
             )}
           </div>
-          {groups.map((g) => (
-            <fieldset key={g.key} className="m-0 flex flex-col gap-0.5 border-0 p-0">
-              <legend className="mb-1.5 p-0 text-[13px] font-bold tracking-[0.04em] text-muted uppercase">{g.title}</legend>
-              {g.options.map((o) => {
-                const id = `loc-${g.key}-${o.value}`;
-                return (
-                  <label key={id} htmlFor={id} className="flex min-h-11 cursor-pointer items-center gap-2.5 text-[15px]">
-                    <input
-                      id={id}
-                      type="checkbox"
-                      checked={o.checked}
-                      onChange={() => toggle(g.key, o.value)}
-                      className="m-0 h-[18px] w-[18px] accent-accent"
-                    />
-                    <span className="flex-1">{o.label}</span>
-                    <span className="text-[13px] text-muted">{o.count}</span>
-                  </label>
-                );
-              })}
-            </fieldset>
-          ))}
+          <div id="nhom-loc" className={`${filtersOpen ? "flex" : "hidden"} flex-col gap-5 md:flex`}>
+            {groups.map((g) => (
+              <fieldset key={g.key} className="m-0 flex flex-col gap-0.5 border-0 p-0">
+                <legend className="mb-1.5 p-0 text-[13px] font-bold tracking-[0.04em] text-muted uppercase">{g.title}</legend>
+                {g.options.map((o) => {
+                  const id = `loc-${g.key}-${o.value}`;
+                  return (
+                    <label key={id} htmlFor={id} className="flex min-h-11 cursor-pointer items-center gap-2.5 text-[15px]">
+                      <input
+                        id={id}
+                        type="checkbox"
+                        checked={o.checked}
+                        onChange={() => toggle(g.key, o.value)}
+                        className="m-0 h-[18px] w-[18px] accent-accent"
+                      />
+                      <span className="flex-1">{o.label}</span>
+                      <span className="text-[13px] text-muted">{o.count}</span>
+                    </label>
+                  );
+                })}
+              </fieldset>
+            ))}
+          </div>
         </aside>
 
         <section aria-label="Danh sách khoá học" className="flex min-w-0 flex-[999_1_560px] flex-col gap-5">
@@ -143,6 +157,7 @@ export function Catalog({ courses }: { courses: CatalogCourse[] }) {
           {list.length === 0 && (
             <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-edge bg-surface px-6 py-12 text-center">
               <p className="text-lg font-semibold">{courses.length === 0 ? "Chưa có khoá học nào được xuất bản" : "Chưa có khoá học phù hợp"}</p>
+              {courses.length === 0 && <p className="text-[15px] text-muted">AI Edu đang soạn nội dung các khoá. Bạn quay lại sau ít ngày nhé.</p>}
               {courses.length > 0 && (
                 <>
                   <p className="text-[15px] text-muted">Thử bỏ bớt bộ lọc hoặc đổi từ khoá tìm kiếm.</p>

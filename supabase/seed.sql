@@ -1,13 +1,14 @@
--- Dữ liệu mẫu cho danh mục khoá học, lấy từ design/prototype.html (9 khoá, đã xuất bản).
+-- Dữ liệu mẫu cho danh mục khoá học, lấy từ design/prototype.html (9 khoá, 81 bước).
 -- Chạy bằng tài khoản quản trị database (SQL editor hoặc psql), không qua API.
--- session_replication_role = replica tắt trigger courses_guard trong giao dịch này để nạp khoá ở trạng thái đã xuất bản.
+-- Khoá ở trạng thái nháp: các bước mới có tên, chưa có nội dung. Academic soạn ở màn Soạn nội dung khoá rồi xuất bản
+-- qua danh sách tự kiểm (không xuất bản thẳng từ seed). Không tắt trigger: bước chỉ ghi module_id được trigger
+-- course_lessons_sync_section xếp vào phần "Nội dung" của học phần.
 -- Chạy lại được: khoá trùng slug thì bỏ qua.
 begin;
-set local session_replication_role = replica;
 
 with c as (
   insert into public.courses (slug, title, summary, description, topic, audiences, hours_min, hours_max, format, level, outcomes, audience_note, status, published_at, created_at)
-  values ('hieu-biet-ai', 'Hiểu biết AI cho giáo viên và cán bộ quản lý', 'Nắm các khái niệm cốt lõi về AI, cách AI học từ dữ liệu và những gì AI chưa làm được.', 'Nắm các khái niệm cốt lõi về AI, cách AI học từ dữ liệu và những gì AI chưa làm được.', 'ai', array['th', 'thcs', 'thpt', 'ql']::text[], 1, 2, 'self', 'basic', array['Giải thích AI là gì bằng ví dụ đời thường', 'Phân biệt AI theo luật và AI học từ dữ liệu', 'Nhận ra khi nào câu trả lời của AI có thể sai', 'Thấy cơ hội dùng AI trong công việc ở trường']::text[], 'Mọi giáo viên và cán bộ quản lý, không cần kiến thức kỹ thuật.', 'published', now(), now() + interval '0 second')
+  values ('hieu-biet-ai', 'Hiểu biết AI cho giáo viên và cán bộ quản lý', 'Nắm các khái niệm cốt lõi về AI, cách AI học từ dữ liệu và những gì AI chưa làm được.', 'Nắm các khái niệm cốt lõi về AI, cách AI học từ dữ liệu và những gì AI chưa làm được.', 'ai', array['th', 'thcs', 'thpt', 'ql']::text[], 1, 2, 'self', 'basic', array['Giải thích AI là gì bằng ví dụ đời thường', 'Phân biệt AI theo luật và AI học từ dữ liệu', 'Nhận ra khi nào câu trả lời của AI có thể sai', 'Thấy cơ hội dùng AI trong công việc ở trường']::text[], 'Mọi giáo viên và cán bộ quản lý, không cần kiến thức kỹ thuật.', 'draft', null, now() + interval '0 second')
   on conflict (slug) do nothing
   returning id
 ), m as (
@@ -21,7 +22,7 @@ join (values (0, 1, 'AI trong đời sống hằng ngày'), (0, 2, 'AI khác ph�
 
 with c as (
   insert into public.courses (slug, title, summary, description, topic, audiences, hours_min, hours_max, format, level, outcomes, audience_note, status, published_at, created_at)
-  values ('gd-ai-thcs', 'Dạy chuyên đề Giáo dục AI 12 tiết – THCS', 'Đi qua 12 tiết theo QĐ 2422 cho khối 6–9: mục tiêu, hoạt động mẫu, phiếu học tập và cách đánh giá.', 'Đi qua 12 tiết theo QĐ 2422 cho khối 6–9: mục tiêu từng tiết, hoạt động mẫu, phiếu học tập và cách đánh giá học sinh. Cuối khoá, bạn chuẩn bị một bộ dạy thử cho lớp của mình.', 'teach', array['thcs']::text[], 4, 6, 'guided', 'basic', array['Nắm mục tiêu và cấu trúc 12 tiết của chuyên đề cho khối 6–9', 'Giải thích AI cho học sinh mà không nhân hoá AI', 'Tổ chức hoạt động huấn luyện mô hình bằng Teachable Machine', 'Tự đánh giá kế hoạch bài dạy theo rubric 7 tiêu chí']::text[], 'Giáo viên THCS dạy chuyên đề Giáo dục AI, kể cả giáo viên chưa từng dạy Tin học. Không cần biết lập trình; cần máy tính có trình duyệt và kết nối mạng.', 'published', now(), now() + interval '1 second')
+  values ('gd-ai-thcs', 'Dạy chuyên đề Giáo dục AI 12 tiết – THCS', 'Đi qua 12 tiết theo QĐ 2422 cho khối 6–9: mục tiêu, hoạt động mẫu, phiếu học tập và cách đánh giá.', 'Đi qua 12 tiết theo QĐ 2422 cho khối 6–9: mục tiêu từng tiết, hoạt động mẫu, phiếu học tập và cách đánh giá học sinh. Cuối khoá, bạn chuẩn bị một bộ dạy thử cho lớp của mình.', 'teach', array['thcs']::text[], 4, 6, 'guided', 'basic', array['Nắm mục tiêu và cấu trúc 12 tiết của chuyên đề cho khối 6–9', 'Giải thích AI cho học sinh mà không nhân hoá AI', 'Tổ chức hoạt động huấn luyện mô hình bằng Teachable Machine', 'Tự đánh giá kế hoạch bài dạy theo rubric 7 tiêu chí']::text[], 'Giáo viên THCS dạy chuyên đề Giáo dục AI, kể cả giáo viên chưa từng dạy Tin học. Không cần biết lập trình; cần máy tính có trình duyệt và kết nối mạng.', 'draft', null, now() + interval '1 second')
   on conflict (slug) do nothing
   returning id
 ), m as (
@@ -35,7 +36,7 @@ join (values (0, 1, 'Mục tiêu của chuyên đề'), (0, 2, 'Cấu trúc 12 t
 
 with c as (
   insert into public.courses (slug, title, summary, description, topic, audiences, hours_min, hours_max, format, level, outcomes, audience_note, status, published_at, created_at)
-  values ('gd-ai-th', 'Dạy chuyên đề Giáo dục AI 12 tiết – Tiểu học', 'Tổ chức tiết học AI 35 phút cho lớp 4–5 với trò chơi, thẻ và hoạt động trải nghiệm.', 'Tổ chức tiết học AI 35 phút cho lớp 4–5 với trò chơi, thẻ và hoạt động trải nghiệm.', 'teach', array['th']::text[], 3, 5, 'guided', 'basic', array['Tổ chức tiết AI 35 phút đúng nhịp lớp 4–5', 'Dùng trò chơi và thẻ để dạy khái niệm', 'Đánh giá bằng quan sát, không chấm điểm riêng']::text[], 'Giáo viên tiểu học dạy lớp 4–5, không cần biết lập trình.', 'published', now(), now() + interval '2 second')
+  values ('gd-ai-th', 'Dạy chuyên đề Giáo dục AI 12 tiết – Tiểu học', 'Tổ chức tiết học AI 35 phút cho lớp 4–5 với trò chơi, thẻ và hoạt động trải nghiệm.', 'Tổ chức tiết học AI 35 phút cho lớp 4–5 với trò chơi, thẻ và hoạt động trải nghiệm.', 'teach', array['th']::text[], 3, 5, 'guided', 'basic', array['Tổ chức tiết AI 35 phút đúng nhịp lớp 4–5', 'Dùng trò chơi và thẻ để dạy khái niệm', 'Đánh giá bằng quan sát, không chấm điểm riêng']::text[], 'Giáo viên tiểu học dạy lớp 4–5, không cần biết lập trình.', 'draft', null, now() + interval '2 second')
   on conflict (slug) do nothing
   returning id
 ), m as (
@@ -49,7 +50,7 @@ join (values (0, 1, 'Mục tiêu từng tiết'), (0, 2, 'Chuẩn bị lớp h�
 
 with c as (
   insert into public.courses (slug, title, summary, description, topic, audiences, hours_min, hours_max, format, level, outcomes, audience_note, status, published_at, created_at)
-  values ('gd-ai-thpt', 'Dạy chuyên đề Giáo dục AI 12 tiết – THPT', 'Dẫn dắt học sinh lớp 10–12 tìm hiểu dữ liệu, mô hình học máy và ứng dụng AI có trách nhiệm.', 'Dẫn dắt học sinh lớp 10–12 tìm hiểu dữ liệu, mô hình học máy và ứng dụng AI có trách nhiệm.', 'teach', array['thpt']::text[], 4, 6, 'guided', 'advanced', array['Dạy dữ liệu và thiên kiến bằng ví dụ thật', 'Giải thích mô hình học máy và mô hình ngôn ngữ lớn', 'Hướng dẫn dự án nhóm có sản phẩm']::text[], 'Giáo viên THPT dạy chuyên đề Giáo dục AI cho lớp 10–12.', 'published', now(), now() + interval '3 second')
+  values ('gd-ai-thpt', 'Dạy chuyên đề Giáo dục AI 12 tiết – THPT', 'Dẫn dắt học sinh lớp 10–12 tìm hiểu dữ liệu, mô hình học máy và ứng dụng AI có trách nhiệm.', 'Dẫn dắt học sinh lớp 10–12 tìm hiểu dữ liệu, mô hình học máy và ứng dụng AI có trách nhiệm.', 'teach', array['thpt']::text[], 4, 6, 'guided', 'advanced', array['Dạy dữ liệu và thiên kiến bằng ví dụ thật', 'Giải thích mô hình học máy và mô hình ngôn ngữ lớn', 'Hướng dẫn dự án nhóm có sản phẩm']::text[], 'Giáo viên THPT dạy chuyên đề Giáo dục AI cho lớp 10–12.', 'draft', null, now() + interval '3 second')
   on conflict (slug) do nothing
   returning id
 ), m as (
@@ -63,7 +64,7 @@ join (values (0, 1, 'Yêu cầu cần đạt lớp 10–12'), (0, 2, 'Phân bổ
 
 with c as (
   insert into public.courses (slug, title, summary, description, topic, audiences, hours_min, hours_max, format, level, outcomes, audience_note, status, published_at, created_at)
-  values ('teachable-machine', 'Teachable Machine trong lớp học', 'Hướng dẫn học sinh tự huấn luyện mô hình nhận dạng hình ảnh, âm thanh mà không cần lập trình.', 'Hướng dẫn học sinh tự huấn luyện mô hình nhận dạng hình ảnh, âm thanh mà không cần lập trình.', 'teach', array['thcs', 'thpt']::text[], 2, 3, 'self', 'basic', array['Tạo mô hình nhận dạng ảnh và âm thanh', 'Thiết kế hoạt động nhóm quanh mô hình', 'Giải thích vì sao mô hình đoán sai']::text[], 'Giáo viên THCS và THPT, chỉ cần máy tính có webcam.', 'published', now(), now() + interval '4 second')
+  values ('teachable-machine', 'Teachable Machine trong lớp học', 'Hướng dẫn học sinh tự huấn luyện mô hình nhận dạng hình ảnh, âm thanh mà không cần lập trình.', 'Hướng dẫn học sinh tự huấn luyện mô hình nhận dạng hình ảnh, âm thanh mà không cần lập trình.', 'teach', array['thcs', 'thpt']::text[], 2, 3, 'self', 'basic', array['Tạo mô hình nhận dạng ảnh và âm thanh', 'Thiết kế hoạt động nhóm quanh mô hình', 'Giải thích vì sao mô hình đoán sai']::text[], 'Giáo viên THCS và THPT, chỉ cần máy tính có webcam.', 'draft', null, now() + interval '4 second')
   on conflict (slug) do nothing
   returning id
 ), m as (
@@ -77,7 +78,7 @@ join (values (0, 1, 'Giao diện Teachable Machine'), (0, 2, 'Chuẩn bị máy 
 
 with c as (
   insert into public.courses (slug, title, summary, description, topic, audiences, hours_min, hours_max, format, level, outcomes, audience_note, status, published_at, created_at)
-  values ('prompt-gv', 'Viết prompt hiệu quả cho giáo viên', 'Cách giao việc cho trợ lý AI để soạn bài, ra đề và nhận xét học sinh, kèm mẫu câu lệnh dùng ngay.', 'Cách giao việc cho trợ lý AI để soạn bài, ra đề và nhận xét học sinh, kèm mẫu câu lệnh dùng ngay.', 'ai', array['th', 'thcs', 'thpt', 'ql']::text[], 1, 2, 'self', 'basic', array['Viết câu lệnh có bối cảnh, yêu cầu và định dạng', 'Dùng mẫu câu lệnh soạn bài, ra đề', 'Kiểm tra lại kết quả trước khi dùng']::text[], 'Mọi giáo viên và cán bộ quản lý đã từng dùng trợ lý AI.', 'published', now(), now() + interval '5 second')
+  values ('prompt-gv', 'Viết prompt hiệu quả cho giáo viên', 'Cách giao việc cho trợ lý AI để soạn bài, ra đề và nhận xét học sinh, kèm mẫu câu lệnh dùng ngay.', 'Cách giao việc cho trợ lý AI để soạn bài, ra đề và nhận xét học sinh, kèm mẫu câu lệnh dùng ngay.', 'ai', array['th', 'thcs', 'thpt', 'ql']::text[], 1, 2, 'self', 'basic', array['Viết câu lệnh có bối cảnh, yêu cầu và định dạng', 'Dùng mẫu câu lệnh soạn bài, ra đề', 'Kiểm tra lại kết quả trước khi dùng']::text[], 'Mọi giáo viên và cán bộ quản lý đã từng dùng trợ lý AI.', 'draft', null, now() + interval '5 second')
   on conflict (slug) do nothing
   returning id
 ), m as (
@@ -91,7 +92,7 @@ join (values (0, 1, 'Bối cảnh, yêu cầu, định dạng'), (0, 2, 'Ví d�
 
 with c as (
   insert into public.courses (slug, title, summary, description, topic, audiences, hours_min, hours_max, format, level, outcomes, audience_note, status, published_at, created_at)
-  values ('an-toan-ai', 'An toàn, đạo đức và bảo vệ dữ liệu khi dùng AI', 'Nhận diện rủi ro, quy tắc dùng AI trong trường học và cách hướng dẫn học sinh kiểm chứng thông tin.', 'Nhận diện rủi ro, quy tắc dùng AI trong trường học và cách hướng dẫn học sinh kiểm chứng thông tin.', 'safe', array['th', 'thcs', 'thpt', 'ql']::text[], 2, 3, 'self', 'basic', array['Nhận diện rủi ro thường gặp khi dùng AI', 'Bảo vệ dữ liệu cá nhân của học sinh', 'Xây quy tắc dùng AI cho lớp và trường']::text[], 'Mọi giáo viên và cán bộ quản lý.', 'published', now(), now() + interval '6 second')
+  values ('an-toan-ai', 'An toàn, đạo đức và bảo vệ dữ liệu khi dùng AI', 'Nhận diện rủi ro, quy tắc dùng AI trong trường học và cách hướng dẫn học sinh kiểm chứng thông tin.', 'Nhận diện rủi ro, quy tắc dùng AI trong trường học và cách hướng dẫn học sinh kiểm chứng thông tin.', 'safe', array['th', 'thcs', 'thpt', 'ql']::text[], 2, 3, 'self', 'basic', array['Nhận diện rủi ro thường gặp khi dùng AI', 'Bảo vệ dữ liệu cá nhân của học sinh', 'Xây quy tắc dùng AI cho lớp và trường']::text[], 'Mọi giáo viên và cán bộ quản lý.', 'draft', null, now() + interval '6 second')
   on conflict (slug) do nothing
   returning id
 ), m as (
@@ -105,7 +106,7 @@ join (values (0, 1, 'Thông tin sai'), (0, 2, 'Thiên kiến'), (1, 1, 'Dữ li�
 
 with c as (
   insert into public.courses (slug, title, summary, description, topic, audiences, hours_min, hours_max, format, level, outcomes, audience_note, status, published_at, created_at)
-  values ('nang-luc-so', 'Tích hợp năng lực số vào bài dạy', 'Gắn mục tiêu năng lực số vào kế hoạch bài dạy và chọn công cụ số phù hợp từng hoạt động.', 'Gắn mục tiêu năng lực số vào kế hoạch bài dạy và chọn công cụ số phù hợp từng hoạt động.', 'digital', array['th', 'thcs', 'thpt']::text[], 3, 4, 'guided', 'basic', array['Đọc khung năng lực số theo lớp', 'Gắn mục tiêu năng lực số vào KHBD', 'Chọn công cụ số cho từng hoạt động']::text[], 'Giáo viên mọi môn ở tiểu học, THCS và THPT.', 'published', now(), now() + interval '7 second')
+  values ('nang-luc-so', 'Tích hợp năng lực số vào bài dạy', 'Gắn mục tiêu năng lực số vào kế hoạch bài dạy và chọn công cụ số phù hợp từng hoạt động.', 'Gắn mục tiêu năng lực số vào kế hoạch bài dạy và chọn công cụ số phù hợp từng hoạt động.', 'digital', array['th', 'thcs', 'thpt']::text[], 3, 4, 'guided', 'basic', array['Đọc khung năng lực số theo lớp', 'Gắn mục tiêu năng lực số vào KHBD', 'Chọn công cụ số cho từng hoạt động']::text[], 'Giáo viên mọi môn ở tiểu học, THCS và THPT.', 'draft', null, now() + interval '7 second')
   on conflict (slug) do nothing
   returning id
 ), m as (
@@ -119,7 +120,7 @@ join (values (0, 1, 'Các miền năng lực'), (0, 2, 'Yêu cầu theo lớp'),
 
 with c as (
   insert into public.courses (slug, title, summary, description, topic, audiences, hours_min, hours_max, format, level, outcomes, audience_note, status, published_at, created_at)
-  values ('soan-khbd-ai', 'Soạn kế hoạch bài dạy với trợ lý AI', 'Dùng AI để soạn nháp KHBD, tự rà soát theo rubric và chỉnh sửa trước khi đưa vào lớp.', 'Dùng AI để soạn nháp KHBD, tự rà soát theo rubric và chỉnh sửa trước khi đưa vào lớp.', 'teach', array['th', 'thcs', 'thpt']::text[], 2, 4, 'guided', 'advanced', array['Soạn nháp KHBD theo CV 5588 với trợ lý AI', 'Rà soát bằng rubric 7 tiêu chí', 'Giữ phần sư phạm do giáo viên quyết định']::text[], 'Giáo viên đã quen dùng trợ lý AI và muốn soạn bài nhanh hơn.', 'published', now(), now() + interval '8 second')
+  values ('soan-khbd-ai', 'Soạn kế hoạch bài dạy với trợ lý AI', 'Dùng AI để soạn nháp KHBD, tự rà soát theo rubric và chỉnh sửa trước khi đưa vào lớp.', 'Dùng AI để soạn nháp KHBD, tự rà soát theo rubric và chỉnh sửa trước khi đưa vào lớp.', 'teach', array['th', 'thcs', 'thpt']::text[], 2, 4, 'guided', 'advanced', array['Soạn nháp KHBD theo CV 5588 với trợ lý AI', 'Rà soát bằng rubric 7 tiêu chí', 'Giữ phần sư phạm do giáo viên quyết định']::text[], 'Giáo viên đã quen dùng trợ lý AI và muốn soạn bài nhanh hơn.', 'draft', null, now() + interval '8 second')
   on conflict (slug) do nothing
   returning id
 ), m as (

@@ -7,7 +7,7 @@ Dùng khi máy không ra được supabase.co, hoặc muốn thử phá dữ li�
    `supabase/seed.sql` và `supabase/seed-khung-mau.sql`. Thêm người dùng thử:
    ```sql
    insert into auth.users (id, email, raw_user_meta_data) values
-     ('11111111-1111-1111-1111-111111111111', 'nmduc@aiedu.com.vn', '{"full_name":"Nguyễn Minh Đức"}');
+     ('11111111-1111-1111-1111-111111111111', 'nhanvien.thu@aiedu.com.vn', '{"full_name":"Nhân viên thử"}');
    insert into public.user_roles (user_id, role) values ('11111111-1111-1111-1111-111111111111', 'admin');
    ```
 2. Chạy PostgREST ở cổng 3001 với `db-anon-role = "anon"` và `jwt-secret` bất kỳ (≥ 32 ký tự).

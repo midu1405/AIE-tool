@@ -233,9 +233,23 @@ export type VersionContent = {
   mock?: boolean;
   objectives?: string[];
   codes?: string[];
+  /** Mục "Thiết bị dạy học và học liệu" (mỗi phần tử một dòng). Bản soạn trước 23/11 chưa có. */
+  equipment?: string[];
   activities?: { name: string; minutes: number; desc: string; product: string }[];
   checks?: { tag: string; text: string }[];
 };
+
+/**
+ * Thứ tự các mục lớn của KHBD khi xem trước, theo mẫu KHBD mà skill aca-khbd-ai12 dùng (và canvas DuyetBai).
+ * Đổi mẫu thì chỉ sửa ở đây; số La Mã đánh theo vị trí.
+ */
+export const KHBD_SECTIONS = [
+  { key: "objectives", title: "Mục tiêu" },
+  { key: "equipment", title: "Thiết bị dạy học và học liệu" },
+  { key: "process", title: "Tiến trình dạy học" },
+] as const;
+export type KhbdSectionKey = (typeof KHBD_SECTIONS)[number]["key"];
+export const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 
 export function formatDate(iso: string | null | undefined) {
   if (!iso) return "";
