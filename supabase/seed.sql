@@ -1,7 +1,7 @@
 -- Dữ liệu mẫu cho danh mục khoá học, lấy từ design/prototype.html (9 khoá, 81 bước).
 -- Chạy bằng tài khoản quản trị database (SQL editor hoặc psql), không qua API.
--- Khoá ở trạng thái nháp: các bước mới có tên, chưa có nội dung. Academic soạn ở màn Soạn nội dung khoá rồi xuất bản
--- qua danh sách tự kiểm (không xuất bản thẳng từ seed). Không tắt trigger: bước chỉ ghi module_id được trigger
+-- Khoá được xuất bản ở cuối file để giao diện có dữ liệu mẫu như bản thiết kế (Midu chốt 23/11): các bước mới có tên,
+-- chưa có nội dung; Academic soạn dần ở màn Soạn nội dung khoá. Khi chèn không tắt trigger: bước chỉ ghi module_id được trigger
 -- course_lessons_sync_section xếp vào phần "Nội dung" của học phần.
 -- Chạy lại được: khoá trùng slug thì bỏ qua.
 begin;
@@ -131,5 +131,14 @@ with c as (
 insert into public.course_lessons (module_id, position, title)
 select m.id, l.pos - 1, l.title from m
 join (values (0, 1, 'Bốn hoạt động'), (0, 2, 'Mục tiêu và sản phẩm'), (1, 1, 'Câu lệnh soạn nháp'), (1, 2, 'Đưa học liệu nguồn'), (2, 1, 'Chấm thử'), (2, 2, 'Sửa theo góp ý'), (3, 1, 'Dạy thử'), (3, 2, 'Rút kinh nghiệm')) as l(mpos, pos, title) on l.mpos = m.position;
+
+-- Xuất bản 9 khoá mẫu. Trigger courses_guard chỉ cho quản lý nội dung xuất bản (seed chạy bằng tài khoản database, không có
+-- vai trò), nên tắt trigger riêng cho câu này. Chỉ đụng khoá nháp chưa từng xuất bản (published_at rỗng): khoá mẫu đã bị
+-- ẩn hoặc chuyển nháp có chủ đích sẽ không bị xuất bản lại khi chạy lại file.
+set local session_replication_role = replica;
+update public.courses set status = 'published', published_at = now()
+where status = 'draft' and published_at is null
+  and slug in ('hieu-biet-ai', 'gd-ai-thcs', 'gd-ai-th', 'gd-ai-thpt', 'teachable-machine', 'prompt-gv', 'an-toan-ai', 'nang-luc-so', 'soan-khbd-ai');
+set local session_replication_role = origin;
 
 commit;

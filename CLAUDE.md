@@ -87,7 +87,7 @@ npm run lint && npm run typecheck && npm test
 npm run test:db -- <ten_db>     # cần Postgres cục bộ; xem supabase/tests/run.sh
 ```
 
-Dữ liệu mẫu (đã nạp vào project, chạy lại không bị trùng): `supabase/seed.sql` (9 khoá học ở trạng thái **nháp**, bước chưa có nội dung; chạy được trên database mới, không tắt trigger), `supabase/seed-khung-mau.sql` (khung lớp 6, Chủ đề 1–2, 10 bài, để thử Tạo KHBD khi chưa đồng bộ Drive).
+Dữ liệu mẫu (đã nạp vào project, chạy lại không bị trùng): `supabase/seed.sql` (9 khoá học mẫu **đã xuất bản**, bước chưa có nội dung; giữ lại để giao diện có dữ liệu như bản thiết kế cho tới khi Academic soạn khoá thật; chạy được trên database mới, không tắt trigger), `supabase/seed-khung-mau.sql` (khung lớp 6, Chủ đề 1–2, 10 bài, để thử Tạo KHBD khi chưa đồng bộ Drive).
 
 Thử trọn luồng KHBD và khoá học trên máy không cần Supabase thật (người dùng thử là tên và email giả, không dùng dữ liệu nhân viên thật): `tests/e2e/README.md` (PostgREST + cổng giả Auth + Playwright; `flow_khbd.py` rồi `flow_noi_dung.py`).
 
