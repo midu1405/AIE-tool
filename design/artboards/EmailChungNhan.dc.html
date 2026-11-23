@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Email gửi giấy chứng nhận</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#2152C5}a:hover{color:#163B91}
+</style>
+</helmet>
+<div style="width: 640px; height: 900px; box-sizing: border-box; background: #F6F7F9; font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #172033; display: flex; flex-direction: column">
+<div style="background: #FFFFFF; border-bottom: 1px solid #E3E6EB; padding: 18px 28px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #4B5565">
+<span><strong style="color: #172033; font-weight: 600">AI Edu Training Hub</strong> &lt;[email gửi đi]&gt;</span>
+<span>Đến: [email giáo viên]</span>
+<span style="font-size: 17px; font-weight: 700; color: #172033">Chúc mừng thầy/cô hoàn thành khoá “[Tên khoá học]”</span>
+</div>
+<div style="padding: 28px; display: flex; flex-direction: column; gap: 20px; flex: 1">
+<div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 32px; display: flex; flex-direction: column; gap: 18px">
+<img src="/_blob/e48b7e068881affd450f30a4074a7921" alt="AI Edu" style="height: 40px; width: auto; align-self: flex-start">
+<p style="margin: 0; font-size: 16px; line-height: 1.65">Chào thầy/cô [Họ và tên giáo viên],</p>
+<p style="margin: 0; font-size: 16px; line-height: 1.65">Chúc mừng thầy/cô đã hoàn thành khoá học <strong>[Tên khoá học]</strong> trên AI Edu Training Hub ngày [dd/mm/yyyy]. Giấy chứng nhận được đính kèm trong email này (file PDF).</p>
+<a href="NhanChungNhan.dc.html" style="align-self: flex-start; background: #2152C5; color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 16px; border-radius: 8px; min-height: 48px; padding: 0 22px; display: flex; align-items: center">Xem giấy chứng nhận</a>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #4B5565">Mã chứng nhận: <strong style="color: #172033">[AIE-2026-XXXXXX]</strong>. Nhà trường có thể kiểm tra tại aie-tool-tici.vercel.app/chung-nhan/[mã] hoặc quét mã QR trên giấy.</p>
+<div style="display: flex; align-items: center; gap: 12px; border: 1px solid #E3E6EB; border-radius: 10px; padding: 12px 14px; background: #F6F7F9">
+<span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 8px; background: #FCECE3; color: #A3470F; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">PDF</span>
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<span style="font-size: 14px; font-weight: 600; overflow-wrap: anywhere">Giay-chung-nhan-AIE-2026-XXXXXX.pdf</span>
+<span style="font-size: 13px; color: #4B5565">Tệp đính kèm · khoảng 200 KB</span>
+</div>
+</div>
+<p style="margin: 0; font-size: 16px; line-height: 1.65">Cảm ơn thầy/cô đã đồng hành cùng AI Edu.<br>Đội ngũ AI Edu</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center; font-size: 13px; line-height: 1.6; color: #4B5565">
+<img src="/_blob/5a7057da917c52dcc11c3308fc2265c0" alt="AI Edu – đối tác đào tạo giáo viên của Google for Education" style="height: 28px; width: auto">
+<span>Thầy/cô nhận email này vì đã hoàn thành một khoá học trên AI Edu Training Hub. Email tự động, vui lòng không trả lời; cần hỗ trợ xem trang Trợ giúp.</span>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":640,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

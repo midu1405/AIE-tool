@@ -14,6 +14,9 @@ export type MyItem = {
   progress: number | null;
   href: string | null;
   enrolled?: boolean;
+  /** Khoá đã xong: link trang giấy chứng nhận; certIssued = đã nhận giấy. */
+  certHref?: string;
+  certIssued?: boolean;
 };
 
 const TABS: [MyItem["group"], string][] = [
@@ -107,6 +110,7 @@ export function MyCourses({ items, error }: { items: MyItem[]; error: string }) 
 function Item({ c }: { c: MyItem }) {
   const t = c.topic ? TOPICS[c.topic] : null;
   const primary = c.group === "learning" ? "Tiếp tục học" : c.group === "done" ? "Xem lại khoá học" : c.enrolled ? "Vào khoá học" : "Bắt đầu học";
+  const cert = c.group === "done" && c.certHref;
   return (
     <article className="flex flex-wrap items-center gap-5 rounded-xl border border-line bg-surface p-5">
       <div className="flex h-24 w-24 flex-none items-center justify-center rounded-[10px]" style={{ background: t?.tint ?? "#EEF0F3" }}>
@@ -146,9 +150,21 @@ function Item({ c }: { c: MyItem }) {
       </div>
       {c.href && (
         <div className="flex max-w-[220px] flex-[1_1_180px] flex-col gap-2">
+          {cert && (
+            <Link
+              href={c.certHref!}
+              className="flex min-h-11 items-center justify-center rounded-[10px] bg-accent px-3 text-[15px] font-semibold text-white no-underline hover:bg-accent-dark"
+            >
+              {c.certIssued ? "Giấy chứng nhận" : "Nhận giấy chứng nhận"}
+            </Link>
+          )}
           <Link
             href={c.group === "learning" ? `${c.href}#noi-dung` : c.href}
-            className="flex min-h-11 items-center justify-center rounded-[10px] bg-accent text-[15px] font-semibold text-white no-underline hover:bg-accent-dark"
+            className={
+              cert
+                ? "flex min-h-11 items-center justify-center rounded-[10px] border border-edge bg-surface text-[15px] font-semibold text-ink no-underline hover:bg-bg hover:text-ink"
+                : "flex min-h-11 items-center justify-center rounded-[10px] bg-accent text-[15px] font-semibold text-white no-underline hover:bg-accent-dark"
+            }
           >
             {primary}
           </Link>

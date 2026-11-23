@@ -28,6 +28,9 @@ export default function PrivacyPage() {
             <strong>Phản tư:</strong> câu trả lời bạn viết và link sản phẩm bạn dán (nếu có).
           </li>
           <li>
+            <strong>Giấy chứng nhận:</strong> họ tên bạn xác nhận để in lên giấy, tên khoá, ngày hoàn thành và mã chứng nhận.
+          </li>
+          <li>
             <strong>Cookie:</strong> chỉ cookie giữ phiên đăng nhập. Web không dùng cookie quảng cáo hay công cụ theo dõi bên ngoài.
           </li>
         </ul>
@@ -36,7 +39,7 @@ export default function PrivacyPage() {
         <h2>Dùng để làm gì</h2>
         <ul>
           <li>Lưu tiến độ để bạn học tiếp trên mọi thiết bị.</li>
-          <li>Chấm quiz và đánh dấu hoàn thành khoá.</li>
+          <li>Chấm quiz, đánh dấu hoàn thành khoá và cấp giấy chứng nhận.</li>
           <li>Giúp người phụ trách khoá hiểu giáo viên học thế nào để cải thiện nội dung.</li>
         </ul>
         <p>AI Edu không bán thông tin của bạn và không dùng thông tin này để quảng cáo.</p>
@@ -49,6 +52,10 @@ export default function PrivacyPage() {
             Nhân viên AI Edu phụ trách soạn và quản lý khoá học xem được tiến độ, kết quả quiz và câu trả lời phản tư của người học trong khoá.
           </li>
           <li>Giáo viên khác không xem được thông tin của bạn.</li>
+          <li>
+            Ai có mã giấy chứng nhận của bạn (in trên giấy, trong mã QR) mở được trang xác minh công khai, thấy họ tên, tên khoá, thời lượng và
+            ngày hoàn thành. Trang này không hiện email hay kết quả quiz, phản tư.
+          </li>
         </ul>
       </section>
       <section className="flex flex-col gap-2">
