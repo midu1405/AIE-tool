@@ -10,6 +10,9 @@ import { getPublishedCourse, getPublishedCourses } from "@/lib/courses";
 // Nội dung khoá đọc từ server (lưu đệm, thẻ "courses"); đăng ký, lưu, bước đã xong đọc theo phiên trong CourseLearner.
 export async function generateStaticParams() {
   const courses = await getPublishedCourses();
+  // cacheComponents bắt buộc trả ít nhất một slug. Khi chưa có khoá nào xuất bản (mọi khoá đang nháp), dùng một slug không tồn tại:
+  // trang đó render notFound(), các slug thật vẫn render khi có người mở.
+  if (courses.length === 0) return [{ slug: "chua-co-khoa" }];
   return courses.map((c) => ({ slug: c.slug }));
 }
 

@@ -25,16 +25,22 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
 
       <div className="flex-1">{children}</div>
 
-      <footer id="tro-giup" className="border-t border-line bg-surface">
+      <footer className="border-t border-line bg-surface">
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-x-8 gap-y-4 p-6 text-sm text-muted">
           <div className="flex flex-col gap-3">
             <PartnerLogo height={32} />
             <span>AI Edu Training Hub</span>
           </div>
-          <nav aria-label="Liên kết cuối trang" className="flex flex-wrap gap-5">
-            <a href="#tro-giup" className="text-muted">Trợ giúp</a>
-            <a href="#tro-giup" className="text-muted">Điều khoản</a>
-            <a href="#tro-giup" className="text-muted">Quyền riêng tư</a>
+          <nav aria-label="Liên kết cuối trang" className="flex flex-wrap gap-x-5">
+            <Link href="/tro-giup" className="flex min-h-11 items-center text-muted">
+              Trợ giúp
+            </Link>
+            <Link href="/dieu-khoan" className="flex min-h-11 items-center text-muted">
+              Điều khoản
+            </Link>
+            <Link href="/quyen-rieng-tu" className="flex min-h-11 items-center text-muted">
+              Quyền riêng tư
+            </Link>
           </nav>
         </div>
       </footer>

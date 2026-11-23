@@ -9,3 +9,6 @@ export function assertSupabaseEnv() {
     );
   }
 }
+
+/** Email hỗ trợ hiện ở trang Trợ giúp và Quyền riêng tư. Đặt trong biến môi trường, không viết cứng (CLAUDE.md). */
+export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "";

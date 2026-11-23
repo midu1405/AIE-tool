@@ -23,6 +23,7 @@ Bản mẫu bấm thử được (canvas, 10 màn): https://claude.ai/artifact/V
 | Duyệt bài | `/noi-bo/duyet-bai` (hàng chờ) và `/noi-bo/khbd/[id]` (một bài) |
 | Quản lý khoá học | `/noi-bo/khoa-hoc` (danh sách, tạo khoá) |
 | Soạn nội dung khoá học | `/noi-bo/khoa-hoc/[id]` (3 tab: Thông tin trang khoá, Nội dung, Kiểm tra trước khi xuất bản) |
+| (không có trong bản mẫu) Trợ giúp, Quyền riêng tư, Điều khoản | `/tro-giup`, `/quyen-rieng-tu`, `/dieu-khoan` (hai trang sau là bản nháp, chờ pháp chế và người phụ trách dữ liệu duyệt; đổi cách lưu dữ liệu thì sửa trang Quyền riêng tư) |
 | (không có trong bản mẫu) Đăng nhập | `/dang-nhap` (Google, và tạm thời email + mật khẩu cho nhân viên), `/auth/callback`, `/auth/dang-xuat` (POST) |
 
 Giữ đúng giao diện bản mẫu. Token gốc:
@@ -64,6 +65,7 @@ Một người giữ được nhiều vai trò. Chỉ tài khoản `@aiedu.com.v
 - `20261120070621_khbd_flow.sql`: luồng KHBD giai đoạn 2. Cột thêm: `documents.topic_name/periods/deploy_format/updated_at`, `document_versions.content` (mục tiêu, 4 hoạt động, kết quả đối chiếu) và `warnings`. Hàm: `create_khbd_jobs(mode, items, options)` tạo lượt chạy (job cha) + job con + 6 bước; `advance_mock_jobs(step_seconds)`; `retry_job`, `cancel_job`; `review_version(version, decision, checklist, rubric, summary)` (trả về thì tự tạo job soạn bản v(N+1), bắt buộc có ít nhất 1 góp ý mở); `undo_approval`. View `khbd_list` (mỗi tài liệu một dòng, `list_status` gồm cả `running`, `error`). Realtime bật cho `generation_jobs`, `job_steps`.
 - `20261120072649_course_admin.sql`: giai đoạn 3. Hàm `move_course_item(kind, id, dir)` đổi chỗ học phần/bài với dòng kề (security invoker, RLS quyết định ai được đổi). View `course_admin_list` (khoá + số học phần, bài, học liệu, học liệu có bản mới, người học) cho màn Quản lý khoá học.
 - `20261120081713_course_steps.sql`: khung 3 tầng. Bảng `course_sections` (Phần); `course_lessons` là Bước: thêm `section_id` (module_id do trigger điền theo phần; thêm bước chỉ có module_id thì vào phần đầu, chưa có thì tạo phần "Nội dung"), `ready`, `kind` đổi sang `doc|video|quiz|reflect|end` (cột `body` cũ bỏ không dùng). Bảng `lesson_contents` (nội dung bước, chỉ người đã đăng ký khoá đang xuất bản và nhân viên đọc), `quiz_keys` (đáp án, chỉ nhân viên đọc), `quiz_attempts`, `reflections` (giáo viên và người phụ trách khoá xem). Hàm `submit_quiz(lesson, answers)` chấm ở database, đạt ≥ 80% thì ghi `lesson_progress`; policy mới: bước quiz chỉ tính xong qua `submit_quiz`, bước phản tư chỉ tính xong khi đã lưu câu trả lời. `courses.prerequisites`, `courses.materials_needed`. `move_course_item` thêm loại `section`.
+- `20261123040747_khbd_equipment.sql`: bản giả lập ghi thêm `content.equipment` (mục "II. Thiết bị dạy học và học liệu"). Thứ tự mục KHBD ở màn Duyệt bài lấy từ `KHBD_SECTIONS` trong `lib/khbd.ts`.
 - Tên file khớp với version đã chạy trên project Supabase `aie-training-hub` (ref `uqgdxncnlcenhjtrszqr`, vùng Singapore). Tên file nhắc trong chú thích bên trong migration là tên cũ, giữ nguyên vì file đã chạy.
 - Thứ tự học phần và bài dùng cột `position` với unique deferrable; đổi chỗ hai dòng thì làm trong một transaction.
 - Giáo viên **không** đọc trực tiếp `document_versions`; lấy link học liệu qua `course_material_links()`.
@@ -72,7 +74,7 @@ Một người giữ được nhiều vai trò. Chỉ tài khoản `@aiedu.com.v
 ## Bản chạy thật
 
 - Web: https://aie-tool-tici.vercel.app (Vercel, project `aie-tool` của tài khoản midu1405, gói Hobby). Mỗi lần đẩy lên `main` Vercel tự deploy; mỗi nhánh có link xem trước.
-- Biến môi trường trên Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+- Biến môi trường trên Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; thêm `NEXT_PUBLIC_SUPPORT_EMAIL` (email hỗ trợ ở trang Trợ giúp, Quyền riêng tư) khi đã chốt hộp thư.
 - Gói Hobby chỉ dành cho dùng thử không thương mại; trước khi mở cho giáo viên cần chuyển Pro hoặc tài khoản Vercel của công ty.
 
 ## Chạy và kiểm tra
@@ -85,9 +87,9 @@ npm run lint && npm run typecheck && npm test
 npm run test:db -- <ten_db>     # cần Postgres cục bộ; xem supabase/tests/run.sh
 ```
 
-Dữ liệu mẫu (đã nạp vào project, chạy lại không bị trùng): `supabase/seed.sql` (9 khoá học), `supabase/seed-khung-mau.sql` (khung lớp 6, Chủ đề 1–2, 10 bài, để thử Tạo KHBD khi chưa đồng bộ Drive).
+Dữ liệu mẫu (đã nạp vào project, chạy lại không bị trùng): `supabase/seed.sql` (9 khoá học ở trạng thái **nháp**, bước chưa có nội dung; chạy được trên database mới, không tắt trigger), `supabase/seed-khung-mau.sql` (khung lớp 6, Chủ đề 1–2, 10 bài, để thử Tạo KHBD khi chưa đồng bộ Drive).
 
-Thử trọn luồng KHBD và khoá học trên máy không cần Supabase thật: `tests/e2e/README.md` (PostgREST + cổng giả Auth + Playwright; `flow_khbd.py` rồi `flow_noi_dung.py`).
+Thử trọn luồng KHBD và khoá học trên máy không cần Supabase thật (người dùng thử là tên và email giả, không dùng dữ liệu nhân viên thật): `tests/e2e/README.md` (PostgREST + cổng giả Auth + Playwright; `flow_khbd.py` rồi `flow_noi_dung.py`).
 
 ## Bản giả lập soạn KHBD (MockExecutor)
 
@@ -102,6 +104,7 @@ Thử trọn luồng KHBD và khoá học trên máy không cần Supabase thậ
 - Next.js 16 khác bản cũ: đọc `node_modules/next/dist/docs/` trước khi dùng API lạ (xem `AGENTS.md`).
 - Middleware nay là `proxy.ts`: chỉ làm mới phiên Supabase và chặn sớm `/noi-bo`, `/khoa-hoc-cua-toi` khi chưa đăng nhập.
 - Bật `cacheComponents`: mọi chỗ đọc cookie/phiên (`getCurrentUser()`, `createClient()` ở `lib/supabase/server.ts`) và `usePathname()` phải nằm trong `<Suspense>`, nếu không build lỗi. Dữ liệu công khai (danh mục khoá) đọc bằng `createPublicClient()` trong hàm `"use cache"` có `cacheTag("courses")`; sửa khoá thì gọi `updateTag("courses")`.
+- `generateStaticParams` của `/khoa-hoc/[slug]` phải trả ít nhất một slug (cacheComponents); khi chưa có khoá xuất bản thì trả slug giả `chua-co-khoa` (ra 404).
 - Global CSS đặt trong `@layer base` để class Tailwind thắng (trước đó `a { color }` đè `text-white` của nút).
 
 ## Stack
@@ -137,6 +140,7 @@ Thử trọn luồng KHBD và khoá học trên máy không cần Supabase thậ
 - Màn Duyệt bài dùng skill `aca-khbd-review` hay checklist của `aca-khbd-ai12`.
 - Tiêu chí lọc khoá học (đối tượng, chủ đề, thời lượng, hình thức) đã khớp với cách Academic phân loại chưa.
 - **Đăng nhập Google:** code đã xong nhưng chưa bật provider. Chờ bạn kỹ thuật cloud tạo OAuth Client (Google Auth Platform, loại Web application, redirect URI `https://uqgdxncnlcenhjtrszqr.supabase.co/auth/v1/callback`, Audience External và Publish) rồi dán vào Supabase › Authentication › Providers › Google; thêm Site URL và Redirect URLs (`<địa chỉ web>/**`) ở URL Configuration. Trong lúc chờ, nhân viên đăng nhập bằng email + mật khẩu do quản trị tạo ở Authentication › Users (tích Auto Confirm User); web không có nút tự đăng ký. Giáo viên chưa đăng nhập được cho tới khi bật Google.
+- **Trang Quyền riêng tư, Điều khoản:** bản nháp đã có, cần pháp chế/người phụ trách dữ liệu duyệt, chốt email hỗ trợ và thời hạn lưu dữ liệu, rồi bỏ khung "Bản nháp" (prop `draft` của `InfoPage`) trước khi bật Google.
 - Link học liệu cho giáo viên: Doc trong `AI Agent` là thư mục nội bộ, giáo viên ngoài công ty không mở được. Cần chốt bản đã duyệt được chép/chia sẻ ra đâu (bước public B9–B10) trước khi giáo viên dùng link.
 
 ## Các giai đoạn dựng

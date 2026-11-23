@@ -2,7 +2,7 @@
 const http = require('http');
 const crypto = require('crypto');
 const SECRET = process.env.JWT_SECRET;
-const USERS = { '11111111-1111-1111-1111-111111111111': { email: 'nmduc@aiedu.com.vn', name: 'Nguyễn Minh Đức' } };
+const USERS = { '11111111-1111-1111-1111-111111111111': { email: 'nhanvien.thu@aiedu.com.vn', name: 'Nhân viên thử' } };
 function verify(tok) {
   try {
     const [h, p, s] = tok.split('.');
