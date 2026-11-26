@@ -55,7 +55,7 @@ async function Result({ params }: { params: Promise<{ code: string }> }) {
           Không tìm thấy giấy chứng nhận có mã {code}
         </h2>
         <p className="text-base leading-relaxed text-muted">
-          Kiểm tra lại mã in ở góc dưới bên trái giấy chứng nhận (dạng AIE-2026-XXXXXX), rồi nhập lại bên dưới.
+          Kiểm tra lại mã in ở góc dưới bên trái giấy chứng nhận (dạng AIE-2026-XXXX-XXXX-XX), rồi nhập lại bên dưới.
         </p>
       </section>
     );

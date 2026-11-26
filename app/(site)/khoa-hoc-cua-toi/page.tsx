@@ -79,7 +79,12 @@ async function Body() {
     // Khoá đã ẩn không còn trang giới thiệu: mở thẳng bước đang học (hoặc bước đầu).
     const hidden = c.status === "hidden";
     const step = p.nextLesson ?? modules[0]?.lessons[0] ?? null;
-    const note = group === "done" ? `Hoàn thành ngày ${dateVN(e.completed_at!)}` : nextLabel(modules, done);
+    // "Đã hoàn thành" lấy từ completed_at; khoá thêm bước sau đó thì chỉ báo số bước mới (chốt 26/11).
+    const extra = p.total - p.doneCount;
+    const note =
+      group === "done"
+        ? `Hoàn thành ngày ${dateVN(e.completed_at!)}${extra > 0 ? ` · Có ${extra} bước mới, học thêm nếu muốn` : ""}`
+        : nextLabel(modules, done);
     items.push({
       key: c.id,
       group,

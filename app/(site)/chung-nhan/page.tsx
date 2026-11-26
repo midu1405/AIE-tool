@@ -34,7 +34,7 @@ function Shell({ typed = "" }: { typed?: string }) {
       <CodeLookup
         label="Mã giấy chứng nhận"
         defaultValue={typed}
-        error={typed ? `“${typed}” không đúng dạng mã. Mã có dạng AIE-2026-XXXXXX (6 ký tự cuối gồm chữ và số).` : ""}
+        error={typed ? `“${typed}” không đúng dạng mã. Mã có dạng AIE-2026-XXXX-XXXX-XX (10 ký tự cuối gồm chữ và số; gõ thiếu gạch cũng được). Giấy cấp trước 26/11/2026 có 6 ký tự cuối.` : ""}
       />
     </main>
   );

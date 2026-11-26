@@ -14,12 +14,25 @@ export type Certificate = {
   revoked_at: string | null;
 };
 
-export const CODE_RE = /^AIE-\d{4}-[A-Z0-9]{6}$/;
+/** Mã chuẩn: AIE-<năm>-XXXX-XXXX-XX (từ 26/11/2026) hoặc AIE-<năm>-XXXXXX (giấy cấp trước đó, vẫn hợp lệ). */
+export const CODE_RE = /^AIE-\d{4}-(?:[A-Z0-9]{6}|[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{2})$/;
 
-/** Chuẩn hoá mã người dùng gõ: bỏ khoảng trắng, viết hoa. Trả null nếu sai dạng. */
+/**
+ * Chuẩn hoá mã người dùng gõ: bỏ gạch, khoảng trắng, viết hoa rồi chia nhóm lại (khớp canonical_certificate_code ở
+ * database). Trả null nếu sai dạng.
+ */
 export function normalizeCode(raw: string): string | null {
-  const c = decodeURIComponent(raw).replace(/\s+/g, "").toUpperCase();
-  return CODE_RE.test(c) ? c : null;
+  let s: string;
+  try {
+    s = decodeURIComponent(raw);
+  } catch {
+    return null;
+  }
+  s = s.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  let m = s.match(/^AIE(\d{4})([A-Z0-9]{10})$/);
+  if (m) return `AIE-${m[1]}-${m[2].slice(0, 4)}-${m[2].slice(4, 8)}-${m[2].slice(8)}`;
+  m = s.match(/^AIE(\d{4})([A-Z0-9]{6})$/);
+  return m ? `AIE-${m[1]}-${m[2]}` : null;
 }
 
 /** Họ tên in trên giấy: gọn khoảng trắng; hợp lệ khi có ít nhất 2 chữ và không quá 80 ký tự (khớp issue_certificate). */

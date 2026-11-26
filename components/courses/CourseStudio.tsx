@@ -86,6 +86,8 @@ export function CourseStudio(p: {
   canPublish: boolean;
   canEdit: boolean;
   learnerCount: number;
+  /** Số người đã hoàn thành khoá: sửa cấu trúc khoá thì báo trước để người soạn biết ảnh hưởng (chốt 26/11). */
+  completedCount: number;
 }) {
   const { course, modules, canEdit } = p;
   const router = useRouter();
@@ -213,6 +215,13 @@ export function CourseStudio(p: {
               Xem các mục cần sửa
             </button>
           )}
+        </Notice>
+      )}
+      {canEdit && p.completedCount > 0 && tab === "content" && (
+        <Notice tone="info">
+          Khoá có {p.completedCount} người đã hoàn thành. Thêm bước không ảnh hưởng giấy đã cấp; họ giữ “Đã hoàn thành” và thấy nhãn “Có bước
+          mới”. Xoá bước không làm ai mất “Đã hoàn thành”. Đổi lớn (chương trình theo văn bản mới, đổi mục tiêu khoá) thì tạo khoá mới và ẩn khoá
+          này; người đã học giữ khoá cũ và giấy cũ.
         </Notice>
       )}
       {error && <Notice tone="err">{error}</Notice>}

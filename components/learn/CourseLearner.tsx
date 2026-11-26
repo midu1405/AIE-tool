@@ -118,24 +118,33 @@ export function EnrollBox() {
   if (!state.ready) return <div className="h-40" aria-hidden="true" />;
   const first = modules[0]?.lessons[0];
   const target = p.nextLesson ?? first;
+  // "Đã hoàn thành" lấy từ completed_at: khoá thêm bước sau khi người này đã xong thì vẫn giữ, chỉ báo số bước mới.
+  const newSteps = state.completedAt ? p.total - p.doneCount : 0;
+  const shown = state.completedAt ? 100 : p.percent;
   return (
     <>
       {state.enrolled ? (
         <div className="flex flex-col gap-2.5">
           <div className="flex justify-between text-sm">
             <span className="font-semibold">Tiến độ của bạn</span>
-            <span>{p.percent}%</span>
+            <span>{state.completedAt ? "Đã hoàn thành" : `${p.percent}%`}</span>
           </div>
-          <div role="progressbar" aria-label="Tiến độ khoá học" aria-valuenow={p.percent} aria-valuemin={0} aria-valuemax={100} className="h-2.5 overflow-hidden rounded-full bg-line">
-            <div className="h-full bg-accent" style={{ width: `${p.percent}%` }} />
+          <div role="progressbar" aria-label="Tiến độ khoá học" aria-valuenow={shown} aria-valuemin={0} aria-valuemax={100} className="h-2.5 overflow-hidden rounded-full bg-line">
+            <div className={`h-full ${state.completedAt ? "bg-ok" : "bg-accent"}`} style={{ width: `${shown}%` }} />
           </div>
           <p className="text-sm text-muted">
             {p.doneCount} / {p.total} bước
-            {state.completedAt ? " · Bạn đã hoàn thành khoá học." : p.nextLesson ? ` · Tiếp theo: ${p.nextLesson.title}` : ""}
+            {state.completedAt
+              ? newSteps > 0
+                ? ` · Bạn đã hoàn thành khoá học. Có ${newSteps} bước mới, học thêm nếu muốn; giấy chứng nhận không đổi.`
+                : " · Bạn đã hoàn thành khoá học."
+              : p.nextLesson
+                ? ` · Tiếp theo: ${p.nextLesson.title}`
+                : ""}
           </p>
           {target ? (
             <Link href={stepHref(slug, target.id)} className={btnPrimaryLg}>
-              {state.completedAt || !p.nextLesson ? "Xem lại từ đầu" : p.doneCount ? "Tiếp tục học" : "Bắt đầu học"}
+              {newSteps > 0 ? "Học bước mới" : state.completedAt || !p.nextLesson ? "Xem lại từ đầu" : p.doneCount ? "Tiếp tục học" : "Bắt đầu học"}
             </Link>
           ) : (
             <p className="text-sm text-muted">Khoá chưa có bước nào.</p>

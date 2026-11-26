@@ -142,6 +142,15 @@ async function CourseDetail({ params }: { params: Promise<{ slug: string }> }) {
                   <dd>{c.legalBasis}</dd>
                 </>
               )}
+              {c.materials.khbd + c.materials.pbt > 0 && (
+                <>
+                  <dt className="text-muted">Học liệu</dt>
+                  <dd>
+                    Kèm {[c.materials.khbd && `${c.materials.khbd} KHBD`, c.materials.pbt && `${c.materials.pbt} PBT`].filter(Boolean).join(" và ")}; mở sau khi đăng
+                    ký
+                  </dd>
+                </>
+              )}
               <dt className="text-muted">Chứng nhận</dt>
               <dd>{c.demo ? "Có khi khoá mở đăng ký" : "Có, khi học xong mọi bước"}</dd>
             </dl>

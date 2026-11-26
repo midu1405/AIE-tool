@@ -30,7 +30,7 @@ async function Body({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const supabase = await createClient();
-  const [{ courses }, user, { data: course }, { data: modules }, { data: updates }, { data: approved }, { data: others }] = await Promise.all([
+  const [{ courses }, user, { data: course }, { data: modules }, { data: updates }, { data: approved }, { data: others }, { count: completedCount }] = await Promise.all([
     getAdminCourses(),
     getCurrentUser(),
     supabase.from("courses").select("*").eq("id", id).maybeSingle(),
@@ -44,6 +44,8 @@ async function Body({ params }: { params: Promise<{ id: string }> }) {
     supabase.from("lesson_material_updates").select("material_id, latest_version_id, latest_version"),
     supabase.from("document_versions").select(`id, version_no, document_id, ${DV_DOC}(title, kind, grade)`).eq("status", "approved"),
     supabase.from("khbd_list").select("id, title, grade, list_status, version_no"),
+    // Người đã hoàn thành (RLS: Academic lead đọc mọi đăng ký; người soạn chỉ sửa khoá nháp, chưa có người học).
+    supabase.from("enrollments").select("course_id", { count: "exact", head: true }).eq("course_id", id).not("completed_at", "is", null),
   ]);
   if (!course) notFound();
 
@@ -123,6 +125,7 @@ async function Body({ params }: { params: Promise<{ id: string }> }) {
       canPublish={canPublish(roles)}
       canEdit={canPublish(roles) || (roles.includes("khbd_editor") && c.status === "draft")}
       learnerCount={courses.find((x) => x.id === id)?.learner_count ?? 0}
+      completedCount={completedCount ?? 0}
     />
   );
 }
