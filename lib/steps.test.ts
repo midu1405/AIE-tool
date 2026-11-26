@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseDoc, parseInline, passNeed, quizProblems, readinessChecks, videoEmbed, type CheckInput } from "@/lib/steps";
+import { parseDoc, parseInline, passNeed, quizProblems, readinessChecks, shuffledOrder, videoEmbed, type CheckInput } from "@/lib/steps";
 
 describe("passNeed (đạt 80%, làm tròn lên)", () => {
   it("3 câu cần 3, 5 câu cần 4, 10 câu cần 8", () => {
@@ -91,5 +91,14 @@ describe("readinessChecks", () => {
     const res = readinessChecks(i);
     expect(res.filter((c) => c.state === "bad")).toEqual([]);
     expect(res.filter((c) => c.state === "warn").length).toBe(2);
+  });
+});
+
+describe("shuffledOrder", () => {
+  it("giữ đủ các vị trí, chỉ đổi thứ tự", () => {
+    for (let n = 0; n <= 6; n++) expect([...shuffledOrder(n)].sort()).toEqual(Array.from({ length: n }, (_, i) => i));
+  });
+  it("đổi thứ tự theo hàm ngẫu nhiên", () => {
+    expect(shuffledOrder(3, () => 0)).toEqual([1, 2, 0]);
   });
 });

@@ -122,6 +122,9 @@ a{color:#2152C5}a:hover{color:#163B91}
 <sc-if value="{{c.hasBadge}}" hint-placeholder-val="{{ false }}">
 <span style="position: absolute; top: 12px; left: 12px; background: #FFFFFF; color: #172033; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600">{{c.badge}}</span>
 </sc-if>
+<sc-if value="{{c.demo}}" hint-placeholder-val="{{ false }}">
+<span style="position: absolute; top: 12px; right: 12px; background: #FFFFFF; color: #4B5565; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600">Khoá minh hoạ</span>
+</sc-if>
 </div>
 <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1">
 <span style="align-self: flex-start; background: {{c.tint}}; color: {{c.ink}}; border-radius: 6px; padding: 3px 8px; font-size: 12px; font-weight: 600">{{c.topicLabel}}</span>
@@ -184,7 +187,7 @@ var COURSES = [
   { id: 'prompt-gv', title: 'Viết prompt hiệu quả cho giáo viên', desc: 'Cách giao việc cho trợ lý AI để soạn bài, ra đề và nhận xét học sinh, kèm mẫu câu lệnh dùng ngay.', topic: 'ai', aud: ALL, h: [1, 2], fmt: 'self', level: 'Cơ bản' },
   { id: 'an-toan-ai', title: 'An toàn, đạo đức và bảo vệ dữ liệu khi dùng AI', desc: 'Nhận diện rủi ro, quy tắc dùng AI trong trường học và cách hướng dẫn học sinh kiểm chứng thông tin.', topic: 'safe', aud: ALL, h: [2, 3], fmt: 'self', level: 'Cơ bản', status: 'learning', progress: 60 },
   { id: 'nang-luc-so', title: 'Tích hợp năng lực số vào bài dạy', desc: 'Gắn mục tiêu năng lực số vào kế hoạch bài dạy và chọn công cụ số phù hợp từng hoạt động.', topic: 'digital', aud: ['th', 'thcs', 'thpt'], h: [3, 4], fmt: 'guided', level: 'Cơ bản' },
-  { id: 'soan-khbd-ai', title: 'Soạn kế hoạch bài dạy với trợ lý AI', desc: 'Dùng AI để soạn nháp KHBD, tự rà soát theo rubric và chỉnh sửa trước khi đưa vào lớp.', topic: 'teach', aud: ['th', 'thcs', 'thpt'], h: [2, 4], fmt: 'guided', level: 'Nâng cao' }
+  { id: 'soan-khbd-ai', title: 'Soạn kế hoạch bài dạy với trợ lý AI', desc: 'Dùng AI để soạn nháp KHBD, tự rà soát theo rubric và chỉnh sửa trước khi đưa vào lớp.', topic: 'teach', aud: ['th', 'thcs', 'thpt'], h: [2, 4], fmt: 'guided', level: 'Nâng cao', demo: true }
 ];
 function durBucket(c) { return c.h[1] <= 2 ? 'short' : (c.h[1] <= 4 ? 'mid' : 'long'); }
 function fold(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase(); }
@@ -248,7 +251,9 @@ class Component extends DCLogic {
         title: c.title, desc: c.desc, tint: t.tint, ink: t.ink, icon: t.icon, topicLabel: t.label,
         durText: c.h[0] + '–' + c.h[1] + ' giờ', fmtLabel: FMT[c.fmt], level: c.level,
         audText: c.aud.length === 4 ? 'Mọi cấp học' : c.aud.map(function (a) { return AUD[a]; }).join(', '),
-        hasBadge: !!badge, badge: badge
+        hasBadge: !!badge, badge: badge,
+        // Khoá minh hoạ (courses.is_demo): hiện ở danh mục, chưa đăng ký được (góp ý P1, 26/11).
+        demo: !!c.demo
       };
     });
     return {

@@ -100,6 +100,13 @@ async def main():
 
         # ---- giáo viên học
         t = await (await ctx_for(b, TEACHER)).new_page(); watch(t, errs)
+        # Khoá minh hoạ (dữ liệu mẫu): có nhãn ở danh mục, trang chi tiết không có nút đăng ký (góp ý P1, 26/11).
+        await t.goto(B + "/")
+        print("nhãn minh hoạ ở danh mục:", await t.get_by_text("Khoá minh hoạ", exact=True).count())
+        await t.goto(B + "/khoa-hoc/hieu-biet-ai")
+        await t.get_by_text("AI Edu đang soạn nội dung khoá này").wait_for(timeout=15000)
+        assert await t.get_by_role("button", name="Đăng ký học").count() == 0, "khoá minh hoạ vẫn có nút đăng ký"
+        await t.screenshot(path="shots/g4-khoa-minh-hoa.png", full_page=True)
         await t.goto(B + f"/khoa-hoc/{slug}")
         await t.get_by_role("button", name="Đăng ký học").click()
         await t.get_by_role("link", name="Bắt đầu học").click()
@@ -112,11 +119,17 @@ async def main():
         await t.get_by_role("button", name="Nộp bài").click()
         await t.get_by_role("status").filter(has_text="Bạn đúng").wait_for()
         print("quiz 1:", await t.get_by_role("status").filter(has_text="Bạn đúng").inner_text())
+        # Chưa đạt: chỉ báo đúng/sai từng câu, không lộ đáp án và giải thích (góp ý P2, 26/11).
+        assert await t.get_by_text("Đáp án đúng").count() == 0, "chưa đạt mà lộ đáp án"
+        assert await t.get_by_text("Giải thích câu 1.").count() == 0, "chưa đạt mà lộ giải thích"
+        print("quiz 1 không lộ đáp án:", await t.get_by_text("Chưa đúng").count(), "câu chưa đúng")
         await t.screenshot(path="shots/g3b-hoc-quiz-sai.png", full_page=True)
         await t.get_by_role("button", name="Làm lại").click()
         await t.get_by_label("Từ ví dụ có nhãn").check(); await t.get_by_label("Không, nó dự đoán").check()
         await t.get_by_role("button", name="Nộp bài").click()
         await t.get_by_text("Bước này đã hoàn thành.").wait_for()
+        assert await t.get_by_text("Đáp án đúng").count() == 2 and await t.get_by_text("Giải thích câu 1.").count() == 1, "đạt mà chưa hiện đáp án"
+        await t.screenshot(path="shots/g4-quiz-dat.png", full_page=True)
         await t.get_by_role("link", name="Bước tiếp").click()
         await t.get_by_role("heading", name="Phản tư").wait_for(timeout=15000)
         await t.fill("#phan-tu", "Bắt đầu từ trò chơi phân loại lá cây.")
@@ -153,6 +166,21 @@ async def main():
         await pg.get_by_role("button", name=re.compile("^Phản tư")).click()
         await pg.get_by_text(re.compile(r"Câu trả lời của giáo viên \(1\)")).click()
         print("reflection seen:", await pg.get_by_text("Bắt đầu từ trò chơi phân loại lá cây.").count() > 0)
+
+        # ---- ẩn khoá: người đã đăng ký vẫn thấy, học tiếp và nhận giấy (góp ý B7, 26/11)
+        await pg.get_by_role("tab", name=re.compile("Kiểm tra trước khi xuất bản")).click()
+        await pg.get_by_role("button", name="Ẩn khỏi trang giáo viên").click()
+        await pg.get_by_role("button", name="Xuất bản lại").wait_for(timeout=10000)
+        await t.goto(B + "/khoa-hoc-cua-toi")
+        await t.get_by_role("tab", name=re.compile("Đã hoàn thành")).click()
+        print("khoá ẩn vẫn ở Khoá học của tôi:", await t.get_by_text("bạn vẫn học tiếp và nhận giấy được").count() > 0)
+        await t.screenshot(path="shots/g4-khoa-an-cua-toi.png", full_page=True)
+        await t.goto(B + f"/khoa-hoc/{slug}/chung-nhan")
+        await t.get_by_role("button", name="Cấp giấy chứng nhận").click()
+        await t.get_by_role("heading", name="Giấy chứng nhận đã sẵn sàng").wait_for(timeout=15000)
+        print("nhận giấy ở khoá ẩn: OK")
+        await pg.get_by_role("button", name="Xuất bản lại").click()
+        await pg.get_by_role("button", name="Ẩn khỏi trang giáo viên").wait_for(timeout=10000)
         await b.close()
     print("console errors:", errs)
 

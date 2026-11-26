@@ -15,6 +15,7 @@ const Ctx = createContext<{
   state: State;
   modules: OModule[];
   slug: string;
+  demo: boolean;
   busy: boolean;
   error: string;
   enroll: () => void;
@@ -32,7 +33,20 @@ export const stepHref = (slug: string, id: string) => `/khoa-hoc/${slug}/buoc/${
 
 // Trạng thái học của người đang xem một khoá: đăng nhập, đăng ký, đã lưu, bước đã xong. Nội dung khoá lấy từ server
 // (lưu đệm); phần này đọc theo phiên trong trình duyệt và RLS chỉ trả dữ liệu của chính người đó.
-export function CourseLearner({ courseId, slug, modules, children }: { courseId: string; slug: string; modules: OModule[]; children: React.ReactNode }) {
+export function CourseLearner({
+  courseId,
+  slug,
+  modules,
+  demo = false,
+  children,
+}: {
+  courseId: string;
+  slug: string;
+  modules: OModule[];
+  /** Khoá minh hoạ: xem được giới thiệu và nội dung, chưa đăng ký được (database cũng chặn). */
+  demo?: boolean;
+  children: React.ReactNode;
+}) {
   const supabase = getBrowserClient();
   const router = useRouter();
   const path = usePathname();
@@ -82,6 +96,7 @@ export function CourseLearner({ courseId, slug, modules, children }: { courseId:
     state,
     modules,
     slug,
+    demo,
     busy,
     error,
     signIn,
@@ -98,7 +113,7 @@ export function CourseLearner({ courseId, slug, modules, children }: { courseId:
 
 /** Ô bên phải phần đầu trang: đăng nhập / đăng ký / tiến độ / lưu. */
 export function EnrollBox() {
-  const { state, modules, slug, busy, error, enroll, toggleSave, signIn } = useLearner();
+  const { state, modules, slug, demo, busy, error, enroll, toggleSave, signIn } = useLearner();
   const p = courseProgress(modules, state.done);
   if (!state.ready) return <div className="h-40" aria-hidden="true" />;
   const first = modules[0]?.lessons[0];
@@ -126,6 +141,13 @@ export function EnrollBox() {
             <p className="text-sm text-muted">Khoá chưa có bước nào.</p>
           )}
         </div>
+      ) : demo ? (
+        <div className="flex flex-col gap-2">
+          <span className="self-start rounded-full bg-warn-soft px-2.5 py-1 text-xs font-semibold text-warn">Khoá minh hoạ</span>
+          <p className="text-[15px] leading-relaxed text-muted">
+            AI Edu đang soạn nội dung khoá này nên chưa mở đăng ký. Lưu lại để dễ tìm khi khoá mở.
+          </p>
+        </div>
       ) : state.signedIn ? (
         <>
           <p className="text-[15px] leading-relaxed text-muted">Khoá học miễn phí. Đăng ký để mở mọi bước học, lưu tiến độ và đánh dấu hoàn thành.</p>
@@ -151,7 +173,7 @@ export function EnrollBox() {
 
 /** Mục "Nội dung khoá học": Học phần → Phần → Bước. Đã đăng ký thì bấm vào bước để học. */
 export function CourseContents() {
-  const { state, modules, slug } = useLearner();
+  const { state, modules, slug, demo } = useLearner();
   const p = courseProgress(modules, state.done);
   const [open, setOpen] = useState<number[] | null>(null);
   const openList = open ?? [Math.max(0, state.enrolled ? p.currentIndex : 0)];
@@ -187,7 +209,7 @@ export function CourseContents() {
       {state.ready && locked && (
         <p className="flex items-center gap-2.5 rounded-[10px] border border-line bg-bg px-3.5 py-3 text-sm text-muted">
           <Icon d="M6 11h12v10H6zM8 11V8a4 4 0 0 1 8 0v3" stroke="#4B5565" />
-          Xem trước được tên các bước. Đăng ký học để mở nội dung từng bước.
+          {demo ? "Khoá minh hoạ: tên các bước để tham khảo, nội dung đang được soạn." : "Xem trước được tên các bước. Đăng ký học để mở nội dung từng bước."}
         </p>
       )}
       {modules.length === 0 ? (

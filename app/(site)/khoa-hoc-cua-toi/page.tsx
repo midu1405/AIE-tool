@@ -59,8 +59,9 @@ async function Body() {
   for (const e of (en.data ?? []) as unknown as { course_id: string; completed_at: string | null; courses: CourseRow | null }[]) {
     enrolledIds.add(e.course_id);
     const c = e.courses;
-    // RLS chỉ trả khoá đã xuất bản (hoặc mọi khoá với nhân viên): khoá bị ẩn sau khi đăng ký thì không đọc được.
-    if (!c || c.status !== "published") {
+    // RLS trả khoá đang xuất bản và khoá đã ẩn mà mình đã đăng ký (B7, 20261126080000_gop_y_prd). Không đọc được
+    // (khoá chuyển về nháp hoặc đã xoá) thì chỉ báo tên.
+    if (!c || (c.status !== "published" && c.status !== "hidden")) {
       items.push({
         key: e.course_id,
         group: e.completed_at ? "done" : "learning",
@@ -75,14 +76,18 @@ async function Body() {
     const modules = toModules(c);
     const p = courseProgress(modules, done);
     const group = e.completed_at ? "done" : "learning";
+    // Khoá đã ẩn không còn trang giới thiệu: mở thẳng bước đang học (hoặc bước đầu).
+    const hidden = c.status === "hidden";
+    const step = p.nextLesson ?? modules[0]?.lessons[0] ?? null;
+    const note = group === "done" ? `Hoàn thành ngày ${dateVN(e.completed_at!)}` : nextLabel(modules, done);
     items.push({
       key: c.id,
       group,
       title: c.title,
       topic: c.topic,
-      note: group === "done" ? `Hoàn thành ngày ${dateVN(e.completed_at!)}` : nextLabel(modules, done),
+      note: hidden ? `${note} · Khoá đã ngừng nhận người mới, bạn vẫn học tiếp và nhận giấy được.` : note,
       progress: group === "done" ? 100 : p.percent,
-      href: `/khoa-hoc/${c.slug}`,
+      href: hidden ? (step ? `/khoa-hoc/${c.slug}/buoc/${step.id}` : null) : `/khoa-hoc/${c.slug}`,
       certHref: group === "done" ? `/khoa-hoc/${c.slug}/chung-nhan` : undefined,
       certIssued: certified.has(c.id),
     });

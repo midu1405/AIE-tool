@@ -26,6 +26,16 @@ export const asKind = (k: string | null | undefined): StepKind => (STEP_KINDS.in
 export const PASS_RATE = 0.8;
 export const passNeed = (n: number) => Math.ceil(n * PASS_RATE - 1e-9);
 
+/** Thứ tự hiện n lựa chọn của một câu quiz, xáo ngẫu nhiên (Fisher–Yates). Đáp án nộp vẫn là vị trí gốc. */
+export function shuffledOrder(n: number, rand: () => number = Math.random): number[] {
+  const a = Array.from({ length: n }, (_, i) => i);
+  for (let i = n - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 // ---------------------------------------------------------------- nội dung bước (lesson_contents.body)
 export type DocBody = { text?: string };
 export type VideoBody = { url?: string; intro?: string; watch?: string; transcript?: string; captions?: boolean };

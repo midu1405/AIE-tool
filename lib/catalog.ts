@@ -16,6 +16,8 @@ export type CatalogCourse = {
   hoursMax: number;
   format: Format;
   level: Level;
+  /** Khoá minh hoạ: hiện ở danh mục, chưa đăng ký và chưa nhận giấy được. */
+  demo?: boolean;
 };
 
 export type Progress = { percent: number; completed: boolean };

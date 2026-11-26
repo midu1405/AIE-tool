@@ -19,9 +19,10 @@ type CourseRow = {
   outcomes: string[];
   audience_note: string;
   legal_basis: string;
+  is_demo: boolean;
 };
 
-const COLS = "id, slug, title, summary, description, topic, audiences, hours_min, hours_max, format, level, outcomes, audience_note, legal_basis";
+const COLS = "id, slug, title, summary, description, topic, audiences, hours_min, hours_max, format, level, outcomes, audience_note, legal_basis, is_demo";
 
 function toCatalog(r: CourseRow): CatalogCourse {
   return {
@@ -35,6 +36,7 @@ function toCatalog(r: CourseRow): CatalogCourse {
     hoursMax: Number(r.hours_max),
     format: r.format,
     level: r.level,
+    demo: r.is_demo,
   };
 }
 

@@ -1,22 +1,24 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@/components/Icon";
 import { Notice } from "@/components/khbd/StatusChip";
 import { stepHref } from "@/components/learn/CourseLearner";
 import { DocBody } from "@/components/learn/DocBody";
 import { locateStep, type OModule } from "@/lib/learning";
-import { STEP_ICON, STEP_LABEL, isHttpUrl, lines, passNeed, videoEmbed, type StepBody } from "@/lib/steps";
+import { STEP_ICON, STEP_LABEL, isHttpUrl, lines, passNeed, shuffledOrder, videoEmbed, type StepBody } from "@/lib/steps";
 import { getBrowserClient } from "@/lib/supabase/client";
 import { btnPrimary, btnSecondary, field, labelCls, textarea } from "@/lib/ui";
 
 export type StepMaterial = { material_id: string; label: string | null; kind: "khbd" | "pbt"; title: string; version_no: number; web_view_link: string | null };
-type QuizResult = { correct: number; total: number; passed: boolean; need: number; answers: number[]; explains: string[] };
+// Chưa đạt: database chỉ trả đúng/sai từng câu (results). Đạt rồi mới có đáp án và giải thích.
+type QuizResult = { correct: number; total: number; passed: boolean; need: number; results: boolean[]; answers?: number[]; explains?: string[] };
 
 // Màn học một bước (design/artboards/HocBuoc.dc.html): mục lục khoá bên trái, nội dung bước bên phải.
 export function StepView(p: {
-  course: { id: string; slug: string; title: string; draft: boolean };
+  /** home: trang khoá (khoá ẩn thì về "Khoá học của tôi", vì trang khoá chỉ hiện khoá đang xuất bản). */
+  course: { id: string; slug: string; title: string; draft: boolean; home: string };
   modules: OModule[];
   stepId: string;
   body: StepBody;
@@ -68,7 +70,7 @@ export function StepView(p: {
             Khoá học của tôi
           </Link>
           <span aria-hidden="true">›</span>
-          <Link href={`/khoa-hoc/${p.course.slug}`} className="text-muted">
+          <Link href={p.course.home} className="text-muted">
             {p.course.title}
           </Link>
           <span aria-hidden="true">›</span>
@@ -206,7 +208,7 @@ export function StepView(p: {
                 <Icon d="M9 6l6 6-6 6" size={16} stroke="#172033" width={2} />
               </Link>
             ) : (
-              <Link href={`/khoa-hoc/${p.course.slug}`} className={btnSecondary}>
+              <Link href={p.course.home} className={btnSecondary}>
                 Về trang khoá học
               </Link>
             )}
@@ -218,7 +220,7 @@ export function StepView(p: {
 }
 
 function Outline(p: {
-  course: { slug: string; title: string };
+  course: { slug: string; title: string; home: string };
   modules: OModule[];
   stepId: string;
   done: Set<string>;
@@ -233,7 +235,7 @@ function Outline(p: {
   return (
     <aside aria-label="Mục lục khoá học" className="min-w-0 flex-[1_1_300px] overflow-hidden rounded-xl border border-line bg-surface md:max-w-[360px]">
       <div className="flex flex-col gap-2.5 border-b border-line px-[18px] pt-[18px] pb-3.5">
-        <Link href={`/khoa-hoc/${p.course.slug}`} className="text-[15px] leading-snug font-bold text-ink no-underline">
+        <Link href={p.course.home} className="text-[15px] leading-snug font-bold text-ink no-underline">
           {p.course.title}
         </Link>
         <div className="flex justify-between text-[13px] text-muted">
@@ -390,9 +392,17 @@ function QuizStep(p: { lessonId: string; body: StepBody; lastAttempt: { correct:
   const supabase = getBrowserClient();
   const qs = p.body.questions ?? [];
   const [answers, setAnswers] = useState<(number | null)[]>(() => qs.map(() => null));
+  // Thứ tự hiện lựa chọn: xáo lại mỗi lần làm (sau khi trang đã hiện, để không lệch với bản dựng ở server).
+  const [order, setOrder] = useState<number[][]>(() => qs.map((q) => q.options.map((_, i) => i)));
   const [result, setResult] = useState<QuizResult | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const sizes = qs.map((q) => q.options.length).join(",");
+  const shuffle = () => setOrder(sizes ? sizes.split(",").map((n) => shuffledOrder(Number(n))) : []);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- xáo một lần sau khi trang hiện; Math.random không chạy ở server
+    setOrder(sizes ? sizes.split(",").map((n) => shuffledOrder(Number(n))) : []);
+  }, [sizes]);
   if (qs.length === 0) return <p className="text-muted">Quiz này chưa có câu hỏi.</p>;
   const need = passNeed(qs.length);
   const complete = answers.every((a) => a !== null);
@@ -411,55 +421,64 @@ function QuizStep(p: { lessonId: string; body: StepBody; lastAttempt: { correct:
   return (
     <div className="flex max-w-[760px] flex-col gap-[18px]">
       <p className="text-base leading-[1.7]">
-        Trả lời {qs.length} câu. Cần đúng ít nhất 80% số câu ({need} / {qs.length} câu) để hoàn thành bước. Làm lại bao nhiêu lần cũng được.
+        Trả lời {qs.length} câu. Cần đúng ít nhất 80% số câu ({need} / {qs.length} câu) để hoàn thành bước. Làm lại bao nhiêu lần cũng được; đạt rồi bạn sẽ
+        xem được đáp án và giải thích từng câu.
       </p>
       {p.lastAttempt && !result && (
         <p className="text-sm text-muted">
           Lần nộp gần nhất: đúng {p.lastAttempt.correct} / {p.lastAttempt.total} câu{p.lastAttempt.passed ? ", đã đạt" : ", chưa đạt"}.
         </p>
       )}
-      {qs.map((q, qi) => (
-        <fieldset key={qi} className="flex flex-col gap-2.5 rounded-xl border border-line px-5 py-[18px]">
-          <legend className="px-1.5 text-[13px] font-semibold text-muted">Câu {qi + 1}</legend>
-          <p className="text-base leading-normal font-semibold">{q.text}</p>
-          {q.options.map((o, oi) => {
-            if (!o.trim()) return null;
-            const id = `cau-${qi}-${oi}`;
-            const picked = answers[qi] === oi;
-            const right = result ? result.answers[qi] === oi : false;
-            const wrong = result ? picked && !right : false;
-            return (
-              <label
-                key={oi}
-                htmlFor={id}
-                className={
-                  "flex min-h-12 cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-[15px] " +
-                  (right ? "border-[1.5px] border-ok bg-ok-soft" : wrong ? "border-[1.5px] border-err bg-err-soft" : picked ? "border-[1.5px] border-accent" : "border border-line")
-                }
-              >
-                <input
-                  id={id}
-                  type="radio"
-                  name={`cau-${qi}`}
-                  checked={picked}
-                  disabled={!!result || busy}
-                  onChange={() => setAnswers((a) => a.map((x, i) => (i === qi ? oi : x)))}
-                  className="h-[18px] w-[18px] accent-accent"
-                />
-                <span className="flex-1">{o}</span>
-                {right && <span className="text-[13px] font-semibold text-ok">Đáp án đúng</span>}
-                {wrong && <span className="text-[13px] font-semibold text-err">Chưa đúng</span>}
-              </label>
-            );
-          })}
-          {result && result.explains[qi] && <p className="rounded-lg bg-bg px-3 py-2.5 text-sm leading-relaxed">{result.explains[qi]}</p>}
-        </fieldset>
-      ))}
+      {qs.map((q, qi) => {
+        const ok = result?.results[qi];
+        return (
+          <fieldset key={qi} className="flex flex-col gap-2.5 rounded-xl border border-line px-5 py-[18px]">
+            <legend className="px-1.5 text-[13px] font-semibold text-muted">
+              Câu {qi + 1}
+              {result && !result.passed && <span className={ok ? "text-ok" : "text-err"}> · {ok ? "Đúng" : "Chưa đúng"}</span>}
+            </legend>
+            <p className="text-base leading-normal font-semibold">{q.text}</p>
+            {(order[qi] ?? []).map((oi) => {
+              const o = q.options[oi] ?? "";
+              if (!o.trim()) return null;
+              const id = `cau-${qi}-${oi}`;
+              const picked = answers[qi] === oi;
+              // Đạt: tô đáp án đúng. Chưa đạt: chỉ tô lựa chọn của mình theo đúng/sai, không lộ đáp án.
+              const right = result ? (result.answers ? result.answers[qi] === oi : picked && !!ok) : false;
+              const wrong = result ? picked && !right : false;
+              return (
+                <label
+                  key={oi}
+                  htmlFor={id}
+                  className={
+                    "flex min-h-12 cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-[15px] " +
+                    (right ? "border-[1.5px] border-ok bg-ok-soft" : wrong ? "border-[1.5px] border-err bg-err-soft" : picked ? "border-[1.5px] border-accent" : "border border-line")
+                  }
+                >
+                  <input
+                    id={id}
+                    type="radio"
+                    name={`cau-${qi}`}
+                    checked={picked}
+                    disabled={!!result || busy}
+                    onChange={() => setAnswers((a) => a.map((x, i) => (i === qi ? oi : x)))}
+                    className="h-[18px] w-[18px] accent-accent"
+                  />
+                  <span className="flex-1">{o}</span>
+                  {right && <span className="text-[13px] font-semibold text-ok">{result?.answers ? "Đáp án đúng" : "Đúng"}</span>}
+                  {wrong && <span className="text-[13px] font-semibold text-err">Chưa đúng</span>}
+                </label>
+              );
+            })}
+            {result?.explains?.[qi] && <p className="rounded-lg bg-bg px-3 py-2.5 text-sm leading-relaxed">{result.explains[qi]}</p>}
+          </fieldset>
+        );
+      })}
       {result && (
         <div role="status" className={`rounded-[10px] px-4 py-3.5 text-[15px] font-semibold ${result.passed ? "bg-ok-soft text-ok" : "bg-warn-soft text-warn"}`}>
           {result.passed
-            ? `Bạn đúng ${result.correct} / ${result.total} câu. Bước này đã hoàn thành.`
-            : `Bạn đúng ${result.correct} / ${result.total} câu. Cần đúng ít nhất ${result.need} câu (80%); đọc giải thích rồi bấm Làm lại.`}
+            ? `Bạn đúng ${result.correct} / ${result.total} câu. Bước này đã hoàn thành. Đáp án và giải thích ở từng câu bên trên.`
+            : `Bạn đúng ${result.correct} / ${result.total} câu. Cần đúng ít nhất ${result.need} câu (80%). Xem lại các câu chưa đúng rồi bấm Làm lại; thứ tự lựa chọn sẽ đổi.`}
         </div>
       )}
       {error && <Notice tone="err">{error}</Notice>}
@@ -470,6 +489,7 @@ function QuizStep(p: { lessonId: string; body: StepBody; lastAttempt: { correct:
             onClick={() => {
               setResult(null);
               setAnswers(qs.map(() => null));
+              shuffle();
             }}
             className={btnSecondary}
           >

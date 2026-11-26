@@ -39,6 +39,17 @@ update public.courses set status = 'published' where id = 'c0000000-0000-0000-00
 \echo '--- teacher chưa thấy khoá nháp (0)'
 set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000c';
 select count(*) from public.courses;
+\echo '--- lead xuất bản khoá chưa đủ nội dung (PHẢI LỖI: database chạy danh sách tự kiểm)'
+set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000a';
+update public.courses set status = 'published' where id = 'c0000000-0000-0000-0000-000000000001';
+-- Soạn đủ: thông tin trang khoá, 2 bài đọc có nội dung và "Sẵn sàng".
+reset role;
+update public.courses set summary = 'Tóm tắt', description = 'Giới thiệu', audience_note = 'Giáo viên THCS',
+  outcomes = array['Ý 1', 'Ý 2', 'Ý 3'] where id = 'c0000000-0000-0000-0000-000000000001';
+update public.course_lessons set ready = true where module_id = 'a0000000-0000-0000-0000-000000000001';
+insert into public.lesson_contents (lesson_id, body) values
+ ('b0000000-0000-0000-0000-000000000001', '{"text":"Nội dung A"}'), ('b0000000-0000-0000-0000-000000000002', '{"text":"Nội dung B"}');
+set role authenticated;
 \echo '--- lead xuất bản (OK, published_by = a)'
 set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000a';
 update public.courses set status = 'published' where id = 'c0000000-0000-0000-0000-000000000001';

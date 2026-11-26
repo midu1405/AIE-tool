@@ -41,11 +41,18 @@ async function Body({ params }: { params: Promise<{ slug: string; id: string }> 
     supabase.rpc("course_material_links", { p_course_id: c.id }),
   ]);
   const staff = user.roles.length > 0;
-  if (!en && !staff) redirect(`/khoa-hoc/${slug}#noi-dung`);
+  if (!en && !staff) redirect(c.status === "published" ? `/khoa-hoc/${slug}#noi-dung` : "/khoa-hoc-cua-toi");
 
   return (
     <StepView
-      course={{ id: c.id, slug: c.slug, title: c.title, draft: c.status !== "published" }}
+      course={{
+        id: c.id,
+        slug: c.slug,
+        title: c.title,
+        draft: c.status === "draft",
+        // Khoá đã ẩn: người đã đăng ký học tiếp được nhưng trang giới thiệu khoá không còn hiện.
+        home: c.status === "hidden" ? "/khoa-hoc-cua-toi" : `/khoa-hoc/${c.slug}`,
+      }}
       modules={modules}
       stepId={id}
       body={((content as { body: StepBody } | null)?.body ?? {}) as StepBody}

@@ -153,7 +153,7 @@ a{color:#2152C5}a:hover{color:#163B91}
 
 <sc-if value="{{isQuiz}}" hint-placeholder-val="{{ false }}">
 <div style="display: flex; flex-direction: column; gap: 18px; max-width: 760px">
-<p style="margin: 0; font-size: 16px; line-height: 1.7">Trả lời {{qCount}} câu. Cần đúng ít nhất 80% số câu ({{passMark}} / {{qCount}} câu) để hoàn thành bước. Làm lại bao nhiêu lần cũng được.</p>
+<p style="margin: 0; font-size: 16px; line-height: 1.7">Trả lời {{qCount}} câu. Cần đúng ít nhất 80% số câu ({{passMark}} / {{qCount}} câu) để hoàn thành bước. Làm lại bao nhiêu lần cũng được; đạt rồi bạn sẽ xem được đáp án và giải thích từng câu.</p>
 <sc-for list="{{questions}}" as="q" hint-placeholder-count="3">
 <fieldset style="margin: 0; border: 1px solid #E3E6EB; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
 <legend style="padding: 0 6px; font-size: 13px; font-weight: 600; color: #4B5565">Câu {{q.no}}</legend>
@@ -366,17 +366,18 @@ class Component extends DCLogic {
     var questions = QUIZ.map(function (q, qi) {
       return {
         no: qi + 1, text: q.text, name: 'cau-' + qi, explain: q.explain,
-        showExplain: s.submitted,
+        // Chưa đạt: chỉ báo lựa chọn của mình đúng hay sai, không lộ đáp án và giải thích (góp ý P2, 26/11).
+        showExplain: passed,
         options: q.options.map(function (o, oi) {
           var picked = s.answers[qi] === oi;
           var right = oi === q.answer;
-          var showRight = s.submitted && right;
+          var showRight = s.submitted && right && (passed || picked);
           var showWrong = s.submitted && picked && !right;
           return {
             id: 'cau-' + qi + '-' + oi, text: o, checked: picked,
             border: showRight ? '1.5px solid #1D6E47' : (showWrong ? '1.5px solid #8A3A0C' : (picked ? '1.5px solid ' + accent : '1px solid #E3E6EB')),
             bg: showRight ? '#E2F3EA' : (showWrong ? '#FCECE3' : '#FFFFFF'),
-            tag: showRight ? 'Đáp án đúng' : (showWrong ? 'Chưa đúng' : ''),
+            tag: showRight ? (passed ? 'Đáp án đúng' : 'Đúng') : (showWrong ? 'Chưa đúng' : ''),
             tagInk: showRight ? '#1D6E47' : '#8A3A0C',
             pick: function () { var a = Object.assign({}, s.answers); a[qi] = oi; self.setState({ answers: a }); }
           };
@@ -416,7 +417,7 @@ class Component extends DCLogic {
       submitOpacity: answered < QUIZ.length ? 0.5 : 1,
       resultBg: passed ? '#E2F3EA' : '#FFF4DB',
       resultInk: passed ? '#1D6E47' : '#7A4B00',
-      resultText: passed ? 'Bạn đúng ' + correct + ' / ' + QUIZ.length + ' câu. Bước này đã hoàn thành.' : 'Bạn đúng ' + correct + ' / ' + QUIZ.length + ' câu. Cần đúng ít nhất 80% (' + PASS + ' câu); đọc giải thích rồi bấm Làm lại.',
+      resultText: passed ? 'Bạn đúng ' + correct + ' / ' + QUIZ.length + ' câu. Bước này đã hoàn thành. Đáp án và giải thích ở từng câu bên trên.' : 'Bạn đúng ' + correct + ' / ' + QUIZ.length + ' câu. Cần đúng ít nhất 80% (' + PASS + ' câu). Xem lại các câu chưa đúng rồi bấm Làm lại; thứ tự lựa chọn sẽ đổi.',
       submitQuiz: function () {
         var ok = QUIZ.filter(function (q, qi) { return s.answers[qi] === q.answer; }).length >= PASS;
         self.setState({ submitted: true, done: ok ? self.addDone(k) : s.done });
