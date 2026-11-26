@@ -5,7 +5,7 @@ Web giáo dục của AI Edu, gồm hai khu dùng chung một codebase và một
 - **Trang giáo viên** (`/`): danh mục khoá học, chi tiết khoá, "Khoá học của tôi". Ai cũng xem được danh mục; đăng nhập Google để đăng ký học và lưu tiến độ.
 - **Khu nội bộ** (`/noi-bo`): nhân viên AI Edu tạo KHBD bằng skill `aca-khbd-ai12`, theo dõi tiến độ, duyệt bài, quản lý và xuất bản khoá học. Chỉ tài khoản `@aiedu.com.vn` có vai trò nhân viên mới vào được.
 
-Đọc file này trước mọi việc. Chi tiết nằm ở `docs/`; schema nằm ở `supabase/migrations/`.
+Đọc file này trước mọi việc. Chi tiết nằm ở `docs/`; schema nằm ở `supabase/migrations/`. PRD, use case và sơ đồ (use case, luồng user story, vòng đời trạng thái, ERD): `docs/prd-usecase.md`, bản gốc là Claude Doc ghi ở đầu file.
 
 ## Thiết kế giao diện
 
@@ -183,7 +183,7 @@ lib/                 supabase client, executor, drive
 worker/              đồng bộ Drive, chạy job
 supabase/migrations/ schema
 supabase/tests/      thử migration và quyền trên Postgres trống
-docs/                quy trình làm việc, repo tham khảo, tài liệu lịch sử
+docs/                PRD và use case (prd-usecase.md, hình ở docs/prd/), quy trình làm việc, repo tham khảo, tài liệu lịch sử
 design/              bản sao canvas (14 màn .dc.html + canvas.json) và prototype.html
 assets/certificate/  font Be Vietnam Pro (OFL) và logo để vẽ PDF giấy chứng nhận
 ```
