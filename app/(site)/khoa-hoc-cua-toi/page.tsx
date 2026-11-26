@@ -59,7 +59,7 @@ async function Body() {
   for (const e of (en.data ?? []) as unknown as { course_id: string; completed_at: string | null; courses: CourseRow | null }[]) {
     enrolledIds.add(e.course_id);
     const c = e.courses;
-    // RLS trả khoá đang xuất bản và khoá đã ẩn mà mình đã đăng ký (B7, 20261126080000_gop_y_prd). Không đọc được
+    // RLS trả khoá đang xuất bản và khoá đã ẩn mà mình đã đăng ký (B7, 20261126074808_gop_y_prd). Không đọc được
     // (khoá chuyển về nháp hoặc đã xoá) thì chỉ báo tên.
     if (!c || (c.status !== "published" && c.status !== "hidden")) {
       items.push({
