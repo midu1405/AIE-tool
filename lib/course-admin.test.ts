@@ -46,5 +46,6 @@ describe("chữ hiển thị", () => {
     expect(audienceShort(["th", "thcs", "thpt", "ql"])).toBe("Mọi cấp học");
     expect(courseSaveError({ code: "23505" })).toMatch(/Đường dẫn này đã có/);
     expect(courseSaveError({ message: "new row violates row-level security policy" })).toMatch(/Academic lead/);
+    expect(courseSaveError({ code: "23514", message: "Chưa xuất bản được: 1 bước chưa “Sẵn sàng”." })).toMatch(/1 bước chưa .*Kiểm tra trước khi xuất bản/);
   });
 });

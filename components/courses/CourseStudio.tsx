@@ -577,9 +577,11 @@ export function CourseStudio(p: {
                 onClick={async () => {
                   if (confirmDelete !== course.id) return setConfirmDelete(course.id);
                   setBusy(true);
-                  const { error } = await supabase.from("courses").delete().eq("id", course.id);
+                  // Database chỉ cho xoá khoá chưa có người học (kể cả khoá đã ẩn); bị chặn thì không lỗi mà 0 dòng.
+                  const { data, error } = await supabase.from("courses").delete().eq("id", course.id).select("id");
                   setBusy(false);
                   if (error) return setError(courseSaveError(error));
+                  if (!data?.length) return setError("Chưa xoá được: khoá đã có người học hoặc bạn không có quyền xoá. Khoá có người học chỉ ẩn được.");
                   router.push("/noi-bo/khoa-hoc");
                   router.refresh();
                 }}

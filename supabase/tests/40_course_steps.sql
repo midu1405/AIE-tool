@@ -9,6 +9,7 @@ insert into public.course_lessons (id, section_id, position, title, kind, ready)
  ('5b000000-0000-0000-0000-000000000001', '5e000000-0000-0000-0000-000000000001', 0, 'Quiz học phần 1', 'quiz', true),
  ('5b000000-0000-0000-0000-000000000002', '5e000000-0000-0000-0000-000000000001', 1, 'Phản tư', 'reflect', true);
 insert into public.lesson_contents (lesson_id, body) values
+ ('5b000000-0000-0000-0000-000000000002', '{"prompt":"Bạn sẽ bắt đầu bài đầu tiên thế nào?"}'),
  ('5b000000-0000-0000-0000-000000000001', '{"questions":[{"text":"C1","options":["a","b"]},{"text":"C2","options":["a","b"]},{"text":"C3","options":["a","b"]},{"text":"C4","options":["a","b"]},{"text":"C5","options":["a","b"]}]}');
 insert into public.quiz_keys (lesson_id, answers, explains) values
  ('5b000000-0000-0000-0000-000000000001', '{1,0,1,0,1}', '{e1,e2,e3,e4,e5}');
@@ -27,7 +28,7 @@ select count(*) as dap_an from public.quiz_keys;
 \echo '--- giáo viên chưa đăng ký nộp quiz (PHẢI LỖI)'
 select public.submit_quiz('5b000000-0000-0000-0000-000000000001', '{1,0,1,0,1}');
 
-\echo '--- giáo viên đã đăng ký: đọc được nội dung (1), vẫn không đọc đáp án (0)'
+\echo '--- giáo viên đã đăng ký: đọc được nội dung (4 bước), vẫn không đọc đáp án (0)'
 set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000c';
 select count(*) as noi_dung from public.lesson_contents;
 select count(*) as dap_an from public.quiz_keys;

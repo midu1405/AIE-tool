@@ -26,7 +26,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: "Làm sai quiz thì sao?",
-    a: "Bạn làm lại bao nhiêu lần cũng được. Sau mỗi lần nộp, trang cho biết câu nào đúng, câu nào chưa và giải thích.",
+    a: "Bạn làm lại bao nhiêu lần cũng được. Sau mỗi lần nộp, trang cho biết câu nào đúng, câu nào chưa; khi đạt, bạn xem được đáp án và giải thích từng câu.",
   },
   {
     q: "Ai đọc được câu trả lời phản tư của tôi?",

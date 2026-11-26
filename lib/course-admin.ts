@@ -102,11 +102,14 @@ export function courseSaveError(e: { code?: string; message?: string } | null) {
   if (e.code === "23505") return "Đường dẫn này đã có khoá khác dùng. Đổi đường dẫn rồi lưu lại.";
   if (e.code === "42501" || /row-level security/i.test(e.message ?? ""))
     return "Bạn không sửa được khoá này. Khoá đã xuất bản hoặc đã ẩn chỉ Academic lead sửa được.";
+  // Database chạy lại danh sách tự kiểm khi xuất bản (courses_guard) và trả các mục còn thiếu.
+  if (e.code === "23514") return `${e.message ?? "Khoá chưa đủ điều kiện."} Mở tab “Kiểm tra trước khi xuất bản” để sửa từng mục.`;
   return e.message ?? "Có lỗi chưa rõ. Thử lại; nếu vẫn lỗi, báo quản trị.";
 }
 
 export function publishHint(status: CourseStatus) {
-  if (status === "published") return "Khoá đang hiện trên trang giáo viên. Ẩn thì giáo viên đang học vẫn giữ tiến độ.";
-  if (status === "hidden") return "Khoá đang ẩn: giáo viên không thấy trong danh mục. Xuất bản lại để hiện.";
+  if (status === "published")
+    return "Khoá đang hiện trên trang giáo viên. Ẩn thì người mới không thấy khoá; người đã đăng ký vẫn học tiếp và nhận giấy được.";
+  if (status === "hidden") return "Khoá đang ẩn: người mới không thấy trong danh mục, người đã đăng ký vẫn học tiếp. Xuất bản lại để hiện.";
   return "Khoá chưa hiện trên trang giáo viên.";
 }

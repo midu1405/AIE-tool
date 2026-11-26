@@ -30,10 +30,11 @@ async function Body({ params }: { params: Promise<{ slug: string }> }) {
     .from("courses")
     .select("id, slug, title, status, hours_min, hours_max, course_modules(id, course_lessons(id))")
     .eq("slug", slug)
-    .eq("status", "published")
+    .in("status", ["published", "hidden"]) // khoá đã ẩn: người đã đăng ký vẫn nhận giấy (RLS chỉ trả khoá ẩn cho họ)
     .maybeSingle();
   if (!course) notFound();
-  const c = course as { id: string; slug: string; title: string; hours_min: number; hours_max: number; course_modules: { id: string; course_lessons: { id: string }[] }[] };
+  const c = course as { id: string; slug: string; title: string; status: string; hours_min: number; hours_max: number; course_modules: { id: string; course_lessons: { id: string }[] }[] };
+  const home = c.status === "hidden" ? "/khoa-hoc-cua-toi" : `/khoa-hoc/${c.slug}`;
   const lessonIds = c.course_modules.flatMap((m) => m.course_lessons.map((l) => l.id));
   const [{ data: en }, { data: cert }, { count: doneCount }] = await Promise.all([
     supabase.from("enrollments").select("completed_at").eq("course_id", c.id).eq("user_id", user.id).maybeSingle(),
@@ -51,7 +52,7 @@ async function Body({ params }: { params: Promise<{ slug: string }> }) {
           Khoá học của tôi
         </Link>
         <span aria-hidden="true">›</span>
-        <Link href={`/khoa-hoc/${c.slug}`} className="text-muted">
+        <Link href={home} className="text-muted">
           {c.title}
         </Link>
         <span aria-hidden="true">›</span>

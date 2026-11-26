@@ -195,6 +195,7 @@ function CourseCard({ c, badge }: { c: CatalogCourse; badge: string }) {
           <Icon d={t.icon} size={48} stroke={t.ink} width={1.5} />
         </span>
         {badge && <span className="absolute top-3 left-3 rounded-full bg-surface px-2.5 py-1 text-xs font-semibold text-ink">{badge}</span>}
+        {c.demo && <span className="absolute top-3 right-3 rounded-full bg-surface px-2.5 py-1 text-xs font-semibold text-muted">Khoá minh hoạ</span>}
       </div>
       <div className="flex flex-1 flex-col gap-2.5 p-5">
         <span className="self-start rounded-md px-2 py-[3px] text-xs font-semibold" style={{ background: t.tint, color: t.ink }}>

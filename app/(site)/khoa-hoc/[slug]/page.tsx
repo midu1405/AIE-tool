@@ -41,12 +41,12 @@ async function CourseDetail({ params }: { params: Promise<{ slug: string }> }) {
     { k: "Chủ đề", v: t.label, d: t.icon, ink: t.ink },
     { k: "Thời lượng", v: hoursText(c.hoursMin, c.hoursMax), d: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2", ink: "#4B5565" },
     // Quyết định đã chốt 1 (đổi 23/11): xong mọi bước thì nhận giấy chứng nhận có mã QR xác minh.
-    { k: "Chứng nhận", v: "Có", d: "M12 3l2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z", ink: "#4B5565" },
+    { k: "Chứng nhận", v: c.demo ? "Khi khoá mở" : "Có", d: "M12 3l2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z", ink: "#4B5565" },
     { k: "Dành cho", v: audienceText(c.audiences), d: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM3 21v-1a6 6 0 0 1 12 0v1M16 3.5a4 4 0 0 1 0 7.5M21 21v-1a6 6 0 0 0-4-5.6", ink: "#4B5565" },
   ];
 
   return (
-    <CourseLearner courseId={c.id} slug={c.slug} modules={c.modules}>
+    <CourseLearner courseId={c.id} slug={c.slug} modules={c.modules} demo={c.demo}>
       <section className="border-b border-line bg-surface">
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-start gap-8 px-6 pt-6 pb-10">
           <div className="flex min-w-0 flex-[999_1_560px] flex-col gap-4">
@@ -143,7 +143,7 @@ async function CourseDetail({ params }: { params: Promise<{ slug: string }> }) {
                 </>
               )}
               <dt className="text-muted">Chứng nhận</dt>
-              <dd>Không</dd>
+              <dd>{c.demo ? "Có khi khoá mở đăng ký" : "Có, khi học xong mọi bước"}</dd>
             </dl>
           </section>
           <CompletionCard />

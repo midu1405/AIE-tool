@@ -132,10 +132,14 @@ insert into public.course_lessons (module_id, position, title)
 select m.id, l.pos - 1, l.title from m
 join (values (0, 1, 'Bốn hoạt động'), (0, 2, 'Mục tiêu và sản phẩm'), (1, 1, 'Câu lệnh soạn nháp'), (1, 2, 'Đưa học liệu nguồn'), (2, 1, 'Chấm thử'), (2, 2, 'Sửa theo góp ý'), (3, 1, 'Dạy thử'), (3, 2, 'Rút kinh nghiệm')) as l(mpos, pos, title) on l.mpos = m.position;
 
--- Xuất bản 9 khoá mẫu. Trigger courses_guard chỉ cho quản lý nội dung xuất bản (seed chạy bằng tài khoản database, không có
--- vai trò), nên tắt trigger riêng cho câu này. Chỉ đụng khoá nháp chưa từng xuất bản (published_at rỗng): khoá mẫu đã bị
--- ẩn hoặc chuyển nháp có chủ đích sẽ không bị xuất bản lại khi chạy lại file.
+-- Xuất bản 9 khoá mẫu dưới dạng khoá minh hoạ (is_demo: hiện ở danh mục, không đăng ký, không cấp giấy; xem
+-- 20261126074808_gop_y_prd.sql). Trigger courses_guard chỉ cho quản lý nội dung xuất bản và đánh dấu minh hoạ (seed chạy
+-- bằng tài khoản database, không có vai trò), nên tắt trigger riêng cho hai câu này. Chỉ xuất bản khoá nháp chưa từng
+-- xuất bản (published_at rỗng): khoá mẫu đã bị ẩn hoặc chuyển nháp có chủ đích sẽ không bị xuất bản lại khi chạy lại file.
 set local session_replication_role = replica;
+update public.courses set is_demo = true
+where not is_demo
+  and slug in ('hieu-biet-ai', 'gd-ai-thcs', 'gd-ai-th', 'gd-ai-thpt', 'teachable-machine', 'prompt-gv', 'an-toan-ai', 'nang-luc-so', 'soan-khbd-ai');
 update public.courses set status = 'published', published_at = now()
 where status = 'draft' and published_at is null
   and slug in ('hieu-biet-ai', 'gd-ai-thcs', 'gd-ai-th', 'gd-ai-thpt', 'teachable-machine', 'prompt-gv', 'an-toan-ai', 'nang-luc-so', 'soan-khbd-ai');
