@@ -53,6 +53,8 @@ export type KhbdRow = {
   warnings: number | null;
   latest_job_id: string | null;
   list_status: ListStatus;
+  /** Bản hiện tại đã duyệt và người duyệt là người đặt soạn bài (được phép, hiện cờ để soát; chốt 26/11). */
+  self_approved?: boolean | null;
 };
 
 export type ListFilters = { tab: ListStatus | "all"; q: string; grade: string; source: "all" | "soan_lai" | "bai_moi" };

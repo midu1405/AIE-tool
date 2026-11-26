@@ -18,11 +18,11 @@ AI Edu Training Hub là web giáo dục gồm hai khu trên cùng một database
 
 **Trong phạm vi bản này:** danh mục và chi tiết khoá, học từng bước, Khoá học của tôi, giấy chứng nhận, khu nội bộ (Tạo KHBD, Tiến độ, Danh sách KHBD, Duyệt bài, Quản lý và Soạn nội dung khoá), phân quyền theo vai trò.
 
-**Ngoài phạm vi bản này:** chấm điểm hay quản lý lớp học sinh, thanh toán, diễn đàn thảo luận, ứng dụng di động riêng, LMS bên ngoài. Học sinh không có tài khoản trên web.
+**Ngoài phạm vi bản này:** chấm điểm hay quản lý lớp học sinh, thanh toán, diễn đàn thảo luận, ứng dụng di động riêng, LMS bên ngoài. Học sinh không có tài khoản trên web. Thông báo cho nhân viên (job xong hoặc lỗi, có bài chờ duyệt, bài bị trả về) để bản sau; trước mắt xem ở màn Tiến độ và Duyệt bài.
 
 ## 2. Người dùng và vai trò
 
-Có 5 vai, một người giữ được nhiều vai. Chỉ tài khoản `@aiedu.com.vn` được giữ vai nhân viên; quyền kiểm ở database (RLS), giao diện chỉ ẩn nút.
+Có 5 vai đăng nhập (giáo viên và 4 vai nhân viên); tính cả khách chưa đăng nhập là 6 tác nhân người như sơ đồ use case. Một người giữ được nhiều vai. Chỉ tài khoản `@aiedu.com.vn` được giữ vai nhân viên; quyền kiểm ở database (RLS), giao diện chỉ ẩn nút.
 
 | Vai (mã trong hệ thống)           | Là ai                              | Cần gì                                                                    | Được làm                                                                                                          |
 |-----------------------------------|------------------------------------|---------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
@@ -36,38 +36,43 @@ Người xem chưa đăng nhập xem được danh mục, chi tiết khoá, tran
 
 ## 3. Danh sách use case
 
-22 use case: 14 đã chạy trên web, 5 mới làm một phần, 3 còn lại. “Một phần” ghi rõ phần thiếu ở cột Ghi chú.
+27 use case: 14 đã chạy trên web, 5 mới làm một phần, 8 còn lại (UC23–UC27 thêm theo góp ý ngày 26/11). “Một phần” ghi rõ phần thiếu ở cột Ghi chú.
 
-| Mã   | Use case                                | Tác nhân                   | Trạng thái | Ghi chú                                                  |
-|------|-----------------------------------------|----------------------------|------------|----------------------------------------------------------|
-| UC01 | Tìm và lọc danh mục khoá học            | Khách, giáo viên           | Đã có      | Tìm bỏ dấu; lọc đối tượng, chủ đề, thời lượng, hình thức |
-| UC02 | Xem chi tiết khoá                       | Khách, giáo viên           | Đã có      | Nội dung 3 tầng, cần có, cần chuẩn bị                    |
-| UC03 | Đăng nhập                               | Giáo viên, nhân viên       | Một phần   | Google chưa bật; nhân viên tạm dùng email + mật khẩu     |
-| UC04 | Đăng ký và lưu khoá                     | Giáo viên                  | Đã có      |                                                          |
-| UC05 | Học một bước (bài đọc, video, tổng kết) | Giáo viên                  | Đã có      | Đánh dấu đã xong, bước trước/sau                         |
-| UC06 | Làm quiz                                | Giáo viên                  | Đã có      | Đạt khi đúng ≥ 80% số câu, làm lại không giới hạn        |
-| UC07 | Viết phản tư, nộp sản phẩm              | Giáo viên                  | Đã có      |                                                          |
-| UC08 | Theo dõi Khoá học của tôi               | Giáo viên                  | Đã có      | Đang học, Đã hoàn thành, Đã lưu                          |
-| UC09 | Nhận giấy chứng nhận                    | Giáo viên                  | Đã có      | Xác nhận họ tên, tải PDF                                 |
-| UC10 | Xác minh giấy chứng nhận                | Khách, nhà trường          | Đã có      | Quét QR hoặc nhập mã                                     |
-| UC11 | Nhận email kèm giấy chứng nhận          | Giáo viên, hệ thống        | Còn lại    | Chờ dịch vụ gửi mail và DNS                              |
-| UC12 | Tạo KHBD (soạn lại từ kho, bài mới)     | Người soạn                 | Một phần   | Đang chạy bản giả lập, chưa có bên soạn thật             |
-| UC13 | Theo dõi tiến độ, chạy lại, huỷ job     | Người soạn                 | Một phần   | Theo bản giả lập                                         |
-| UC14 | Duyệt KHBD                              | Người duyệt, Academic lead | Đã có      | Checklist, rubric 7 tiêu chí, góp ý theo phần            |
-| UC15 | Dựng PBT sau khi KHBD được duyệt        | Người soạn                 | Còn lại    | Giai đoạn 2 của skill                                    |
-| UC16 | Đồng bộ cây kho học liệu từ Drive       | Hệ thống                   | Còn lại    | Chờ service account Google                               |
-| UC17 | Tạo và soạn nội dung khoá               | Người soạn, Academic lead  | Đã có      | Học phần → Phần → Bước                                   |
-| UC18 | Gắn KHBD/PBT đã duyệt làm học liệu      | Người soạn, Academic lead  | Đã có      | “Gắn vN” khi có bản mới                                  |
-| UC19 | Kiểm tra và xuất bản, ẩn khoá           | Academic lead              | Đã có      | Danh sách tự kiểm chặn khi còn mục đỏ                    |
-| UC20 | Xem câu trả lời phản tư                 | Người phụ trách khoá       | Đã có      |                                                          |
-| UC21 | Thu hồi giấy chứng nhận                 | Academic lead              | Một phần   | Chỉ làm được bằng lệnh database, chưa có màn             |
-| UC22 | Cấp, thu hồi vai trò                    | Quản trị                   | Một phần   | Làm trong Supabase, chưa có màn trên web                 |
+| Mã   | Use case                                                                 | Tác nhân                   | Trạng thái | Ghi chú                                                                         |
+|------|--------------------------------------------------------------------------|----------------------------|------------|---------------------------------------------------------------------------------|
+| UC01 | Tìm và lọc danh mục khoá học                                             | Khách, giáo viên           | Đã có      | Tìm bỏ dấu; lọc đối tượng, chủ đề, thời lượng, hình thức                        |
+| UC02 | Xem chi tiết khoá                                                        | Khách, giáo viên           | Đã có      | Nội dung 3 tầng, cần có, cần chuẩn bị                                           |
+| UC03 | Đăng nhập                                                                | Giáo viên, nhân viên       | Một phần   | Google chưa bật; nhân viên tạm dùng email + mật khẩu                            |
+| UC04 | Đăng ký và lưu khoá                                                      | Giáo viên                  | Đã có      |                                                                                 |
+| UC05 | Học một bước (bài đọc, video, tổng kết)                                  | Giáo viên                  | Đã có      | Đánh dấu đã xong, bước trước/sau                                                |
+| UC06 | Làm quiz                                                                 | Giáo viên                  | Đã có      | Đạt khi đúng ≥ 80% số câu, làm lại không giới hạn; chưa đạt không hiện đáp án   |
+| UC07 | Viết phản tư, nộp sản phẩm                                               | Giáo viên                  | Đã có      |                                                                                 |
+| UC08 | Theo dõi Khoá học của tôi                                                | Giáo viên                  | Đã có      | Đang học, Đã hoàn thành, Đã lưu                                                 |
+| UC09 | Nhận giấy chứng nhận                                                     | Giáo viên                  | Đã có      | Xác nhận họ tên, tải PDF; chỉ cấp ở khoá đủ nội dung, không cấp ở khoá minh hoạ |
+| UC10 | Xác minh giấy chứng nhận                                                 | Khách, nhà trường          | Đã có      | Quét QR hoặc nhập mã                                                            |
+| UC11 | Nhận email kèm giấy chứng nhận                                           | Giáo viên, hệ thống        | Còn lại    | Chờ dịch vụ gửi mail và DNS                                                     |
+| UC12 | Tạo KHBD (soạn lại từ kho, bài mới)                                      | Người soạn                 | Một phần   | Đang chạy bản giả lập, chưa có bên soạn thật                                    |
+| UC13 | Theo dõi tiến độ, chạy lại, huỷ job                                      | Người soạn                 | Một phần   | Theo bản giả lập                                                                |
+| UC14 | Duyệt KHBD                                                               | Người duyệt, Academic lead | Đã có      | Checklist, rubric 7 tiêu chí, góp ý theo phần                                   |
+| UC15 | Dựng PBT sau khi KHBD được duyệt                                         | Người soạn                 | Còn lại    | Giai đoạn 2 của skill                                                           |
+| UC16 | Đồng bộ cây kho học liệu từ Drive                                        | Hệ thống                   | Còn lại    | Chờ service account Google                                                      |
+| UC17 | Tạo và soạn nội dung khoá                                                | Người soạn, Academic lead  | Đã có      | Học phần → Phần → Bước                                                          |
+| UC18 | Gắn KHBD/PBT đã duyệt làm học liệu                                       | Người soạn, Academic lead  | Đã có      | “Gắn vN” khi có bản mới; giáo viên mở học liệu là UC24                          |
+| UC19 | Kiểm tra và xuất bản, ẩn khoá                                            | Academic lead              | Đã có      | Danh sách tự kiểm chặn khi còn mục đỏ                                           |
+| UC20 | Xem câu trả lời phản tư                                                  | Người phụ trách khoá       | Đã có      |                                                                                 |
+| UC21 | Thu hồi giấy chứng nhận                                                  | Academic lead              | Một phần   | Chỉ làm được bằng lệnh database, chưa có màn                                    |
+| UC22 | Cấp, thu hồi vai trò                                                     | Quản trị                   | Một phần   | Làm trong Supabase, chưa có màn trên web                                        |
+| UC23 | Duyệt PBT                                                                | Người duyệt, Academic lead | Còn lại    | Chưa chốt checklist, rubric và cách trả về; cần lưu riêng spec PBT              |
+| UC24 | Mở học liệu của bước                                                     | Giáo viên đã đăng ký       | Còn lại    | Chờ nơi chia sẻ bản đã duyệt (B9–B10); chốt chỉ người đã đăng ký mới mở được    |
+| UC25 | Quản lý dữ liệu của mình: huỷ đăng ký, sửa họ tên, tải về, xoá tài khoản | Giáo viên                  | Còn lại    | Ban đầu làm thủ công qua email hỗ trợ                                           |
+| UC26 | Cập nhật khung chương trình (khung NLS, chủ đề, mã 2422 theo lớp)        | Academic                   | Còn lại    | Đang nạp bằng seed; chưa có quy trình khi Bộ ban hành văn bản mới               |
+| UC27 | Bỏ job lỗi                                                               | Người soạn                 | Còn lại    | Job lỗi vì nguồn hỏng hiện chỉ chạy lại được                                    |
 
 ![sơ đồ use case · 6 tác nhân, 7 nhóm use case](prd/use-case.png)
 
 sơ đồ use case · 6 tác nhân, 7 nhóm use case
 
-Khách và giáo viên chỉ dùng trang giáo viên; bốn vai nhân viên chỉ dùng khu nội bộ. Người soạn sửa được khoá nháp; xuất bản, ẩn và thu hồi giấy là việc của Academic lead.
+Khách và giáo viên chỉ dùng trang giáo viên; bốn vai nhân viên chỉ dùng khu nội bộ. Người soạn sửa được khoá nháp; xuất bản, ẩn và thu hồi giấy là việc của Academic lead (UC21 nằm cạnh nhóm Quản trị cho gọn hình). Sơ đồ không vẽ hai tác nhân phụ: nhà trường xác minh giấy như khách (UC10), hệ thống chạy UC11 và UC16.
 
 ## 4. Đặc tả use case chính
 
@@ -77,7 +82,7 @@ Sáu use case dưới đây quyết định giá trị sản phẩm; các use ca
 
 luồng user story · 5 làn, 3 điểm quyết định, 4 vòng lặp
 
-Có bốn vòng lặp: job lỗi thì chạy lại, KHBD trả về thì hệ thống soạn bản mới, khoá còn mục đỏ thì sửa tiếp, quiz dưới 80% thì làm lại. Khoá có thể xuất bản không cần KHBD; khi có, chỉ bản đã duyệt được gắn.
+Có bốn vòng lặp: job lỗi thì chạy lại, KHBD trả về thì hệ thống soạn bản mới, khoá còn mục đỏ thì sửa tiếp, quiz dưới 80% thì làm lại. Khoá có thể xuất bản không cần KHBD; khi có, chỉ bản đã duyệt được gắn. Luồng chưa vẽ bước PBT (UC15, UC23) giữa duyệt KHBD và gắn vào khoá; thêm khi chốt cách duyệt PBT.
 
 ### UC12. Tạo KHBD
 
@@ -93,7 +98,7 @@ Có bốn vòng lặp: job lỗi thì chạy lại, KHBD trả về thì hệ th
 
 **Ngoại lệ:** lớp 1–3 chưa soạn được; lớp 4–5 chưa có khung NLS nên bản soạn ghi giả định. Một bước lỗi thì job dừng ở bước đó; người soạn bấm “Chạy lại từ bước lỗi” hoặc huỷ.
 
-**Kết quả:** mỗi bài có phiên bản KHBD trạng thái “Chờ duyệt”, Doc lưu trong `AI Agent › <ngày> › <đường dẫn bài nguồn> › Bài N`, đuôi `– vN`. Không ghi đè: sửa là ra bản mới.
+**Kết quả:** mỗi bài có phiên bản KHBD trạng thái “Chờ duyệt”, Doc lưu trong `AI Agent › <ngày> › <đường dẫn bài nguồn> › Bài N`, đuôi `– vN`. Bài mới không có bài nguồn nên lưu ở AI Agent › \<ngày\> › Lớp N › Bài NN. \<Tên bài\>. Không ghi đè: sửa là ra bản mới.
 
 ### UC14. Duyệt KHBD
 
@@ -107,7 +112,7 @@ Có bốn vòng lặp: job lỗi thì chạy lại, KHBD trả về thì hệ th
 
 4.  Chọn **Duyệt** hoặc **Trả về**.
 
-**Quy tắc:** trả về bắt buộc có ít nhất 1 góp ý mở và tự tạo job soạn bản v(N+1) theo góp ý. Duyệt nhầm thì bấm Hoàn tác duyệt. Xem được bản cũ để so sánh.
+**Quy tắc:** trả về bắt buộc có ít nhất 1 góp ý mở và tự tạo job soạn bản v(N+1) theo góp ý. Duyệt nhầm thì bấm Hoàn tác duyệt. Xem được bản cũ để so sánh. Người tạo job được tự duyệt bản đó vì đội còn ít người (chốt 26/11); hệ thống ghi người duyệt và Danh sách KHBD hiện cờ “Tự duyệt” để soát lại.
 
 **Kết quả:** bản “Đã duyệt” gắn được vào khoá học (UC18); bản trả về có bản kế tiếp đang soạn.
 
@@ -123,13 +128,13 @@ Có bốn vòng lặp: job lỗi thì chạy lại, KHBD trả về thì hệ th
 
 4.  Ở tab Kiểm tra trước khi xuất bản, sửa hết mục đỏ rồi bấm **Xuất bản**.
 
-**Quy tắc:** nút Xuất bản bị chặn khi còn mục đỏ (bước chưa sẵn sàng, quiz thiếu đáp án hoặc giải thích, video thiếu bản ghi lời…). Không bắt buộc người khác xem trước. Khoá đã xuất bản mà còn mục đỏ thì màn soạn hiện cảnh báo. Chỉ xoá được khoá chưa có người học. Khi có bản KHBD mới hơn đã duyệt, màn Quản lý hiện “Có vN đã duyệt” để người quản lý tự chọn “Gắn vN”.
+**Quy tắc:** xuất bản bị chặn khi còn mục đỏ, ở cả giao diện và database (bước chưa sẵn sàng, quiz thiếu đáp án hoặc giải thích, video thiếu bản ghi lời…). Không bắt buộc người khác xem trước. Khoá đã xuất bản mà còn mục đỏ thì màn soạn hiện cảnh báo. Chỉ xoá được khoá chưa có người học, kể cả khoá đã ẩn. Khoá minh hoạ (9 khoá mẫu) hiện ở danh mục nhưng không đăng ký và không cấp giấy được. Khi có bản KHBD mới hơn đã duyệt, màn Quản lý hiện “Có vN đã duyệt” để người quản lý tự chọn “Gắn vN”.
 
-**Kết quả:** khoá hiện trong danh mục cho giáo viên; ẩn khoá thì khoá biến mất khỏi danh mục nhưng người đã học vẫn giữ tiến độ.
+**Kết quả:** khoá hiện trong danh mục cho giáo viên; ẩn khoá thì người mới không thấy khoá; người đã đăng ký vẫn thấy ở Khoá học của tôi, học tiếp và nhận giấy (chốt 26/11).
 
 ### UC05–UC07. Học từng bước
 
-**Tác nhân:** giáo viên. **Điều kiện:** đã đăng nhập và đăng ký khoá đang xuất bản.
+**Tác nhân:** giáo viên. **Điều kiện:** đã đăng nhập và đăng ký khoá (đang xuất bản, hoặc đã ẩn sau khi mình đăng ký).
 
 1.  Mở khoá, bấm bước cần học trên mục lục (trên điện thoại mục lục thu gọn).
 
@@ -137,13 +142,13 @@ Có bốn vòng lặp: job lỗi thì chạy lại, KHBD trả về thì hệ th
 
 3.  Chuyển bước trước/sau.
 
-**Quy tắc:** quiz chấm ở database, đạt khi đúng ít nhất 80% số câu (làm tròn lên), làm lại không giới hạn; sau khi nộp hiện câu đúng, câu sai và giải thích. Bước quiz chỉ tính xong khi đạt; bước phản tư chỉ tính xong khi đã lưu câu trả lời. Câu trả lời phản tư chỉ giáo viên đó và người phụ trách khoá xem được.
+**Quy tắc:** quiz chấm ở database, đạt khi đúng ít nhất 80% số câu (làm tròn lên), làm lại không giới hạn; chưa đạt thì chỉ biết câu nào đúng, câu nào sai; đạt rồi mới hiện đáp án và giải thích; thứ tự lựa chọn xáo lại mỗi lần làm (chốt 26/11). Bước quiz chỉ tính xong khi đạt; bước phản tư chỉ tính xong khi đã lưu câu trả lời. Câu trả lời phản tư chỉ giáo viên đó và người phụ trách khoá xem được.
 
 **Kết quả:** tiến độ lưu theo tài khoản; xong mọi bước thì khoá được đánh dấu “Đã hoàn thành”.
 
 ### UC09. Nhận giấy chứng nhận
 
-**Tác nhân:** giáo viên. **Điều kiện:** đã hoàn thành mọi bước của khoá.
+**Tác nhân:** giáo viên. **Điều kiện:** đã hoàn thành mọi bước của khoá; khoá không phải khoá minh hoạ và không còn mục đỏ (kiểm ở database).
 
 1.  Bấm “Nhận giấy chứng nhận” ở thẻ hoàn thành khoá hoặc tab Đã hoàn thành.
 
@@ -153,9 +158,9 @@ Có bốn vòng lặp: job lỗi thì chạy lại, KHBD trả về thì hệ th
 
 4.  Tải PDF, mở trang xác minh hoặc sao chép link xác minh.
 
-**Ngoại lệ:** họ tên dưới 2 chữ hoặc quá 80 ký tự thì báo lỗi; chưa xong khoá thì trang báo còn bao nhiêu bước. Bấm cấp hai lần vẫn chỉ ra một giấy.
+**Ngoại lệ:** họ tên dưới 2 chữ hoặc quá 80 ký tự thì báo lỗi; chưa xong khoá thì trang báo còn bao nhiêu bước. Bấm cấp hai lần vẫn chỉ ra một giấy. Khoá chưa đủ nội dung thì báo AI Edu sẽ báo khi khoá hoàn thiện.
 
-**Kết quả:** giấy có mã `AIE-<năm>-XXXXXX`, PDF A4 ngang có QR. Họ tên trên giấy không đổi; cần sửa thì Academic lead thu hồi (UC21) và giáo viên nhận lại với mã mới.
+**Kết quả:** giấy có mã `AIE-<năm>-XXXXXX`, PDF A4 ngang có QR. Họ tên trên giấy không đổi; cần sửa thì Academic lead thu hồi (UC21) và giáo viên nhận lại với mã mới. Họ tên do giáo viên tự gõ, chưa đối chiếu danh tính; giấy vẫn gắn với tài khoản nên Academic lead tra được email gốc của một mã khi nhà trường hỏi.
 
 ### UC10. Xác minh giấy chứng nhận
 
@@ -165,7 +170,7 @@ Có bốn vòng lặp: job lỗi thì chạy lại, KHBD trả về thì hệ th
 
 2.  Trang hiện một trong ba kết quả: **Hợp lệ** (họ tên, khoá, thời lượng, ngày hoàn thành, mã, tải PDF), **Đã thu hồi** (ngày thu hồi), **Không tìm thấy**.
 
-**Quy tắc:** không hiện email, kết quả quiz hay câu phản tư; mã sai dạng báo ngay cách sửa; giấy đã thu hồi không tải được PDF.
+**Quy tắc:** không hiện email, kết quả quiz hay câu phản tư; mã sai dạng báo ngay cách sửa; giấy đã thu hồi không tải được PDF. Ai có mã thì xem được họ tên trên giấy; trang Quyền riêng tư ghi rõ điều này.
 
 ### Vòng đời trạng thái
 
@@ -175,38 +180,41 @@ Mỗi đối tượng chỉ đổi trạng thái qua thao tác có kiểm tra �
 
 vòng đời trạng thái · job, phiên bản KHBD, khoá học, giấy chứng nhận
 
-Job chỉ huỷ được khi đang chờ chạy. Khoá học không quay lại nháp sau khi đã xuất bản. Hai trạng thái `draft` và `archived` có trong database của phiên bản KHBD nhưng web chưa dùng.
+Job chỉ huỷ được khi đang chờ chạy; job lỗi hiện chỉ chạy lại được (UC27 Bỏ job lỗi còn lại). Khoá học không quay lại nháp sau khi đã xuất bản. Hai trạng thái `draft` và `archived` có trong database của phiên bản KHBD nhưng web chưa dùng; archived hợp để đánh dấu bản cũ khi bản mới hơn được duyệt (chưa chốt, mục 9).
 
 ## 5. Yêu cầu chức năng
 
 Mỗi yêu cầu kiểm được bằng thao tác trên web hoặc test database. Cột UC chỉ về use case ở mục 3.
 
-| Mã   | Khu              | Yêu cầu                                                                                                         | UC         |
-|------|------------------|-----------------------------------------------------------------------------------------------------------------|------------|
-| FR01 | Danh mục         | Chỉ hiện khoá đã xuất bản; tìm theo tên không phân biệt dấu (“hieu biet” ra “Hiểu biết”)                        | UC01       |
-| FR02 | Danh mục         | Lọc theo đối tượng, chủ đề, thời lượng, hình thức; dưới 768 px các nhóm lọc gộp vào nút “Bộ lọc (n)”            | UC01       |
-| FR03 | Danh mục         | Cả thẻ khoá bấm được; rê chuột hoặc Tab tới thì thẻ nổi lên, đổi màu viền                                       | UC01       |
-| FR04 | Chi tiết khoá    | Hiện thông tin nhanh (thời lượng, hình thức, cấp độ, chứng nhận), cần có, cần chuẩn bị, nội dung 3 tầng         | UC02       |
-| FR05 | Chi tiết khoá    | Đăng ký, lưu khoá, hiện tiến độ của người đang đăng nhập                                                        | UC04       |
-| FR06 | Học bước         | 5 loại bước: bài đọc (Markdown rút gọn), video (YouTube, Drive), quiz, phản tư, tổng kết học phần               | UC05–UC07  |
-| FR07 | Học bước         | Chấm quiz ở database; đạt khi đúng ≥ 80% số câu, làm tròn lên; đáp án không gửi xuống trình duyệt trước khi nộp | UC06       |
-| FR08 | Học bước         | Xong mọi bước thì tự đánh dấu khoá “Đã hoàn thành”                                                              | UC05       |
-| FR09 | Khoá học của tôi | Ba tab Đang học, Đã hoàn thành, Đã lưu; khoá đã xong có nút giấy chứng nhận                                     | UC08       |
-| FR10 | Chứng nhận       | Xác nhận họ tên trước khi cấp; mỗi người một giấy còn hiệu lực cho mỗi khoá                                     | UC09       |
-| FR11 | Chứng nhận       | PDF A4 ngang, font Be Vietnam Pro, logo AI Edu × Google for Education, mã và QR dẫn tới trang xác minh          | UC09       |
-| FR12 | Chứng nhận       | Trang xác minh công khai có 3 trạng thái; thu hồi không xoá dữ liệu                                             | UC10, UC21 |
-| FR13 | Chứng nhận       | Gửi email kèm PDF khi cấp (chưa làm)                                                                            | UC11       |
-| FR14 | Tạo KHBD         | Tạo nhiều bài một lượt; mỗi job đúng 6 bước theo skill `aca-khbd-ai12`                                          | UC12       |
-| FR15 | Tiến độ          | Cập nhật trực tiếp (Realtime); chạy lại từ bước lỗi; huỷ job                                                    | UC13       |
-| FR16 | Danh sách KHBD   | Mỗi tài liệu một dòng với trạng thái đang chạy, lỗi, chờ duyệt, đã duyệt, trả về                                | UC12–UC14  |
-| FR17 | Duyệt bài        | Checklist 2422/5588, rubric 7 tiêu chí, góp ý theo phần; trả về cần ≥ 1 góp ý và tự tạo bản v(N+1)              | UC14       |
-| FR18 | Duyệt bài        | Xem trước KHBD theo thứ tự mục chuẩn I–III; xem bản cũ; hoàn tác duyệt                                          | UC14       |
-| FR19 | Soạn khoá        | Thêm, đổi tên, xoá, đổi thứ tự học phần, phần, bước                                                             | UC17       |
-| FR20 | Soạn khoá        | Chỉ gắn được KHBD/PBT đã duyệt; một bước không gắn hai phiên bản của cùng tài liệu                              | UC18       |
-| FR21 | Soạn khoá        | Danh sách tự kiểm chặn Xuất bản khi còn mục đỏ; cảnh báo khi khoá đã xuất bản còn mục đỏ                        | UC19       |
-| FR22 | Soạn khoá        | Xuất bản hoặc ẩn khoá thì danh mục cập nhật ngay                                                                | UC19       |
-| FR23 | Soạn khoá        | Người phụ trách khoá xem câu trả lời phản tư của người học                                                      | UC20       |
-| FR24 | Chung            | Trang Trợ giúp, Quyền riêng tư, Điều khoản; email hỗ trợ lấy từ cấu hình                                        | —          |
+| Mã   | Khu              | Yêu cầu                                                                                                                                                                           | UC         |
+|------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|
+| FR01 | Danh mục         | Chỉ hiện khoá đã xuất bản, khoá minh hoạ có nhãn riêng; tìm theo tên không phân biệt dấu (“hieu biet” ra “Hiểu biết”)                                                             | UC01       |
+| FR02 | Danh mục         | Lọc theo đối tượng, chủ đề, thời lượng, hình thức; dưới 768 px các nhóm lọc gộp vào nút “Bộ lọc (n)”                                                                              | UC01       |
+| FR03 | Danh mục         | Cả thẻ khoá bấm được; rê chuột hoặc Tab tới thì thẻ nổi lên, đổi màu viền                                                                                                         | UC01       |
+| FR04 | Chi tiết khoá    | Hiện thông tin nhanh (thời lượng, hình thức, cấp độ, chứng nhận), cần có, cần chuẩn bị, nội dung 3 tầng                                                                           | UC02       |
+| FR05 | Chi tiết khoá    | Đăng ký, lưu khoá, hiện tiến độ của người đang đăng nhập; khoá minh hoạ chỉ lưu, không đăng ký                                                                                    | UC04       |
+| FR06 | Học bước         | 5 loại bước: bài đọc (Markdown rút gọn), video (YouTube, Drive), quiz, phản tư, tổng kết học phần                                                                                 | UC05–UC07  |
+| FR07 | Học bước         | Chấm quiz ở database; đạt khi đúng ≥ 80% số câu, làm tròn lên; chưa đạt chỉ báo đúng/sai từng câu, đáp án và giải thích chỉ gửi xuống khi đã đạt; xáo thứ tự lựa chọn mỗi lần làm | UC06       |
+| FR08 | Học bước         | Xong mọi bước thì tự đánh dấu khoá “Đã hoàn thành”                                                                                                                                | UC05       |
+| FR09 | Khoá học của tôi | Ba tab Đang học, Đã hoàn thành, Đã lưu; khoá đã xong có nút giấy chứng nhận                                                                                                       | UC08       |
+| FR10 | Chứng nhận       | Xác nhận họ tên trước khi cấp; mỗi người một giấy còn hiệu lực cho mỗi khoá; chỉ cấp ở khoá đủ nội dung, không phải khoá minh hoạ                                                 | UC09       |
+| FR11 | Chứng nhận       | PDF A4 ngang, font Be Vietnam Pro, logo AI Edu × Google for Education, mã và QR dẫn tới trang xác minh                                                                            | UC09       |
+| FR12 | Chứng nhận       | Trang xác minh công khai có 3 trạng thái; thu hồi không xoá dữ liệu                                                                                                               | UC10, UC21 |
+| FR13 | Chứng nhận       | Gửi email kèm PDF khi cấp (chưa làm)                                                                                                                                              | UC11       |
+| FR14 | Tạo KHBD         | Tạo nhiều bài một lượt; mỗi job đúng 6 bước theo skill `aca-khbd-ai12`                                                                                                            | UC12       |
+| FR15 | Tiến độ          | Cập nhật trực tiếp (Realtime); chạy lại từ bước lỗi; huỷ job                                                                                                                      | UC13       |
+| FR16 | Danh sách KHBD   | Mỗi tài liệu một dòng với trạng thái đang chạy, lỗi, chờ duyệt, đã duyệt, trả về                                                                                                  | UC12–UC14  |
+| FR17 | Duyệt bài        | Checklist 2422/5588, rubric 7 tiêu chí, góp ý theo phần; trả về cần ≥ 1 góp ý và tự tạo bản v(N+1)                                                                                | UC14       |
+| FR18 | Duyệt bài        | Xem trước KHBD theo thứ tự mục chuẩn I–III; xem bản cũ; hoàn tác duyệt                                                                                                            | UC14       |
+| FR19 | Soạn khoá        | Thêm, đổi tên, xoá, đổi thứ tự học phần, phần, bước                                                                                                                               | UC17       |
+| FR20 | Soạn khoá        | Chỉ gắn được KHBD/PBT đã duyệt; một bước không gắn hai phiên bản của cùng tài liệu                                                                                                | UC18       |
+| FR21 | Soạn khoá        | Danh sách tự kiểm chặn Xuất bản khi còn mục đỏ, database kiểm lại khi xuất bản; cảnh báo khi khoá đã xuất bản còn mục đỏ                                                          | UC19       |
+| FR22 | Soạn khoá        | Xuất bản hoặc ẩn khoá thì danh mục cập nhật ngay; khoá ẩn vẫn mở cho người đã đăng ký                                                                                             | UC19       |
+| FR23 | Soạn khoá        | Người phụ trách khoá xem câu trả lời phản tư của người học                                                                                                                        | UC20       |
+| FR24 | Chung            | Trang Trợ giúp, Quyền riêng tư, Điều khoản; email hỗ trợ lấy từ cấu hình                                                                                                          | —          |
+| FR25 | Chung            | Đăng nhập xong chỉ chuyển về trang trong web; địa chỉ ngoài và đường dẫn trình duyệt hiểu thành địa chỉ ngoài về trang chủ                                                        | UC03       |
+| FR26 | Tạo KHBD         | Job chỉ tạo qua hàm có kiểm tra; job PBT chỉ cho KHBD đã duyệt                                                                                                                    | UC12, UC15 |
+| FR27 | Danh sách KHBD   | Hiện cờ “Tự duyệt” khi người duyệt cũng là người tạo job của bản đó                                                                                                               | UC14       |
 
 ## 6. Yêu cầu phi chức năng
 
@@ -216,13 +224,13 @@ Quyền nằm ở database, không ở giao diện: mọi bảng bật Row Level
 
 - Mọi bảng bật RLS và có policy ngay khi tạo; trình duyệt chỉ dùng khoá công khai, khoá quản trị chỉ ở server.
 
-- Ghi dữ liệu quan trọng qua hàm database có kiểm tra: chấm quiz, cấp và thu hồi giấy, duyệt KHBD, xuất bản khoá.
+- Ghi dữ liệu quan trọng qua hàm database có kiểm tra: chấm quiz, cấp và thu hồi giấy, duyệt KHBD, tạo job; xuất bản khoá đi qua trigger chạy lại danh sách tự kiểm.
 
 - Không viết cứng secret, ID Drive hay email trong code; không đưa token vào log hoặc commit.
 
 - Drive: chỉ đọc kho nguồn; chỉ tạo mới trong thư mục `AI Agent`; không ghi, đổi tên, di chuyển hay xoá file nguồn.
 
-- Bộ test quyền trên Postgres trống: hiện 30 ca “phải lỗi”, chạy trước mỗi lần merge.
+- Bộ test quyền trên Postgres trống: hiện 36 ca “phải lỗi”, chạy trước mỗi lần merge.
 
 **Quyền riêng tư**
 
@@ -231,6 +239,12 @@ Quyền nằm ở database, không ở giao diện: mọi bảng bật Row Level
 - Giáo viên khác không xem được dữ liệu của nhau; trang xác minh chỉ hiện họ tên, khoá, thời lượng, ngày.
 
 - Trang Quyền riêng tư phải được pháp chế duyệt trước khi bật đăng nhập Google; đổi cách lưu dữ liệu thì sửa trang này.
+
+- Thời hạn lưu dữ liệu chưa có con số; pháp chế và người phụ trách dữ liệu chốt trước khi bật đăng nhập Google.
+
+- Giáo viên yêu cầu huỷ đăng ký, sửa họ tên, tải về hoặc xoá dữ liệu của mình (UC25) theo quy định bảo vệ dữ liệu cá nhân hiện hành; pháp chế xác nhận văn bản áp dụng.
+
+- Ai có mã giấy chứng nhận thì xem được họ tên trên giấy; mã hiện 6 ký tự và chưa giới hạn số lần tra (mục 9).
 
 **Giao diện và truy cập**
 
@@ -244,7 +258,7 @@ Quyền nằm ở database, không ở giao diện: mọi bảng bật Row Level
 
 **Hiệu năng và vận hành**
 
-- Danh mục khoá đọc từ bộ nhớ đệm, làm mới khi xuất bản hoặc ẩn khoá. Chưa đo thời gian tải; cần đặt mục tiêu khi mở cho giáo viên.
+- Danh mục khoá đọc từ bộ nhớ đệm, làm mới khi xuất bản hoặc ẩn khoá. Mục tiêu tạm (đề xuất, chờ chốt): trang danh mục và trang học một bước tải xong trong 3 giây trên điện thoại 4G; đo trước khi mở cho giáo viên.
 
 - Mỗi lần đẩy lên `main`, Vercel tự deploy; mỗi nhánh có link xem trước.
 
@@ -252,21 +266,30 @@ Quyền nằm ở database, không ở giao diện: mọi bảng bật Row Level
 
 - Mọi thay đổi đi qua Pull Request; Midu duyệt trước khi merge.
 
+- Sao lưu: cần biết gói Supabase đang dùng có sao lưu tự động không, giữ bao lâu, ai khôi phục; chốt trước khi lưu tiến độ và giấy chứng nhận thật.
+
+- Theo dõi lỗi: web và worker chưa báo lỗi về đâu; cần một nơi nhận và một người trực.
+
+- Nhật ký thao tác: bảng `audit_log` có sẵn nhưng chưa ghi; cần ghi cấp và thu hồi vai trò, thu hồi giấy, xuất bản và ẩn khoá.
+
 ## 7. Chỉ số thành công
 
-Chưa có số liệu nền vì chưa có bên soạn KHBD thật và giáo viên chưa đăng nhập được. Đề xuất đo 4 tuần đầu sau khi mở rồi mới đặt mục tiêu. Mọi chỉ số dưới đây lấy được từ database hiện có, không cần công cụ theo dõi.
+Chưa có số liệu nền vì chưa có bên soạn KHBD thật và giáo viên chưa đăng nhập được. Đề xuất đo 4 tuần đầu sau khi mở rồi mới đặt mục tiêu; riêng đợt thử nghiệm đầu cần mục tiêu sớm (số trường, số giáo viên), chờ quản lý chốt. Mọi chỉ số dưới đây lấy được từ database hiện có, không cần công cụ theo dõi.
 
-| Chỉ số                                  | Cách đo                                                   | Mục tiêu                                 |
-|-----------------------------------------|-----------------------------------------------------------|------------------------------------------|
-| Thời gian từ tạo job đến KHBD chờ duyệt | Giờ tạo job đến giờ tạo phiên bản, trung vị theo tuần     | Chờ chốt sau khi có bên soạn thật        |
-| Tỉ lệ job lỗi                           | Job có bước lỗi / tổng job                                | Chờ chốt                                 |
-| Tỉ lệ KHBD duyệt ngay vòng đầu          | Bài duyệt ở v1 / tổng bài đã có kết quả duyệt             | Chờ chốt                                 |
-| Điểm rubric trung bình                  | Trung bình 7 tiêu chí mỗi bài duyệt                       | Chờ chốt                                 |
-| Số khoá có nội dung thật đã xuất bản    | Khoá đã xuất bản, qua hết danh sách tự kiểm               | Chờ chốt                                 |
-| Tỉ lệ hoàn thành khoá                   | Giáo viên hoàn thành / giáo viên đăng ký, theo khoá       | Chờ chốt                                 |
-| Bước bỏ dở nhiều nhất                   | Bước cuối cùng người học chưa xong làm tới, đếm theo bước | Dùng để sửa nội dung, không đặt mục tiêu |
-| Số lần làm quiz trung bình đến khi đạt  | Lượt nộp / số quiz đã đạt                                 | Dùng để chỉnh độ khó                     |
-| Số giấy chứng nhận đã cấp và bị thu hồi | Đếm theo tháng                                            | Chờ chốt                                 |
+| Chỉ số                                  | Cách đo                                                                                          | Mục tiêu                                  |
+|-----------------------------------------|--------------------------------------------------------------------------------------------------|-------------------------------------------|
+| Thời gian từ tạo job đến KHBD chờ duyệt | Giờ tạo job đến giờ tạo phiên bản, trung vị theo tuần                                            | Chờ chốt sau khi có bên soạn thật         |
+| Thời gian chờ duyệt                     | Từ lúc có bản “Chờ duyệt” đến khi có quyết định (document_versions, reviews), trung vị theo tuần | Chờ chốt; thường là nút thắt của Academic |
+| Tỉ lệ job lỗi                           | Job có bước lỗi / tổng job                                                                       | Chờ chốt                                  |
+| Tỉ lệ KHBD duyệt ngay vòng đầu          | Bài duyệt ở v1 / tổng bài đã có kết quả duyệt                                                    | Chờ chốt                                  |
+| Điểm rubric trung bình                  | Trung bình 7 tiêu chí mỗi bài duyệt                                                              | Chờ chốt                                  |
+| Số khoá có nội dung thật đã xuất bản    | Khoá đã xuất bản, qua hết danh sách tự kiểm                                                      | Chờ chốt                                  |
+| Số giáo viên đăng ký                    | Tài khoản không có vai trò đã đăng ký ít nhất một khoá                                           | Mục tiêu đợt thử nghiệm đầu, chờ chốt     |
+| Giáo viên hoạt động mỗi tuần            | Giáo viên có ít nhất một lần đánh dấu bước, nộp quiz hoặc lưu phản tư trong tuần                 | Chờ chốt                                  |
+| Tỉ lệ hoàn thành khoá                   | Giáo viên hoàn thành / giáo viên đăng ký, theo khoá                                              | Chờ chốt                                  |
+| Bước bỏ dở nhiều nhất                   | Bước cuối cùng người học chưa xong làm tới, đếm theo bước                                        | Dùng để sửa nội dung, không đặt mục tiêu  |
+| Số lần làm quiz trung bình đến khi đạt  | Lượt nộp / số quiz đã đạt                                                                        | Dùng để chỉnh độ khó                      |
+| Số giấy chứng nhận đã cấp và bị thu hồi | Đếm theo tháng                                                                                   | Chờ chốt                                  |
 
 ## 8. Phạm vi phát hành và lộ trình
 
@@ -280,31 +303,42 @@ Bên soạn KHBD thật chỉ cần cho nhân viên nội bộ; giáo viên họ
 
 ## 9. Phụ thuộc, rủi ro và mục chưa chốt
 
-Ba việc chặn việc mở web cho giáo viên: bật đăng nhập Google, pháp chế duyệt trang Quyền riêng tư, chuyển Vercel sang gói có phép dùng thương mại. Các mục còn lại chặn từng tính năng.
+Bốn việc chặn việc mở web cho giáo viên, khớp sơ đồ lộ trình: bật đăng nhập Google, pháp chế duyệt trang Quyền riêng tư, chuyển Vercel sang gói có phép dùng thương mại, có khoá với nội dung thật. Các lỗ hổng chặn trong góp ý ngày 26/11 (cấp giấy từ khoá trống, quiz lộ đáp án, xuất bản không kiểm ở database, chuyển hướng ra ngoài sau đăng nhập, chèn thẳng job PBT, xoá khoá ẩn có người học) đã sửa ở PR \#9. Các mục còn lại chặn từng tính năng.
 
-| Mục cần quyết hoặc cần làm                                                                       | Chặn gì                                       | Ai quyết / ai làm                 |
-|--------------------------------------------------------------------------------------------------|-----------------------------------------------|-----------------------------------|
-| Tạo OAuth Client Google, dán vào Supabase                                                        | Giáo viên đăng nhập (UC03 trở đi)             | Bạn kỹ thuật cloud                |
-| Duyệt trang Quyền riêng tư, Điều khoản; chốt email hỗ trợ và thời hạn lưu dữ liệu                | Bật đăng nhập Google                          | Pháp chế, người phụ trách dữ liệu |
-| Chuyển Vercel sang gói Pro hoặc tài khoản công ty                                                | Mở cho giáo viên (gói Hobby chỉ cho dùng thử) | Midu, quản lý                     |
-| Chọn bên soạn KHBD thật: Claude API, routine của Claude Code, hay API khác                       | KHBD thật (UC12, UC13)                        | Midu, quản lý                     |
-| Tạo service account Google đọc kho, ghi thư mục `AI Agent`                                       | Đồng bộ kho (UC16), lưu Doc thật              | Bạn kỹ thuật cloud                |
-| Chốt nơi chia sẻ bản đã duyệt cho giáo viên ngoài công ty (bước B9–B10)                          | Giáo viên mở học liệu gắn trong khoá          | Academic                          |
-| Chọn dịch vụ gửi mail, thêm bản ghi DNS cho `aiedu.com.vn`                                       | Email kèm giấy chứng nhận (UC11)              | Midu, bạn kỹ thuật cloud          |
-| Người ký, ảnh chữ ký/con dấu; điều khoản dùng logo Google for Education                          | Giấy chứng nhận chính thức                    | Quản lý, pháp chế                 |
-| Màn Duyệt bài dùng skill `aca-khbd-review` hay checklist của `aca-khbd-ai12`                     | Nội dung checklist UC14                       | Academic                          |
-| Tên đầy đủ và phạm vi TT 02, TT 16, TT 18                                                        | Mục căn cứ tuỳ chọn ở UC12                    | Academic                          |
-| Tiêu chí lọc khoá (đối tượng, chủ đề, thời lượng, hình thức) có khớp cách phân loại của Academic | Bộ lọc danh mục (UC01)                        | Academic                          |
+| Mục cần quyết hoặc cần làm                                                                                                     | Chặn gì                                       | Ai quyết / ai làm                 |
+|--------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|-----------------------------------|
+| Tạo OAuth Client Google, dán vào Supabase                                                                                      | Giáo viên đăng nhập (UC03 trở đi)             | Bạn kỹ thuật cloud                |
+| Duyệt trang Quyền riêng tư, Điều khoản; chốt email hỗ trợ và thời hạn lưu dữ liệu                                              | Bật đăng nhập Google                          | Pháp chế, người phụ trách dữ liệu |
+| Chuyển Vercel sang gói Pro hoặc tài khoản công ty                                                                              | Mở cho giáo viên (gói Hobby chỉ cho dùng thử) | Midu, quản lý                     |
+| Chọn bên soạn KHBD thật: Claude API, routine của Claude Code, hay API khác                                                     | KHBD thật (UC12, UC13)                        | Midu, quản lý                     |
+| Tạo service account Google đọc kho, ghi thư mục `AI Agent`                                                                     | Đồng bộ kho (UC16), lưu Doc thật              | Bạn kỹ thuật cloud                |
+| Chốt nơi chia sẻ bản đã duyệt cho giáo viên ngoài công ty (bước B9–B10)                                                        | Giáo viên mở học liệu gắn trong khoá          | Academic                          |
+| Chọn dịch vụ gửi mail, thêm bản ghi DNS cho `aiedu.com.vn`                                                                     | Email kèm giấy chứng nhận (UC11)              | Midu, bạn kỹ thuật cloud          |
+| Người ký, ảnh chữ ký/con dấu; điều khoản dùng logo Google for Education                                                        | Giấy chứng nhận chính thức                    | Quản lý, pháp chế                 |
+| Màn Duyệt bài dùng skill `aca-khbd-review` hay checklist của `aca-khbd-ai12`                                                   | Nội dung checklist UC14                       | Academic                          |
+| Tên đầy đủ và phạm vi TT 02, TT 16, TT 18                                                                                      | Mục căn cứ tuỳ chọn ở UC12                    | Academic                          |
+| Tiêu chí lọc khoá (đối tượng, chủ đề, thời lượng, hình thức) có khớp cách phân loại của Academic                               | Bộ lọc danh mục (UC01)                        | Academic                          |
+| Cách duyệt PBT: ai duyệt, checklist, rubric, trả về; lưu riêng spec PBT (hiện một cột spec_drive_file_id cho cả KHBD)          | Dựng và duyệt PBT (UC15, UC23)                | Academic                          |
+| Học liệu là quyền của người đã đăng ký khoá hay mọi người đã đăng nhập (hàm link học liệu đang trả cho mọi người đã đăng nhập) | Mở học liệu (UC24)                            | Academic, Midu                    |
+| Sửa nội dung khoá đã có người hoàn thành: giữ “Đã hoàn thành” và báo “Có nội dung mới”, hay mở lại khoá                        | Tiến độ và giấy của người đã học              | Academic lead                     |
+| Bản KHBD cũ khi bản mới hơn đã được duyệt: còn gắn mới vào bước khác được không; có chuyển sang archived                       | Gắn học liệu (UC18)                           | Academic                          |
+| Mã giấy 6 ký tự (khoảng 887 triệu tổ hợp), tra không giới hạn: kéo dài lên 10 ký tự hay giới hạn số lần tra theo IP            | Trang xác minh công khai (UC10)               | Midu                              |
+| Cảnh báo khi họ tên gõ trên giấy khác nhiều tên tài khoản Google                                                               | Giấy chứng nhận (UC09)                        | Academic lead                     |
+| Ai cập nhật khung chương trình khi Bộ ban hành văn bản mới, kiểm thế nào                                                       | Tạo KHBD đúng khung (UC26)                    | Academic                          |
+| Sao lưu, thời hạn lưu dữ liệu, nơi nhận báo lỗi                                                                                | Lưu tiến độ và giấy chứng nhận thật           | Midu, bạn kỹ thuật cloud          |
+| Mục tiêu đợt thử nghiệm đầu (số trường, số giáo viên)                                                                          | Chỉ số thành công (mục 7)                     | Quản lý                           |
 
 **Rủi ro**
 
-- 9 khoá mẫu đang hiện nhưng các bước chưa có nội dung. Chấp nhận được khi chưa mở đăng nhập; trước khi mở phải soạn xong hoặc ẩn khoá trống.
+- 9 khoá mẫu là khoá minh hoạ: hiện ở danh mục nhưng không đăng ký và không cấp giấy được (database chặn). Trước khi mở web cần có khoá với nội dung thật.
 
 - Chất lượng KHBD do AI soạn chưa kiểm trên bài thật. Giảm rủi ro bằng bước kiểm tra 2422/5588 trong job và bắt buộc người duyệt trước khi gắn vào khoá.
 
 - Email của một nhân viên thật, từng dùng cho người dùng thử, vẫn còn trong lịch sử git của repo; Midu quyết có viết lại lịch sử không.
 
 - Chưa có màn thu hồi giấy và cấp vai trò trên web; hai việc này phải làm trong Supabase, dễ sai nếu người làm không quen.
+
+- Họ tên trên giấy do giáo viên tự gõ nên có thể cấp giấy mang tên người khác. Giảm rủi ro: giấy gắn với tài khoản, Academic lead tra được email gốc khi nhà trường hỏi, thu hồi được giấy sai.
 
 ## 10. Phụ lục
 
