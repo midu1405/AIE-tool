@@ -119,6 +119,11 @@ export function KhbdList({ rows, initialTab = "all" }: { rows: KhbdRow[]; initia
                   <td className="border-b border-line-soft px-3 py-3">{r.version_no ? `v${r.version_no}` : "–"}</td>
                   <td className="border-b border-line-soft px-3 py-3">
                     <StatusChip chip={LIST_STATUS[r.list_status]} size="sm" />
+                    {r.self_approved && (
+                      <span title="Người duyệt cũng là người đặt soạn bài này" className="mt-1 block text-xs font-semibold text-muted">
+                        Tự duyệt
+                      </span>
+                    )}
                   </td>
                   <td className={"border-b border-line-soft px-3 py-3 " + (r.warnings ? "text-err" : "text-muted")}>
                     {r.warnings ? `${r.warnings} cảnh báo` : "Không"}
