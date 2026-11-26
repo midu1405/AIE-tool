@@ -18,7 +18,7 @@ set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000c';
 \echo '--- họ tên một chữ (PHẢI LỖI)'
 select public.issue_certificate('c0000000-0000-0000-0000-000000000001', '  Lan ');
 \echo '--- nhận giấy (OK: mã đúng dạng, họ tên gọn khoảng trắng, chụp tên khoá)'
-select code ~ '^AIE-[0-9]{4}-[A-Z0-9]{6}$' as ma_dung, full_name, course_title
+select code ~ '^AIE-[0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{2}$' as ma_dung, full_name, course_title
 from public.issue_certificate('c0000000-0000-0000-0000-000000000001', '  Nguyễn   Thị Lan ');
 \echo '--- gọi lại với tên khác: vẫn giấy cũ, họ tên không đổi (1 giấy, Nguyễn Thị Lan)'
 select full_name from public.issue_certificate('c0000000-0000-0000-0000-000000000001', 'Nguyen Thi Lan');

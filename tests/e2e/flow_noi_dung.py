@@ -108,6 +108,9 @@ async def main():
         assert await t.get_by_role("button", name="Đăng ký học").count() == 0, "khoá minh hoạ vẫn có nút đăng ký"
         await t.screenshot(path="shots/g4-khoa-minh-hoa.png", full_page=True)
         await t.goto(B + f"/khoa-hoc/{slug}")
+        # Chưa đăng ký: thấy số học liệu, chưa có link (trả lời câu 1 ngày 26/11).
+        await t.get_by_text(re.compile(r"Kèm 1 KHBD; mở sau khi đăng ký")).wait_for(timeout=15000)
+        print("số học liệu trước khi đăng ký: OK")
         await t.get_by_role("button", name="Đăng ký học").click()
         await t.get_by_role("link", name="Bắt đầu học").click()
         await t.get_by_role("heading", name="Đọc mở đầu").wait_for(timeout=15000)
@@ -178,7 +181,13 @@ async def main():
         await t.goto(B + f"/khoa-hoc/{slug}/chung-nhan")
         await t.get_by_role("button", name="Cấp giấy chứng nhận").click()
         await t.get_by_role("heading", name="Giấy chứng nhận đã sẵn sàng").wait_for(timeout=15000)
-        print("nhận giấy ở khoá ẩn: OK")
+        code = (await t.locator("dd").filter(has_text=re.compile(r"^AIE-")).first.inner_text()).strip()
+        assert re.fullmatch(r"AIE-\d{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{2}", code), code
+        print("nhận giấy ở khoá ẩn: OK, mã", code)
+        await t.goto(B + "/chung-nhan?ma=" + code.lower().replace("-", " "))
+        await t.wait_for_url("**/chung-nhan/" + code, timeout=15000)
+        await t.get_by_text("Giáo viên Thử").first.wait_for(timeout=15000)
+        print("tra mã gõ thường, thiếu gạch: OK")
         await pg.get_by_role("button", name="Xuất bản lại").click()
         await pg.get_by_role("button", name="Ẩn khỏi trang giáo viên").wait_for(timeout=10000)
         await b.close()

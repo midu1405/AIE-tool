@@ -79,6 +79,7 @@ describe("chữ hiển thị", () => {
     expect(hoursText(1.5, 2)).toBe("1,5–2 giờ");
     expect(progressBadge({ percent: 33, completed: false })).toBe("Đang học · 33%");
     expect(progressBadge({ percent: 100, completed: true })).toBe("Đã hoàn thành");
+    expect(progressBadge({ percent: 75, completed: true })).toBe("Đã hoàn thành · Có bước mới");
     expect(progressBadge(undefined)).toBe("");
   });
 });

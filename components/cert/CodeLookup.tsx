@@ -10,7 +10,7 @@ export function CodeLookup({ label, defaultValue = "", error = "" }: { label: st
           id="ma-cn"
           name="ma"
           defaultValue={defaultValue}
-          placeholder="AIE-2026-XXXXXX"
+          placeholder="AIE-2026-XXXX-XXXX-XX"
           autoComplete="off"
           spellCheck={false}
           required

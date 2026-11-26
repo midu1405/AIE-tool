@@ -136,5 +136,7 @@ export function hoursText(min: number, max: number) {
 
 export function progressBadge(p: Progress | undefined) {
   if (!p) return "";
-  return p.completed ? "Đã hoàn thành" : `Đang học · ${p.percent}%`;
+  // "Đã hoàn thành" lấy từ completed_at, không suy ra từ phần trăm: khoá thêm bước sau khi đã xong thì vẫn giữ (chốt 26/11).
+  if (p.completed) return p.percent < 100 ? "Đã hoàn thành · Có bước mới" : "Đã hoàn thành";
+  return `Đang học · ${p.percent}%`;
 }

@@ -6,7 +6,7 @@ import { createPublicClient } from "@/lib/supabase/public";
 export async function GET(request: Request, ctx: RouteContext<"/chung-nhan/[code]/pdf">) {
   const code = normalizeCode((await ctx.params).code);
   const text = (msg: string, status: number) => new Response(msg, { status, headers: { "content-type": "text/plain; charset=utf-8" } });
-  if (!code) return text("Mã giấy chứng nhận không đúng dạng (AIE-2026-XXXXXX).", 404);
+  if (!code) return text("Mã giấy chứng nhận không đúng dạng (AIE-2026-XXXX-XXXX-XX).", 404);
 
   const { data, error } = await createPublicClient().rpc("verify_certificate", { p_code: code });
   if (error) return text("Chưa tải được giấy chứng nhận. Thử lại sau ít phút.", 502);

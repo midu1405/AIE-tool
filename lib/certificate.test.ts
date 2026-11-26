@@ -6,10 +6,17 @@ describe("mã giấy chứng nhận", () => {
     expect(normalizeCode(" aie-2026-7f3k9q ")).toBe("AIE-2026-7F3K9Q");
     expect(normalizeCode("AIE-2026-7F3K9Q")).toBe("AIE-2026-7F3K9Q");
   });
+  it("mã 10 ký tự: bỏ qua gạch, khoảng trắng, chia nhóm lại", () => {
+    expect(normalizeCode("AIE-2026-K7MQ-X3PV-9R")).toBe("AIE-2026-K7MQ-X3PV-9R");
+    expect(normalizeCode(" aie 2026 k7mqx3pv9r ")).toBe("AIE-2026-K7MQ-X3PV-9R");
+    expect(normalizeCode("AIE2026K7MQ-X3PV9R")).toBe("AIE-2026-K7MQ-X3PV-9R");
+  });
   it("loại mã sai dạng", () => {
     expect(normalizeCode("AIE-26-7F3K9Q")).toBeNull();
     expect(normalizeCode("AIE-2026-7F3K9")).toBeNull();
     expect(normalizeCode("../etc/passwd")).toBeNull();
+    expect(normalizeCode("AIE-2026-K7MQ-X3PV-9")).toBeNull();
+    expect(normalizeCode("%E0%A4%A")).toBeNull();
   });
   it("tên file PDF", () => expect(certFileName("AIE-2026-7F3K9Q")).toBe("Giay-chung-nhan-AIE-2026-7F3K9Q.pdf"));
 });

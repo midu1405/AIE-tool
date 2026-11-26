@@ -62,6 +62,8 @@ export type CourseDetail = CatalogCourse & {
   audienceNote: string;
   legalBasis: string;
   modules: OModule[];
+  /** Số KHBD, PBT gắn trong khoá. Link chỉ mở cho người đã đăng ký (course_material_links); ai cũng thấy số lượng. */
+  materials: { khbd: number; pbt: number };
 };
 
 export async function getPublishedCourse(slug: string): Promise<CourseDetail | null> {
@@ -77,6 +79,8 @@ export async function getPublishedCourse(slug: string): Promise<CourseDetail | n
   if (error) throw new Error(`Không tải được khoá học: ${error.message}`);
   if (!data) return null;
   const row = data as unknown as CourseRow & { prerequisites: string[]; materials_needed: string[]; course_modules: RawModule[] };
+  const { data: counts } = await createPublicClient().rpc("course_material_counts", { p_course_id: row.id });
+  const n = (k: string) => ((counts ?? []) as { kind: string; n: number }[]).find((c) => c.kind === k)?.n ?? 0;
   return {
     ...toCatalog(row),
     description: row.description,
@@ -86,5 +90,6 @@ export async function getPublishedCourse(slug: string): Promise<CourseDetail | n
     audienceNote: row.audience_note,
     legalBasis: row.legal_basis,
     modules: buildOutline(row.course_modules),
+    materials: { khbd: n("khbd"), pbt: n("pbt") },
   };
 }
