@@ -1,4 +1,4 @@
--- Cờ "Tự duyệt" ở Danh sách KHBD (20261126090000_tu_duyet). Dùng lại 20_: b tạo "Bài 2", "Bài 3"; d là người duyệt.
+-- Cờ "Tự duyệt" ở Danh sách KHBD (20261126074852_tu_duyet). Dùng lại 20_: b tạo "Bài 2", "Bài 3"; d là người duyệt.
 \set ON_ERROR_STOP 0
 set role authenticated;
 \echo '--- người duyệt d duyệt "Bài 3" do người soạn b tạo: không phải tự duyệt (false)'

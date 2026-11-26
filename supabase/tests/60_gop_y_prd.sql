@@ -1,4 +1,4 @@
--- Góp ý PRD 26/11 (20261126080000_gop_y_prd): khoá minh hoạ, cấp giấy cần khoá đủ nội dung, quiz không lộ đáp án,
+-- Góp ý PRD 26/11 (20261126074808_gop_y_prd): khoá minh hoạ, cấp giấy cần khoá đủ nội dung, quiz không lộ đáp án,
 -- khoá ẩn vẫn mở cho người đã đăng ký, không xoá khoá có người học, không chèn thẳng job.
 -- Dùng lại user và khoá ở 10_–50_: a = Academic lead, b = người soạn, c = giáo viên đã đăng ký c…1, f1 = giáo viên khác.
 \set ON_ERROR_STOP 0
