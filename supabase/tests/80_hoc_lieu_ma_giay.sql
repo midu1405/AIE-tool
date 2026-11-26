@@ -1,4 +1,4 @@
--- Học liệu chỉ cho người đã đăng ký, mã giấy 10 ký tự, xoá bước không làm người học kẹt (20261126100000_hoc_lieu_ma_giay).
+-- Học liệu chỉ cho người đã đăng ký, mã giấy 10 ký tự, xoá bước không làm người học kẹt (20261126081943_hoc_lieu_ma_giay).
 -- Dùng lại 10_–70_: khoá c…1 đã xuất bản, có học liệu gắn ở bước b…1; c, f1 đã đăng ký; f2 chưa đăng ký.
 \set ON_ERROR_STOP 0
 set role authenticated;
