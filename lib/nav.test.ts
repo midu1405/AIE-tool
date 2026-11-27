@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { safeNext } from "@/lib/nav";
+import { loginErrorCode, safeNext } from "@/lib/nav";
 
 describe("safeNext", () => {
   it("giữ đường dẫn nội bộ", () => {
@@ -12,5 +12,16 @@ describe("safeNext", () => {
       expect(safeNext(bad)).toBe("/");
     }
     expect(safeNext(null, "/noi-bo")).toBe("/noi-bo");
+  });
+});
+
+describe("loginErrorCode", () => {
+  it("nhận ra lỗi chưa có trong danh sách dùng thử", () => {
+    expect(loginErrorCode("chua_duoc_moi: Email này chưa có trong danh sách dùng thử của AI Edu Training Hub.")).toBe("chua-moi");
+    expect(loginErrorCode("500: Error running hook URI: chua_duoc_moi: Email…")).toBe("chua-moi");
+  });
+  it("lỗi khác hoặc không có mô tả", () => {
+    expect(loginErrorCode("Unable to exchange external code")).toBe("1");
+    expect(loginErrorCode(null)).toBe("1");
   });
 });
