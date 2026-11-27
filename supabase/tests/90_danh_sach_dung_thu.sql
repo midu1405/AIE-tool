@@ -1,4 +1,4 @@
--- Danh sách dùng thử và hook tạo tài khoản (20261127040000_danh_sach_dung_thu).
+-- Danh sách dùng thử và hook tạo tài khoản (20261127034538_danh_sach_dung_thu).
 -- c = giáo viên teacher@example.com (10_). Thêm một quản trị riêng cho file này.
 \set ON_ERROR_STOP 0
 \set VERBOSITY terse
