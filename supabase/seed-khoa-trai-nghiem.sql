@@ -230,6 +230,8 @@ end $seed$;
 
 -- Xuất bản. courses_guard chỉ cho quản lý nội dung xuất bản (file chạy bằng tài khoản database, không có vai trò), nên tắt
 -- trigger riêng cho câu cập nhật này; điều kiện của nút Xuất bản được kiểm lại ngay trước đó bằng course_problems().
+-- Tài khoản không được đặt session_replication_role (vd. chạy SQL qua công cụ quản trị Supabase) thì xuất bản bằng nút Xuất bản
+-- trong khu nội bộ. Trên project, khoá được xuất bản ngày 27/11 bằng tài khoản quản trị của Midu, qua đủ kiểm tra của courses_guard.
 do $pub$
 declare
   c uuid;
