@@ -49,6 +49,8 @@ export async function getPublishedCourses(): Promise<CatalogCourse[]> {
     .from("courses")
     .select(COLS)
     .eq("status", "published")
+    // Khoá học thật (đăng ký được) xếp trước khoá minh hoạ (is_demo), để người mới vào thấy ngay khoá trải nghiệm.
+    .order("is_demo", { ascending: true })
     .order("created_at", { ascending: true });
   if (error) throw new Error(`Không tải được danh mục khoá học: ${error.message}`);
   return (data as CourseRow[]).map(toCatalog);
