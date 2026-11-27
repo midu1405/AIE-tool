@@ -1,8 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { safeNext } from "@/lib/nav";
+import { loginErrorCode, safeNext } from "@/lib/nav";
 
-// Google chuyển về đây kèm ?code=…; đổi code lấy phiên rồi về trang người dùng định vào.
+// Google chuyển về đây kèm ?code=…; đổi code lấy phiên rồi về trang người dùng định vào. Supabase từ chối (vd. email chưa
+// có trong danh sách dùng thử) thì về đây kèm ?error=…&error_description=… thay cho code.
 export async function GET(request: NextRequest) {
   const url = request.nextUrl;
   const code = url.searchParams.get("code");
@@ -12,5 +13,6 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) return NextResponse.redirect(new URL(next, url.origin));
   }
-  return NextResponse.redirect(new URL(`/dang-nhap?loi=1&next=${encodeURIComponent(next)}`, url.origin));
+  const loi = loginErrorCode(url.searchParams.get("error_description"));
+  return NextResponse.redirect(new URL(`/dang-nhap?loi=${loi}&next=${encodeURIComponent(next)}`, url.origin));
 }

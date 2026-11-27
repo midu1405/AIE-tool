@@ -26,7 +26,9 @@ async function LoginBody({ searchParams }: { searchParams: Promise<Record<string
     <>
       {error && (
         <p role="alert" className="rounded-lg bg-err-soft px-4 py-3 text-sm text-err">
-          Đăng nhập chưa thành công. Thử lại; nếu vẫn lỗi, báo quản trị kèm thời điểm thử.
+          {error === "chua-moi"
+            ? "Email này chưa có trong danh sách dùng thử. Trong giai đoạn thử, chỉ tài khoản @aiedu.com.vn và email được AI Edu mời mới đăng nhập được. Nhờ người mời bạn thêm email này, rồi đăng nhập lại."
+            : "Đăng nhập chưa thành công. Thử lại; nếu vẫn lỗi, báo quản trị kèm thời điểm thử."}
         </p>
       )}
       <LoginButton next={next} />
