@@ -95,7 +95,7 @@ npm run lint && npm run typecheck && npm test
 npm run test:db -- <ten_db>     # cần Postgres cục bộ; xem supabase/tests/run.sh
 ```
 
-Dữ liệu mẫu (đã nạp vào project, chạy lại không bị trùng): `supabase/seed.sql` (9 khoá học mẫu **đã xuất bản dạng khoá minh hoạ** `is_demo`: hiện ở danh mục, không đăng ký và không cấp giấy được; bước chưa có nội dung; giữ lại để giao diện có dữ liệu như bản thiết kế cho tới khi Academic soạn khoá thật; chạy được trên database mới, không tắt trigger), `supabase/seed-khung-mau.sql` (khung lớp 6, Chủ đề 1–2, 10 bài, để thử Tạo KHBD khi chưa đồng bộ Drive).
+Dữ liệu mẫu (đã nạp vào project, chạy lại không bị trùng): `supabase/seed.sql` (9 khoá học mẫu **đã xuất bản dạng khoá minh hoạ** `is_demo`: hiện ở danh mục, không đăng ký và không cấp giấy được; bước chưa có nội dung; giữ lại để giao diện có dữ liệu như bản thiết kế cho tới khi Academic soạn khoá thật; chạy được trên database mới, không tắt trigger), `supabase/seed-khung-mau.sql` (khung lớp 6, Chủ đề 1–2, 10 bài, để thử Tạo KHBD khi chưa đồng bộ Drive), `supabase/seed-khoa-trai-nghiem.sql` (khoá trải nghiệm `trai-nghiem-ai-tao-sinh`: khoá thật, không minh hoạ, 2 học phần, 10 bước đủ loại, khoảng 45 phút; học trọn tới giấy chứng nhận để mọi người thử web và góp ý; danh mục xếp khoá thật trước khoá minh hoạ; video là của Code.org, ô bản ghi lời đang là bản tóm tắt tiếng Việt; sửa nội dung ở màn Soạn nội dung khoá, không chạy lại file).
 
 Thử trọn luồng KHBD và khoá học trên máy không cần Supabase thật (người dùng thử là tên và email giả, không dùng dữ liệu nhân viên thật): `tests/e2e/README.md` (PostgREST + cổng giả Auth + Playwright; `flow_khbd.py` rồi `flow_noi_dung.py`).
 

@@ -4,7 +4,7 @@ Dùng khi máy không ra được supabase.co, hoặc muốn thử phá dữ li�
 [PostgREST](https://github.com/PostgREST/postgrest/releases) (bản static).
 
 1. Tạo database `e2e`: chạy `supabase/tests/00_stub_supabase.sql`, mọi file trong `supabase/migrations/` theo thứ tự tên, rồi
-   `supabase/seed.sql` và `supabase/seed-khung-mau.sql`. Thêm người dùng thử:
+   `supabase/seed.sql`, `supabase/seed-khung-mau.sql` và `supabase/seed-khoa-trai-nghiem.sql`. Thêm người dùng thử:
    ```sql
    insert into auth.users (id, email, raw_user_meta_data) values
      ('11111111-1111-1111-1111-111111111111', 'nhanvien.thu@aiedu.com.vn', '{"full_name":"Nhân viên thử"}');
@@ -22,3 +22,7 @@ Dùng khi máy không ra được supabase.co, hoặc muốn thử phá dữ li�
    đăng ký, học từng bước (quiz sai rồi làm lại đạt 80%), hoàn thành khoá; menu nội bộ 390 px; người phụ trách xem câu trả lời phản tư.
 
 Realtime không có trong cách này (trang vẫn tự cập nhật nhờ vòng gọi `advance_mock_jobs`).
+
+8. Khoá trải nghiệm: `E2E_TEACHER_COOKIE_FILE=<file> python3 flow_trai_nghiem.py` với một giáo viên thử chưa đăng ký khoá
+   `trai-nghiem-ai-tao-sinh`: khoá ở đầu danh mục, đăng ký, học trọn 10 bước (quiz 1 sai rồi làm lại), nhận giấy, tải PDF, xác minh
+   công khai. Chạy lại thì xoá `enrollments`, `lesson_progress`, `quiz_attempts`, `reflections` của giáo viên thử trước.
