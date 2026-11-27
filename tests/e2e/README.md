@@ -21,8 +21,8 @@ Dùng khi máy không ra được supabase.co, hoặc muốn thử phá dữ li�
    soạn thông tin trang khoá, học phần, phần, 4 bước (bài đọc có học liệu, quiz, phản tư, tổng kết), kiểm tra, xuất bản; giáo viên
    đăng ký, học từng bước (quiz sai rồi làm lại đạt 80%), hoàn thành khoá; menu nội bộ 390 px; người phụ trách xem câu trả lời phản tư.
 
-Realtime không có trong cách này (trang vẫn tự cập nhật nhờ vòng gọi `advance_mock_jobs`).
-
 8. Khoá trải nghiệm: `E2E_TEACHER_COOKIE_FILE=<file> python3 flow_trai_nghiem.py` với một giáo viên thử chưa đăng ký khoá
    `trai-nghiem-ai-tao-sinh`: khoá ở đầu danh mục, đăng ký, học trọn 10 bước (quiz 1 sai rồi làm lại), nhận giấy, tải PDF, xác minh
    công khai. Chạy lại thì xoá `enrollments`, `lesson_progress`, `quiz_attempts`, `reflections` của giáo viên thử trước.
+
+Realtime không có trong cách này (trang vẫn tự cập nhật nhờ vòng gọi `advance_mock_jobs`).
