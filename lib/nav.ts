@@ -13,3 +13,12 @@ export function safeNext(next: string | null | undefined, fallback = "/") {
     return fallback;
   }
 }
+
+/**
+ * Mã lỗi đăng nhập đưa sang /dang-nhap?loi=… (trang hiện lời nhắn cố định theo mã, không hiện chữ lấy từ địa chỉ).
+ * "chua-moi": hook_truoc_khi_tao_tai_khoan từ chối vì email chưa có trong danh sách dùng thử (thông báo bắt đầu bằng
+ * "chua_duoc_moi:"). Lỗi khác: "1".
+ */
+export function loginErrorCode(errorDescription: string | null | undefined): "chua-moi" | "1" {
+  return (errorDescription ?? "").includes("chua_duoc_moi") ? "chua-moi" : "1";
+}

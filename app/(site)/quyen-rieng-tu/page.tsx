@@ -19,6 +19,10 @@ export default function PrivacyPage() {
             <strong>Tài khoản:</strong> email và họ tên lấy từ tài khoản Google khi bạn đăng nhập (kèm ảnh đại diện nếu tài khoản Google có).
           </li>
           <li>
+            <strong>Danh sách dùng thử:</strong> trong giai đoạn thử, AI Edu giữ danh sách email được mời dùng web, kèm ghi chú ngắn (ví dụ
+            trường của bạn). Email không có trong danh sách bị từ chối khi đăng nhập lần đầu, và không có tài khoản nào được tạo.
+          </li>
+          <li>
             <strong>Việc học:</strong> khoá bạn đăng ký và lưu để học sau, bước đã xong, thời điểm hoàn thành khoá.
           </li>
           <li>
